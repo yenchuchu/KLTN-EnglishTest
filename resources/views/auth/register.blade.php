@@ -163,13 +163,13 @@
                                     <div class="option">
                                         <div class="group nav nav-tabs" >
                                             <div class="item objs">
-                                                <input type="radio" id="student" name="office_type" value="2"
+                                                <input type="radio" id="student" name="office_type" value="ST"
                                                        class="radio"
                                                        checked="">
                                                 <label for="student"><a data-toggle="tab" href="#student-tabs">STUDENT</a></label>
                                             </div>
                                             <div class="item objt">
-                                                <input type="radio" id="teacher" name="office_type" value="1"
+                                                <input type="radio" id="teacher" name="office_type" value="TC"
                                                        class="radio">
                                                 <label for="teacher"><a data-toggle="tab" href="#teacher-tabs">TEACHER</a></label>
                                             </div>

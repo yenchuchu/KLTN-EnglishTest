@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use Route;
 
 class AuthorController extends Controller
 {
@@ -58,61 +59,37 @@ class AuthorController extends Controller
         return view('backend.author.underlines');
     }
 
-
-
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function grade(Request $request)
     {
-        //
+        $this->url_parameters = Route::getCurrentRoute()->parameters();
+        $class_code = $this->url_parameters['class_code'];
+
+        return view('backend.author.grade-menu',compact('class_code'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+//    public function create() {
+//
+//        $header_examp_type = ExamType::select('Header')->where('ID', '=', 1)->first();
+//        $exam_format = ExamFormat::where('ID', '=', 2)->first();
+//
+//        return view('elementary.create', compact('header_examp_type', 'exam_format'));
+//    }
+
+    public function secondary()
     {
-        //
+
+        return view('frontend.secondary.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function highschool()
     {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+        return view('frontend.highschool.index');
     }
 
     /**

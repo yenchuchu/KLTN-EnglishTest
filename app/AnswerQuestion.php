@@ -18,7 +18,7 @@ class AnswerQuestion extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'point','content_json',
+        'title', 'content', 'point','content_json', 'type_user'
     ];
 
     public function answer_question_details()
@@ -28,6 +28,14 @@ class AnswerQuestion extends Model
 
     public function skills() {
         return $this->hasMany(Skill::class, 'id', 'skill_id' );
+    }
+
+    public function exam_types() {
+        return $this->hasMany(ExamType::class, 'id', 'exam_type_id' );
+    }
+
+    public function classes() {
+        return $this->hasMany(Classes::class, 'id', 'class_id' );
     }
 
     public function levels() {

@@ -18,4 +18,9 @@ class Classes extends Model
     protected $fillable = [
         'title'
     ];
+
+    public function answer_questions()
+    {
+        return $this->belongsTo(AnswerQuestion::class);
+    }
 }

@@ -3,37 +3,51 @@
 @section('header')
     <h1 class="page-header">Dashboard</h1>
 @stop
-@section('content')
-    <div class="row">
-        <!-- Welcome -->
-        <div class="col-lg-12">
-            <div class="alert alert-info">
-                <i class="fa fa-folder-open"></i><b>&nbsp;Hello ! </b>Welcome Back <b>Jonny Deen </b>
-                <i class="fa  fa-pencil"></i><b>&nbsp;2,000 </b>Support Tickets Pending to Answere. nbsp;
-            </div>
-        </div>
-        <!--end  Welcome -->
-    </div>
+@section('style')
+    <style>
+        .navbar-custom {
+            padding: 10px 0;
+        }
 
-    <div class="row">
-        <div class="col-lg-12">
-            <!-- Advanced Tables -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Advanced Tables
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive" id="reload-table-manager-users">
+        #dashboard-index-wrap {
+            padding: 100px 0 80px;
+        }
 
-                    </div>
+        a > img {
+            width: 100%;
+        }
 
-                </div>
-            </div>
-            <!--End Advanced Tables -->
-        </div>
-    </div>
+        .main-body {
+            margin: 30px 15px 10px;
+            overflow: hidden;
+            padding: 10px 10px;
+            margin-bottom: 90px;
+        }
 
+    </style>
 @stop
 
-@section('script')
+@section('content')
+    <section id="dashboard-index-wrap">
+        <div class="container">
+            <div class="row">
+
+                <div class="main-body">
+
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <a href="{{ route('backend.author.grade', 1) }}">
+                            <img src="{{asset('/imgs-dashboard/tieu-hoc.PNG')}}" alt="Tạo Đề Cấp Tiểu Học"></a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <a href="{{ route('backend.author.grade', 2) }}">
+                            <img src="{{asset('/imgs-dashboard/THCS.PNG')}}" alt="Tạo Đề Cấp Trung Học Cơ Sở"></a>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                        <a href="{{ route('backend.author.grade', 3) }}">
+                            <img src="{{asset('/imgs-dashboard/THPT.PNG')}}" alt="Tạo Đề Cấp Trung Học Phổ Thông"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 @stop

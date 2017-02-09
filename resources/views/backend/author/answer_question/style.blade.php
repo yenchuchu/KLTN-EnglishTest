@@ -107,4 +107,9 @@
         margin-right: 5px;
     }
 
+    .bookmap_form {
+        width: 30%;
+        float: left;
+    }
+
 </style>

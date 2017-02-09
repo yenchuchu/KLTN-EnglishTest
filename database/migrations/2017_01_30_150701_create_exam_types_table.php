@@ -17,10 +17,11 @@ class CreateExamTypesTable extends Migration
             $table->increments('id');
 
             $table->string('title');
-            $table->string('description');
-            $table->integer('class_id');
-            $table->integer('skill_id');
-            $table->integer('level_id');
+            $table->string('code');
+            $table->string('description')->nullable();
+            $table->integer('class_id')->nullable();
+            $table->integer('skill_id')->nullable();
+            $table->integer('level_id')->nullable();
 
             $table->timestamps();
         });

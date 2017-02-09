@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -67,9 +68,12 @@ class RegisterController extends Controller
         if(!isset($data['class'])) {
             $data['class'] = null;
         }
+
+        $roles = Role::where('code', $data['office_type'])->first();
+
         return User::create([
             'full_name' => $data['full_name'],
-            'type' => $data['office_type'],
+            'type' => $roles->id,
             'email' => $data['email'],
             'class_id' => $data['class'],
             'user_name' => $data['user_name'],

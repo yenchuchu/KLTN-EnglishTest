@@ -54,30 +54,38 @@ Route::group(['middleware' => 'auth'], function () {
 
                 Route::get('/', 'backend\AuthorController@index')->name('backend.manager.author.index');
 
+                // go to elementary
+                Route::group(array('prefix' => 'grade'), function () {
+                    Route::get('/{class_code}', 'backend\AuthorController@grade')->name('backend.author.grade');
+                });
+
                 Route::get('/underlines',
                     'backend\AuthorController@underlines')->name('backend.manager.author.underlines');
 
                 Route::group(array('prefix' => 'answer-question'), function () {
-                    Route::get('/', 'backend\author\AnswerQuestionsController@index')
+                    Route::get('/{class_code}', 'backend\author\AnswerQuestionsController@index')
                         ->name('backend.manager.author.answer-question');
 
-                    Route::get('/create', 'backend\author\AnswerQuestionsController@create')
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\AnswerQuestionsController@create')
                         ->name('backend.manager.author.answer-question.create');
+//                    Route::get('/create-teacher/{class_code}', 'backend\author\AnswerQuestionsController@create_teacher')
+//                        ->name('backend.manager.author.answer-question.create-teacher');
+
                     Route::post('/store', 'backend\author\AnswerQuestionsController@store')
                         ->name('backend.manager.author.answer-question.store');
 
+
                 });
 
-
-                Route::get('/classify-word',
+                Route::get('/classify-word/{class_code}',
                     'backend\AuthorController@classify_words')->name('backend.manager.author.classify-word');
-                Route::get('/complete-word',
+                Route::get('/complete-word/{class_code}',
                     'backend\AuthorController@complete_words')->name('backend.manager.author.complete-word');
-                Route::get('/find-errors',
+                Route::get('/find-errors/{class_code}',
                     'backend\AuthorController@find_errors')->name('backend.manager.author.find-errors');
-                Route::get('/multiple-choice',
+                Route::get('/multiple-choice/{class_code}',
                     'backend\AuthorController@multiple_choice')->name('backend.manager.author.multiple-choice');
-                Route::get('/tick-cricle-true-false',
+                Route::get('/tick-cricle-true-false/{class_code}',
                     'backend\AuthorController@tick_circle_true_false')->name('backend.manager.author.tick-cricle-true-false');
             });
 

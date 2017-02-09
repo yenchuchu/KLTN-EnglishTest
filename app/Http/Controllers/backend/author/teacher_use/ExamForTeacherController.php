@@ -1,9 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\backend\author;
+namespace App\Http\Controllers\backend\author\teacher_use;
 
-use App\BookMap;
-use App\Classes;
 use App\Skill;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -11,34 +9,11 @@ use App\User;
 use App\Level;
 use App\AnswerQuestion;
 use App\AnswerQuestionDetail;
-use App\ExamType;
-
 use Carbon\Carbon;
-use Route;
 use Illuminate\Support\Facades\Redirect;
 
-class AnswerQuestionsController extends Controller
+class ExamForTeacherController extends Controller
 {
-    protected $levels;
-    protected $skill;
-    protected $classes;
-
-    /**
-     * @var $type_diff = 1 : tao de cho giao vien
-     * = 2: tao de cho hoc sinh
-     */
-    protected $type_diff;
-    protected $class_code;
-    protected $code_user;
-
-    public function __construct()
-    {
-        $this->levels = Level::all();
-        $this->classes = Classes::all();
-        $this->skill = 'Read';
-
-        $this->url_parameters = Route::getCurrentRoute()->parameters();
-    }
 
     public function index()
     {
@@ -48,6 +23,8 @@ class AnswerQuestionsController extends Controller
 
         $ans_questions = [];
         foreach ($ans_questions_all as $ans) {
+//            $ans->created_at = $ans->created_at->format('d-m-Y');
+//            $ans->updated_at = $ans->updated_at->format('d-m-Y');
             $ans->content_json = json_decode($ans->content_json);
             $ans->skills = $ans->skills->first();
             $ans->levels = $ans->levels->first();
@@ -56,33 +33,12 @@ class AnswerQuestionsController extends Controller
 
         }
 
-        $class_code = $this->url_parameters['class_code'];
-
-        return view('backend.author.answer_question.index', compact('ans_questions', 'class_code'));
+        return view('backend.author.answer_question.index', compact('ans_questions'));
     }
 
-    public function create()
+    public function createExamUsullay()
     {
-        $levels = $this->levels;
-        $all_classes = $this->classes;
-
-
-        $class_code = $this->url_parameters['class_code'];
-        $code_user = $this->url_parameters['code_user'];
-
-        $classes = $all_classes->filter(function ($class) use ($class_code) {
-            return ($class->code == $class_code);
-        });
-
-        if($code_user == 'TC') {
-            $exam_types = ExamType::all();
-            $book_maps = BookMap::all();
-
-            return view('backend.author.answer_question.create',
-                compact('levels', 'class_code', 'code_user', 'classes', 'exam_types', 'book_maps'));
-        }
-
-        return view('backend.author.answer_question.create', compact('levels', 'class_code', 'code_user', 'classes'));
+        return view('backend.author.teacher_use.create', compact('levels'));
     }
 
     /**
@@ -95,21 +51,8 @@ class AnswerQuestionsController extends Controller
     {
         $all_data = $request->all();
 
-        if(!isset($all_data['level_id'])) {
-            $all_data['level_id'] = null;
-        }
-
-        if(!isset($all_data['book_map_id'])) {
-            $all_data['book_map_id'] = null;
-        }
-
-        if(!isset($all_data['exam_type_id'])) {
-            $all_data['exam_type_id'] = null;
-        }
-
         $skill = Skill::where('code', $this->skill)->first();
         $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
 
         foreach ($all_data['answer_question'] as $data) {
 
@@ -119,13 +62,22 @@ class AnswerQuestionsController extends Controller
             $answer_question->title = $data['title-answer-question'];
             $answer_question->content = $data['content-answer-question'];
             $answer_question->point = $data['point'];
-            $answer_question->type_user = $data['code_user'];
             $answer_question->content_json = json_encode($answer_question_content_question);
             $answer_question->skill_id = $skill->id;
             $answer_question->level_id = $level_id;
-            $answer_question->class_id = $class_id;
 
             $answer_question->save();
+
+//            $answer_question_details = new AnswerQuestionDetail();
+//
+//            $answer_question_content_question = $data['content-choose-ans-question'];
+//            $answer_question_id = $answer_question->id;
+//
+//            $answer_question_details->answer_question_id = $answer_question_id;
+////            $answer_question_details->title = $answer_question_id;
+//            $answer_question_details->content_json = json_encode($answer_question_content_question);
+//
+//            $answer_question_details->save();
         }
 
         return Redirect()->route('backend.manager.author.answer-question');

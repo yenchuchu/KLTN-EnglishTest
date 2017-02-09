@@ -21,7 +21,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Advanced Tables
-                    <a href="{{route('backend.manager.author.answer-question.create')}}" target="_blank">ADD</a>
+                    <a href="{{route('backend.manager.author.answer-question.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
+                    <a href="{{route('backend.manager.author.answer-question.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload-table-manager-users">

@@ -13,16 +13,67 @@
     {{ Form::open(['route' => 'backend.manager.author.answer-question.store', 'method' => 'post']) }}
 
     <div class="row">
-        <div class="col-lg-3">
-            <div class="form-group">
+        @if($code_user == 'ST')
+            <div class="col-lg-3">
+                <div class="form-group">
 
-                <select name="level_id" class="form-control" id="add-answer-question-level">
-                    @foreach($levels as $level)
-                        <option value="{{$level->id}}">{{$level->title}} - {{$level->point}}  </option>
-                    @endforeach
-                </select>
+                    <select name="level_id" class="form-control" id="add-answer-question-level">
+                        @foreach($levels as $level)
+                            <option value="{{$level->id}}">{{$level->title}} - {{$level->point}}  </option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-        </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <select name="class_id" class="form-control" id="answer-question-class">
+                        @foreach($classes as $class)
+                            <option value="{{$class->id}}">{{$class->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        @elseif($code_user == 'TC')
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <select name="class_id" class="form-control" id="answer-question-class">
+                        @foreach($classes as $class)
+                            <option value="{{$class->id}}">{{$class->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="form-group">
+
+                    <select name="exam_type_id" class="form-control" id="answer-question-examtype">
+                        @foreach($exam_types as $types)
+                            <option value="{{$types->id}}" code="{{$types->code}}">{{$types->title}}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-12" id="wrap_bookmap_form">
+
+                @foreach($book_maps as $book)
+                    <div class="form-group bookmap_form">
+                        <label for="bookmap_{{$book->id}}">{{$book->title}}</label>
+                        <input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">
+                    </div>
+                @endforeach
+                {{--<select name="book_map_id" class="form-control" id="answer-question-bookmap">--}}
+                {{--@foreach($book_maps as $book)--}}
+                {{--<option value="{{$book->id}}">{{$book->title}}</option>--}}
+                {{--@endforeach--}}
+                {{--</select>--}}
+
+            </div>
+        @endif
+
+        <input type="hidden" value="{{$code_user}}" name="code_user">
+        <input type="hidden" value="{{$class_code}}" name="class_code">
     </div>
     <div class="row" id="wrap_add_answer_question">
         <div class="col-lg-12 col_add_answer_question">
@@ -48,7 +99,8 @@
                         </div>
 
                         <div class="form-group">
-                                <textarea type="text" class="form-control" name="answer_question[1][content-answer-question]"
+                                <textarea type="text" class="form-control"
+                                          name="answer_question[1][content-answer-question]"
                                           placeholder="enter content" required></textarea>
                         </div>
                         <div class="form-group" style="width:100%; float:left;">
@@ -56,15 +108,20 @@
                                 1
                             </div>
                             <div class="span-text-question">
-                                    <textarea type="text" class="form-control" name="answer_question[1][content-choose-ans-question][1][content]"
+                                    <textarea type="text" class="form-control"
+                                              name="answer_question[1][content-choose-ans-question][1][content]"
                                               placeholder="enter content" required></textarea>
                             </div>
                             <div class="span-choose-answer">
                                 <span>
-                                    <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="1" class="ans-true"><strong>T</strong>
+                                    <input type="radio"
+                                           name="answer_question[1][content-choose-ans-question][1][answer]" value="1"
+                                           class="ans-true"><strong>T</strong>
                                 </span>
                                 <span>
-                                     <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="0" class="ans-false"><strong>F</strong>
+                                     <input type="radio"
+                                            name="answer_question[1][content-choose-ans-question][1][answer]" value="0"
+                                            class="ans-false"><strong>F</strong>
                                 </span>
                             </div>
                         </div>

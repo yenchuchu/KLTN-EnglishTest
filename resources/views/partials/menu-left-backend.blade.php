@@ -28,34 +28,6 @@
                 <li class="selected">
                     <a href="{{route('backend.manager.author.index')}}"><i class="fa fa-dashboard fa-fw"></i>Dashboard</a>
                 </li>
-                <li>
-                    <a href="{{route('backend.manager.author.answer-question')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Answer Questions</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.classify-word')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Classify Words</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.complete-word')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Complete Words</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.find-errors')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Find Errors</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.multiple-choice')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Multiple Choices</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.tick-cricle-true-false')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Tick Cricle True Flase</a>
-                </li>
-                <li>
-                    <a href="{{route('backend.manager.author.underlines')}}">
-                        <i class="fa fa-dashboard fa-fw"></i>Underlines</a>
-                </li>
 
             @endif
 
