@@ -17,6 +17,7 @@ class CreateLevelsTable extends Migration
             $table->increments('id');
 
             $table->string('title');
+            $table->string('code');
             $table->integer('point');
 
             $table->timestamps();

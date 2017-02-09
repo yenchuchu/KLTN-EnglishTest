@@ -19,6 +19,7 @@ class CreateAnswerQuestionsTable extends Migration
             $table->string('title');
             $table->string('content');
             $table->integer('point');
+            $table->string('content_json');
             $table->integer('skill_id')->nullable();
             $table->integer('level_id')->nullable();
 

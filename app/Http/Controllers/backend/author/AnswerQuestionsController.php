@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers\backend\author;
 
+use App\Skill;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Level;
+use App\AnswerQuestion;
+use App\AnswerQuestionDetail;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Redirect;
 
 class AnswerQuestionsController extends Controller
 {
@@ -20,7 +25,23 @@ class AnswerQuestionsController extends Controller
 
     public function index()
     {
-        return view('backend.author.answer_question.index');
+        $ans_questions_all = AnswerQuestion::orderBy('level_id', 'ASC')
+            ->with('skills', 'levels')
+            ->get();
+
+        $ans_questions = [];
+        foreach ($ans_questions_all as $ans) {
+//            $ans->created_at = $ans->created_at->format('d-m-Y');
+//            $ans->updated_at = $ans->updated_at->format('d-m-Y');
+            $ans->content_json = json_decode($ans->content_json);
+            $ans->skills = $ans->skills->first();
+            $ans->levels = $ans->levels->first();
+
+            $ans_questions[] = $ans;
+
+        }
+
+        return view('backend.author.answer_question.index', compact('ans_questions'));
     }
 
     public function create()
@@ -37,9 +58,38 @@ class AnswerQuestionsController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['skill_code'] = $this->skill;
-        dd($data);
+        $all_data = $request->all();
+
+        $skill = Skill::where('code', $this->skill)->first();
+        $level_id = $all_data['level_id'];
+
+        foreach ($all_data['answer_question'] as $data) {
+
+            $answer_question_content_question = $data['content-choose-ans-question'];
+            $answer_question = new AnswerQuestion();
+
+            $answer_question->title = $data['title-answer-question'];
+            $answer_question->content = $data['content-answer-question'];
+            $answer_question->point = $data['point'];
+            $answer_question->content_json = json_encode($answer_question_content_question);
+            $answer_question->skill_id = $skill->id;
+            $answer_question->level_id = $level_id;
+
+            $answer_question->save();
+
+//            $answer_question_details = new AnswerQuestionDetail();
+//
+//            $answer_question_content_question = $data['content-choose-ans-question'];
+//            $answer_question_id = $answer_question->id;
+//
+//            $answer_question_details->answer_question_id = $answer_question_id;
+////            $answer_question_details->title = $answer_question_id;
+//            $answer_question_details->content_json = json_encode($answer_question_content_question);
+//
+//            $answer_question_details->save();
+        }
+
+        return Redirect()->route('backend.manager.author.answer-question');
     }
 
     /**

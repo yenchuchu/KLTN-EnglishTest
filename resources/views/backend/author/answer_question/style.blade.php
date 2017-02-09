@@ -103,4 +103,8 @@
         color: rgb(128, 128, 128);
     }
 
+    .span-choose-answer input[type="radio"] {
+        margin-right: 5px;
+    }
+
 </style>

@@ -15,18 +15,19 @@
 
                 '<div class="col-lg-10" style="padding-left: 0;">' +
                 '<div class="form-group">' +
-                '<input type="text" name="title-answer-question-'+ j +'" class="form-control">' +
+                '<input type="text" name="answer_question['+ j +'][title-answer-question] " class="form-control" required>' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-lg-2" style=" padding-right: 0;">' +
                 '<div class="form-group">' +
                 '<label class="lable-point">Point: </label>' +
-                '<input type="number" name="point-'+ j +'" class="form-control input-point">' +
+                '<input type="number" name="answer_question['+ j +'][point]" class="form-control input-point" required>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group">' +
-                '<textarea type="text" class="form-control" name="content-answer-question-'+ j +'" placeholder="enter content"></textarea>' +
+                '<textarea type="text" class="form-control" name="answer_question['+ j +'][content-answer-question]' +
+                'placeholder="enter content" required></textarea>' +
                 '</div>' +
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
@@ -34,12 +35,18 @@
                 '</div>' +
 
                 '<div class="span-text-question">' +
-                '<textarea type="text" class="form-control" name="content-choose-ans-question-'+ j +'[]" placeholder="enter content" ></textarea>' +
+                '<textarea type="text" class="form-control" ' +
+                'name="answer_question['+ j +'][content-choose-ans-question][1][content]"' +
+                'placeholder="enter content" required></textarea>' +
                 '</div>' +
 
                 '<div class="span-choose-answer" >' +
-                '<span><strong>T</strong></span>' +
-                '<span><strong>F</strong></span>' +
+                '<span>' +
+                '<input type="radio" name="answer_question['+ j +'][content-choose-ans-question][1][answer]" value="1" class="ans-true"><strong>T</strong>' +
+                '</span>' +
+                '<span>' +
+                '<input type="radio" name="answer_question['+ j +'][content-choose-ans-question][1][answer]" value="0" class="ans-false"><strong>F</strong>' +
+                '</span>' +
                 '</div>' +
 
                 '</div>' +
@@ -67,11 +74,17 @@
                  item_this +
                  '</div>' +
                  '<div class="span-text-question">' +
-                 '<textarea type="text" class="form-control" name="content-choose-ans-question-'+ item +'[]" placeholder="enter content" ></textarea>' +
+                 '<textarea type="text" class="form-control" ' +
+                 'name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][content]"' +
+                 'placeholder="enter content" ></textarea>' +
                  '</div>' +
                  '<div class="span-choose-answer" >' +
-                 '<span><strong>T</strong></span>' +
-                 '<span><strong>F</strong></span>' +
+                 '<span>' +
+                 '<input type="radio" name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]" value="1" class="ans-true">' +
+                 '<strong>T</strong> </span>' +
+                 '<span>' +
+                 '<input type="radio" name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]" value="0" class="ans-false">' +
+                 '<strong>F</strong> </span>' +
                  '</div>' +
                  '</div>');
 

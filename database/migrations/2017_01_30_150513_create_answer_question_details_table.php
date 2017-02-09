@@ -17,9 +17,9 @@ class CreateAnswerQuestionDetailsTable extends Migration
             $table->increments('id');
 
             $table->integer('answer_question_id');
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->string('content_json');
-            $table->string('answer');
+            $table->string('answer')->nullable();
 
             $table->timestamps();
         });

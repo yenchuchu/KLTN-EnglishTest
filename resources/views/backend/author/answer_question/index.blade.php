@@ -25,8 +25,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload-table-manager-users">
-                        answer question
-
+                        @include('backend.author.answer_question.table-index')
                     </div>
 
                 </div>

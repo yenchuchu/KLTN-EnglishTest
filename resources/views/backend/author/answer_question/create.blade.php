@@ -18,7 +18,7 @@
 
                 <select name="level_id" class="form-control" id="add-answer-question-level">
                     @foreach($levels as $level)
-                        <option value="{{$level->id}}">{{$level->title}} -{{$level->point}}  </option>
+                        <option value="{{$level->id}}">{{$level->title}} - {{$level->point}}  </option>
                     @endforeach
                 </select>
             </div>
@@ -35,31 +35,37 @@
 
                         <div class="col-lg-10" style="padding-left: 0;">
                             <div class="form-group">
-                                <input type="text" name="title-answer-question-1" class="form-control">
+                                <input type="text" name="answer_question[1][title-answer-question]"
+                                       class="form-control" required>
                             </div>
                         </div>
                         <div class="col-lg-2" style=" padding-right: 0;">
                             <div class="form-group">
                                 <label class="lable-point">Point: </label>
-                                <input type="number" name="point-1" class="form-control input-point">
+                                <input type="number" name="answer_question[1][point]"
+                                       class="form-control input-point" required>
                             </div>
                         </div>
 
                         <div class="form-group">
-                                <textarea type="text" class="form-control" name="content-answer-question-1"
-                                          placeholder="enter content"></textarea>
+                                <textarea type="text" class="form-control" name="answer_question[1][content-answer-question]"
+                                          placeholder="enter content" required></textarea>
                         </div>
                         <div class="form-group" style="width:100%; float:left;">
                             <div class="span-numb-question" id="id-numb-question-1">
                                 1
                             </div>
                             <div class="span-text-question">
-                                    <textarea type="text" class="form-control" name="content-choose-ans-question-1[]"
-                                              placeholder="enter content"></textarea>
+                                    <textarea type="text" class="form-control" name="answer_question[1][content-choose-ans-question][1][content]"
+                                              placeholder="enter content" required></textarea>
                             </div>
                             <div class="span-choose-answer">
-                                <span><strong>T</strong></span>
-                                <span><strong>F</strong></span>
+                                <span>
+                                    <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="1" class="ans-true"><strong>T</strong>
+                                </span>
+                                <span>
+                                     <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="0" class="ans-false"><strong>F</strong>
+                                </span>
                             </div>
                         </div>
 
