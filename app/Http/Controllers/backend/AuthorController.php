@@ -68,8 +68,15 @@ class AuthorController extends Controller
     {
         $this->url_parameters = Route::getCurrentRoute()->parameters();
         $class_code = $this->url_parameters['class_code'];
+        if ($class_code == 1) {
+            $name_code = 'Elementary';
+        } elseif ($class_code == 2) {
+            $name_code = 'Secondary';
+        } elseif ($class_code == 3) {
+            $name_code = 'High School ';
+        }
 
-        return view('backend.author.grade-menu',compact('class_code'));
+        return view('backend.author.grade-menu',compact('class_code', 'name_code'));
     }
 
 //    public function create() {

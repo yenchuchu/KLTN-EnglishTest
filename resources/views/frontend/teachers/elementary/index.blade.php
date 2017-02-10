@@ -94,17 +94,6 @@
                                         <option value="{{$book_map->id}}"
                                                 id="bookmap_{{$book_map->id}}">{{$book_map->title}}</option>
                                     @endforeach
-                                    {{--<option value="0">Chọn Unit</option>--}}
-                                    {{--<option value="1">Unit 1: Hello</option>--}}
-                                    {{--<option value="2">Unit 2: What is your name?</option>--}}
-                                    {{--<option value="3">Unit 3: This is Tony</option>--}}
-                                    {{--<option value="4">Unit 4: How old are you?</option>--}}
-                                    {{--<option value="5">Unit 5: Are they your friends?</option>--}}
-                                    {{--<option value="6">Unit 6: Stand up!</option>--}}
-                                    {{--<option value="7">Unit 7: That's my school</option>--}}
-                                    {{--<option value="8">Unit 8: This is my pen</option>--}}
-                                    {{--<option value="9">Unit 9: What colour is it?</option>--}}
-                                    {{--<option value="10">Unit 10: What do you do at break time?</option>--}}
                                 </select>
                             </div>
                             <div class="col-sm-4">
@@ -131,7 +120,7 @@
     </div>
 @stop
 
-@section('add-script')
+@section('script')
     <script>
         $(document).ready(function () {
 
@@ -169,7 +158,5 @@
             });
 
         });
-
-
     </script>
 @stop

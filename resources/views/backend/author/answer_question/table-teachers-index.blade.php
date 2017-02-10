@@ -1,17 +1,16 @@
-<table class="table table-hover" id="manager_answer_questions">
+<table class="table table-hover" id="manager_answer_questions_teachers">
     <thead>
     <tr>
         <th>STT</th>
         <th>Skill</th>
-        <th>Level</th>
         <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($ans_questions as $item)
+    @foreach($ans_for_teachers as $item)
         <tr class="odd gradeX">
-             <td>{{$item->skills->title}}</td>
-             <td>{{$item->levels->title}}</td>
+            <td></td>
+            <td>{{$item->skills->title}}</td>
             <td>
                 <!-- nút hiện form sửa -->
                 <button class="btn btn-sm btn-primary" id="btn-edit-school">

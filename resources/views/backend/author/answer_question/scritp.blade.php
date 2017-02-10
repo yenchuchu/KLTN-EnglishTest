@@ -113,7 +113,6 @@
         } else {
             $('#wrap_bookmap_form').hide();
         }
-        console.log(code_exam_type);
     });
 
 </script>

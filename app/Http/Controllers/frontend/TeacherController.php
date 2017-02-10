@@ -28,7 +28,9 @@ class TeacherController extends Controller
 
     public function index()
     {
-        return view('frontend.student.index');
+        $classes = Classes::all();
+//        dd($classes);
+        return view('dashboard.index');
     }
 
     public function elementary()
@@ -40,7 +42,7 @@ class TeacherController extends Controller
         $skills = $this->skills;
         $book_maps = $this->book_maps;
 
-        return view('frontend.elementary.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
+        return view('frontend.teachers.elementary.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
     }
 
     public function secondary()
@@ -52,7 +54,7 @@ class TeacherController extends Controller
         $skills = $this->skills;
         $book_maps = $this->book_maps;
 
-        return view('frontend.secondary.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
+        return view('frontend.teachers.secondary.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
     }
 
     public function highschool()
@@ -64,7 +66,7 @@ class TeacherController extends Controller
         $skills = $this->skills;
         $book_maps = $this->book_maps;
 
-        return view('frontend.highschool.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
+        return view('frontend.teachers.highschool.index', compact('classes', 'exam_types', 'skills', 'book_maps'));
     }
 
 }

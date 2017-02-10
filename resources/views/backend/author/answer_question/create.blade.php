@@ -5,7 +5,13 @@
 @stop
 
 @section('header')
-    <h1 class="page-header">Add exam 'answer question'</h1>
+    <h1 class="page-header">
+        @if($code_user == 'ST')
+            Add exam 'answer question' for Student test online
+        @elseif($code_user == 'TC')
+            Add exam 'answer question' for Teacher
+        @endif
+    </h1>
 @stop
 
 @section('content')

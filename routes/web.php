@@ -100,7 +100,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(array('prefix' => 'teacher', 'middleware' => 'checkRole:TC'), function () {
 
             // dashboard
-            Route::get('/', 'DashboardController@index')->name('frontend.teacher.index');
+            Route::get('/', 'frontend\TeacherController@index')->name('frontend.teacher.index');
 
             // go to elementary
             Route::group(array('prefix' => 'elementary'), function () {

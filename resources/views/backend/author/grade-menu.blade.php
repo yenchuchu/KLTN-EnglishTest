@@ -1,7 +1,7 @@
  @extends('layouts.app-backend')
 
 @section('header')
-    <h1 class="page-header">Dashboard</h1>
+    <h1 class="page-header">Create Exam For {{$name_code}}</h1>
 @stop
 @section('style')
     <style>

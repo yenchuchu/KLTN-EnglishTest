@@ -157,7 +157,6 @@
     </div>
 @stop
 
-
 @section('add-script')
     <script>
         $(document).ready(function () {
