@@ -61,19 +61,19 @@
                     </select>
                 </div>
             </div>
-            <div class="col-lg-12" id="wrap_bookmap_form">
+            <div class="col-lg-3" id="wrap_bookmap_form">
 
-                @foreach($book_maps as $book)
-                    <div class="form-group bookmap_form">
-                        <label for="bookmap_{{$book->id}}">{{$book->title}}</label>
-                        <input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">
-                    </div>
-                @endforeach
-                {{--<select name="book_map_id" class="form-control" id="answer-question-bookmap">--}}
+                <select name="book_map_id" class="form-control" id="answer-question-bookmap">
+                    @foreach($book_maps as $book)
+                        <option value="{{$book->id}}">{{$book->title}}</option>
+                    @endforeach
+                </select>
                 {{--@foreach($book_maps as $book)--}}
-                {{--<option value="{{$book->id}}">{{$book->title}}</option>--}}
+                    {{--<div class="form-group bookmap_form">--}}
+                        {{--<input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">--}}
+                        {{--<label for="bookmap_{{$book->id}}">{{$book->title}}</label>--}}
+                    {{--</div>--}}
                 {{--@endforeach--}}
-                {{--</select>--}}
 
             </div>
         @endif

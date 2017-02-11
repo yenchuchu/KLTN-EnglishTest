@@ -12,6 +12,7 @@ use App\Skill;
 use App\User;
 use Illuminate\Http\Request;
 use Route;
+use Config;
 
 class AnswerQuestionsController extends Controller
 {
@@ -145,7 +146,8 @@ class AnswerQuestionsController extends Controller
             $answer_question->skill_id = $skill->id;
             $answer_question->level_id = $level_id;
             $answer_question->class_id = $class_id;
-            $answer_question->bookmap_json_id = json_encode($book_map_id);
+//            $answer_question->bookmap_json_id = json_encode($book_map_id);
+            $answer_question->bookmap_json_id = $book_map_id;
 
             $answer_question->save();
         }

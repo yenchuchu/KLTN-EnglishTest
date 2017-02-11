@@ -1,38 +1,7 @@
 @extends ('layouts.app')
-@section('add-style')
+@section('style')
     <style>
-        .body-wrap-main {
-            background: #DEF3FF url({{asset('/imgs-dashboard/gamepage_bg.png')}}) no-repeat bottom right;
-        }
-
-        .bread_crumb ul {
-            display: inline-flex;
-            list-style-type: none;
-            margin-bottom: 0px;
-        }
-
-        .bread_crumb ul li {
-            margin-right: 10px;
-        }
-
-        .main-body {
-            background: #fff none repeat scroll 0 0;
-            border: 1px solid #ddd;
-            margin: 7px 15px 10px;
-            overflow: hidden;
-            padding: 10px 10px;
-            margin-bottom: 100px;
-        }
-
-        .wrap-bread_scrumb {
-            margin-bottom: 10px;
-        }
-
-        .point-start {
-            color: red;
-            margin-left: 5px;
-        }
-
+        @include('frontend.teachers.elementary.style')
     </style>
 @stop
 
@@ -42,113 +11,177 @@
             <ul>
                 <li><a href="{{ route('frontend.teacher.index') }}">Trang chủ &nbsp;›</a></li>
                 <li><a href="{{ route('frontend.teacher.elementary') }}">Tiểu học&nbsp;›</a></li>
-                <li><a href="{{ route('frontend.teacher.elementary.create') }}">Tạo đề thi</a></li>
+                <li><a href="{{ route('frontend.teacher.elementary.store') }}">Tạo đề thi</a></li>
             </ul>
         </div>
     </div>
 
 
-    <div class="main-body col-lg-12 col-md-12 col-ms-12 col-xs-12">
+    <div class="main-body col-lg-11 col-md-11 col-ms-11 col-xs-11">
         <div class="panel-body">
-            <form action="" method="POST" class="">
 
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <button style="color: green;" id="btnSave" class="btn btn-default" type="button">
+            {{ Form::open(['route' => 'frontend.teacher.elementary.store', 'method' => 'post']) }}
+
+                <div class="list-group">
+                    <div>
+                        <button style="color: green;" id="btnSave" class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Tạo
                         </button>
-                        <button style="color: red;" class="btn btn-default" id="cancel-btn" type="button">
-                            <span class="glyphicon glyphicon-remove"></span>Hủy
-                        </button>
-                    </li>
-                    <li class="list-group-item" style="height: 206px;">
+                        {{--<button style="color: red;" class="btn btn-default" id="cancel-btn" type="button">--}}
+                            {{--<span class="glyphicon glyphicon-remove"></span>Hủy--}}
+                        {{--</button>--}}
+                    </div>
+                    <div class="div-hr"></div>
+                    <div>
                         <div class="form-group">
                             <div class="col-sm-4">
                                 <span class="control-label label-bold" style="line-height: 22px;"><b>CHỌN LỚP</b><span
                                             class="point-start">*</span></span>
-                                <select class="form-control input-sm" id="slClass">
+                                <select class="form-control input-sm" id="slClass" name="class_id">
+                                    <option value="0"> --- Chọn lớp ---</option>
                                     @foreach($classes as $class)
                                         <option value="{{$class->id}}">{{$class->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-sm-4">
-                            <span class="control-label label-bold"
+                                <span class="control-label label-bold"
                                   style="line-height: 22px;"><b>CHỌN LOẠI BÀI KIỂM TRA</b><span
                                         class="point-start">*</span></span>
-                                <select class="form-control input-sm" id="slExamType">
-                                    <option value="0">Chọn loại kiểm tra</option>
+                                <select class="form-control input-sm" id="slExamType"  name="exam_type_id">
+                                    <option value="0" code="none">--- Chọn loại kiểm tra----</option>
                                     @foreach($exam_types as $exam_type)
-                                        <option value="{{$exam_type->id}}"
+                                        <option value="{{$exam_type->id}}" code="{{$exam_type->code}}"
                                                 id="{{$exam_type->description}}">{{$exam_type->title}}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group" style="display: none;margin-top: 80px;" id="container_Unit">
-                            <div class="col-sm-4">
-                                <span class="control-label label-bold" style="line-height: 22px;"><b>CHỌN UNIT</b><span
-                                            class="point-start">*</span></span>
-                                <select class="form-control input-sm input-background-warning" id="slUnit">
-                                    @foreach($book_maps as $book_map)
-                                        <option value="{{$book_map->id}}"
-                                                id="bookmap_{{$book_map->id}}">{{$book_map->title}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-4" id="container_skill">
                                 <span class="control-label label-bold"
                                       style="line-height: 22px;"><b>CHỌN KỸ NĂNG</b><span
                                             class="point-start">*</span></span>
-                                <select class="form-control input-sm input-background-warning" id="slKyNang">
-                                    <option value="0">Chọn kỹ năng</option>
+                                <select class="form-control input-sm input-background-warning" id="slKyNang" name="skill_id">
+                                    <option value="0" code="none">Chọn kỹ năng</option>
                                     @foreach($skills as $skill)
-                                        <option value="{{$skill->id}}"
+                                        <option value="{{$skill->id}}" code="{{$skill->code}}"
                                                 id="skill_{{$skill->id}}">{{$skill->title}}</option>
                                     @endforeach
-                                    {{--<option value="2">2 - LISTENING</option>--}}
-                                    {{--<option value="9">9 - READING AND WRITING</option>--}}
-                                    {{--<option value="13">13 - SPEAKING</option>--}}
                                 </select>
+                                <div class="col-lg-12" id="reload_examtype_skill">
+                                    @include('frontend.teachers.elementary.examtype-skill-reload')
+                                </div>
                             </div>
                         </div>
-                    </li>
-                </ul>
+                        <div class="col-lg-12" id="reload-unit">
+                            @include('frontend.teachers.elementary.unit-reload')
+                        </div>
 
-            </form>
+                    </div>
+                </div>
+
+            {!! Form::close() !!}
         </div>
     </div>
 @stop
 
 @section('script')
     <script>
+        function get_unit_ofClass(class_id) {
+
+            $.ajax({
+                url: '{{route("frontend.teacher.elementary.get.unit")}}',
+                type: "GET",
+                data: {
+                    'class_id': class_id
+                },
+                success: function (data) {
+                    $('#reload-unit').html(data);
+                    console.log(data);
+                    return false;
+                },
+                error: function () {
+                    alert("Không lấy được thông tin này!");
+                }
+            });
+        }
+
+        function get_examtype_ofSkill(skill_code) {
+
+            $.ajax({
+                url: '{{route("frontend.teacher.elementary.get.examtype.ofSkill")}}',
+                type: "GET",
+                data: {
+                    'skill_code': skill_code
+                },
+                success: function (data) {
+                    $('#reload_examtype_skill').html(data);
+                    return false;
+                },
+                error: function () {
+                    alert("Không lấy được thông tin này!");
+                }
+            });
+        }
+
         $(document).ready(function () {
 
-            $('#slExamType').on('change', function (e) {
-                var valueSelected = this.value;
+            $('#slClass').on('change', function (e) {
+                class_id = $('#slClass').val();
+                get_unit_ofClass(class_id);
+            });
 
-                if (valueSelected == 2) {
-                    $('#container_Unit').css('display', 'block');
+            item_examtype = $('#slExamType').val();
+            if(item_examtype == 0) {
+                $('#container_skill').hide();
+                $('#reload-unit').hide();
+            }
+
+            $('#slExamType').on('change', function (e) {
+                var code_exam_type = $('#slExamType').find(":selected").attr('code');
+
+                if (code_exam_type == 'test_15') {
+                    $('#container_skill').show();
+                    $('#reload-unit').show();
                 } else {
-                    $('#container_Unit').css('display', 'none');
+                    $('#container_skill').hide();
+                    $('#reload-unit').hide();
                 }
 
             });
 
-            $('#btnSave').click(function () {
-                type_exam = $('#slExamType option:selected').val();
-                if (type_exam == 0) {
-                    alert('Bạn phải chọn loại bài kiểm tra');
-                }
-                if (type_exam == 2) {
-                    unit = $('#slUnit option:selected').val();
-                    skill = $('#slKyNang option:selected').val();
+            var skill = $('#slKyNang option:selected').val();
+            if (skill == 0) {
+                $('#reload_examtype_skill').hide();
+            } else {
+                $('#reload_examtype_skill').show();
+            }
 
-                    if (unit == 0) {
-                        alert('Bạn phải chọn Unit');
+            $('#slKyNang').on('change', function (e) {
+                skill_code =  $('#slKyNang').find(":selected").attr('code');
+                get_examtype_ofSkill(skill_code);
+            });
+
+            $('#btnSave').click(function () {
+                class_id = $('#slClass').val();
+                if(class_id == 0) {
+                    alert('Bạn phải chọn lớp');
+                    return false;
+                }
+
+                var code_examType = $('#slExamType').find(":selected").attr('code');
+                if (code_examType == 'none') {
+                    alert('Bạn phải chọn loại bài kiểm tra');
+                    return false;
+                }
+
+                if (code_examType == 'test_15') {
+                    var unitOfChecked = $('input[name="book_map_id[]"]:checked').length;
+                    if(unitOfChecked <= 2) {
+                        alert('Bạn phải chọn ít nhất 3 Unit');
                         return false;
                     }
 
+                    var skill = $('#slKyNang option:selected').val();
                     if (skill == 0) {
                         alert('Bạn phải chọn Kỹ Năng');
                         return false;

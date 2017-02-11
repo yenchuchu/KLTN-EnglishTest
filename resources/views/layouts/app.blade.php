@@ -22,8 +22,7 @@
     <link href="{{URL::asset('frontend/theme_css/css/freelancer.min.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="{{URL::asset('frontend/theme_vendor/font-awesome/css/font-awesome.min.css')}}" rel="stylesheet"
-          type="text/css">
+    <link href="{{URL::asset('backend/assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
           type="text/css">
@@ -75,6 +74,7 @@
     </nav>
 
     @yield('content')
+
 </div>
 
 <!-- Core Scripts - Include with every page -->
