@@ -18,7 +18,12 @@ class CreateTickCircleTrueFalsesTable extends Migration
 
             $table->string('title');
             $table->string('content');
-            $table->integer('point');
+            $table->integer('point')->default(0);
+            $table->string('content_json');
+            $table->string('type_user');
+            $table->integer('class_id')->nullable();
+            $table->integer('exam_type_id')->nullable();
+            $table->integer('bookmap_id')->nullable();
             $table->integer('skill_id')->nullable();
             $table->integer('level_id')->nullable();
 

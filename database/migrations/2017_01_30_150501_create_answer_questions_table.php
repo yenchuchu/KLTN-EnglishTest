@@ -23,7 +23,7 @@ class CreateAnswerQuestionsTable extends Migration
             $table->string('type_user');
             $table->integer('class_id')->nullable();
             $table->integer('exam_type_id')->nullable();
-            $table->string('bookmap_json_id')->nullable();
+            $table->integer('bookmap_id')->nullable();
             $table->integer('skill_id')->nullable();
             $table->integer('level_id')->nullable();
 

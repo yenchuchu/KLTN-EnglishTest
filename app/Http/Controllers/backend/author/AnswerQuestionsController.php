@@ -132,6 +132,7 @@ class AnswerQuestionsController extends Controller
         $class_id = $all_data['class_id'];
         $code_user = $all_data['code_user'];
         $book_map_id = $all_data['book_map_id'];
+        $exam_type_id = $all_data['exam_type_id'];
 
         foreach ($all_data['answer_question'] as $data) {
 
@@ -144,10 +145,11 @@ class AnswerQuestionsController extends Controller
             $answer_question->type_user = $code_user;
             $answer_question->content_json = json_encode($answer_question_content_question);
             $answer_question->skill_id = $skill->id;
+            $answer_question->exam_type_id = $exam_type_id;
             $answer_question->level_id = $level_id;
             $answer_question->class_id = $class_id;
 //            $answer_question->bookmap_json_id = json_encode($book_map_id);
-            $answer_question->bookmap_json_id = $book_map_id;
+            $answer_question->bookmap_id = $book_map_id;
 
             $answer_question->save();
         }

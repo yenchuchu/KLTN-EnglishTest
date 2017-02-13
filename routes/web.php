@@ -107,7 +107,7 @@ Route::group(['middleware' => 'auth'], function () {
                 Route::get('/', 'frontend\TeacherController@elementary')->name('frontend.teacher.elementary');
                 Route::get('/get-unit-class', 'frontend\TeacherController@get_unit_class')
                     ->name('frontend.teacher.elementary.get.unit');
-                Route::get('/get-unit-class', 'frontend\TeacherController@get_examtype_skill')
+                Route::get('/get-examtype-ofskill', 'frontend\TeacherController@get_examtype_skill')
                     ->name('frontend.teacher.elementary.get.examtype.ofSkill');
 
                 Route::post('/create', 'frontend\TeacherController@store')->name('frontend.teacher.elementary.store');

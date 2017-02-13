@@ -32,12 +32,15 @@
         margin-left: 5px;
     }
 
-    .bookmap_form {
-        width: 30%;
+    .bookmap_form,
+    .examtype_skill_form {
+        width: 50%;
         float: left;
     }
 
-    #reload-unit {
+    #reload-unit,
+    #container_skill,
+    #reload_examtype_skill {
         margin-top: 15px;
     }
 

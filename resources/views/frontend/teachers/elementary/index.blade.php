@@ -27,10 +27,8 @@
                         <button style="color: green;" id="btnSave" class="btn btn-default" type="submit">
                             <span class="glyphicon glyphicon-floppy-disk"></span>&nbsp;&nbsp;Tạo
                         </button>
-                        {{--<button style="color: red;" class="btn btn-default" id="cancel-btn" type="button">--}}
-                            {{--<span class="glyphicon glyphicon-remove"></span>Hủy--}}
-                        {{--</button>--}}
                     </div>
+                    <input type="hidden" value="TC" name="code_user">
                     <div class="div-hr"></div>
                     <div>
                         <div class="form-group">
@@ -56,7 +54,10 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-sm-4" id="container_skill">
+                            <div class="col-lg-6" id="reload-unit">
+                                @include('frontend.teachers.elementary.unit-reload')
+                            </div>
+                            <div class="col-sm-6" id="container_skill">
                                 <span class="control-label label-bold"
                                       style="line-height: 22px;"><b>CHỌN KỸ NĂNG</b><span
                                             class="point-start">*</span></span>
@@ -71,9 +72,6 @@
                                     @include('frontend.teachers.elementary.examtype-skill-reload')
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12" id="reload-unit">
-                            @include('frontend.teachers.elementary.unit-reload')
                         </div>
 
                     </div>
@@ -96,8 +94,8 @@
                 },
                 success: function (data) {
                     $('#reload-unit').html(data);
-                    console.log(data);
-                    return false;
+//                    console.log(data);
+//                    return false;
                 },
                 error: function () {
                     alert("Không lấy được thông tin này!");
@@ -115,7 +113,7 @@
                 },
                 success: function (data) {
                     $('#reload_examtype_skill').html(data);
-                    return false;
+//                    return false;
                 },
                 error: function () {
                     alert("Không lấy được thông tin này!");
@@ -149,16 +147,14 @@
 
             });
 
-            var skill = $('#slKyNang option:selected').val();
-            if (skill == 0) {
-                $('#reload_examtype_skill').hide();
-            } else {
-                $('#reload_examtype_skill').show();
-            }
-
             $('#slKyNang').on('change', function (e) {
                 skill_code =  $('#slKyNang').find(":selected").attr('code');
-                get_examtype_ofSkill(skill_code);
+                if(skill_code != 'none') {
+                    $('#reload_examtype_skill').show();
+                    get_examtype_ofSkill(skill_code);
+                } else {
+                    $('#reload_examtype_skill').hide();
+                }
             });
 
             $('#btnSave').click(function () {

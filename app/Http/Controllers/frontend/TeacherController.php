@@ -7,7 +7,11 @@ use App\Classes;
 use App\ExamType;
 use App\Http\Controllers\Controller;
 use App\Skill;
+
+use App\AnswerQuestion;
+
 use Config;
+use DB;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -26,7 +30,7 @@ class TeacherController extends Controller
         $this->skills = Skill::all();
         $this->book_maps = BookMap::all();
 
-        $kind_exam = Config::get('constants.skill');
+        $this->kind_exam = Config::get('constants.skill');
     }
 
     public function index()
@@ -64,8 +68,7 @@ class TeacherController extends Controller
     {
         $all_request = $requests->all();
         $skill_code = $all_request['skill_code'];
-dd($skill_code);
-        $examtype_skills = $this->kind_exam['skill_code'];
+        $examtype_skills = $this->kind_exam[$skill_code];
 
         return view('frontend.teachers.elementary.examtype-skill-reload', compact('examtype_skills'));
     }
@@ -75,6 +78,8 @@ dd($skill_code);
         $request_all = $request->all();
         $class_id = $request_all['class_id'];
         $exam_type_id = $request_all['exam_type_id'];
+        $code_user = $request_all['code_user'];
+        $examtype_skills = $request_all['examtype_skills'];
 
         if (!isset($request_all['skill_id'])) {
             $skill_id = null;
@@ -88,7 +93,21 @@ dd($skill_code);
             $book_map_id = $request_all['book_map_id'];
         }
 
-        dd();
+        $record_model = [];
+        foreach ($examtype_skills as $item) {
+            var_dump($item);
+            var_dump($class_id);
+            var_dump($skill_id);
+            var_dump($exam_type_id);
+            var_dump($book_map_id);
+
+            $record_model[$item] = DB::table($item)->where(['class_id' => $class_id, 'type_user' => $code_user,
+                'skill_id' => $skill_id, 'exam_type_id' => $exam_type_id])
+                ->whereIn('bookmap_id', $book_map_id)->get();
+            dd($record_model);
+        }
+
+        dd($record_model);
     }
 
     public function secondary()
