@@ -12,6 +12,9 @@ use App\AnswerQuestion;
 
 use Config;
 use DB;
+use Illuminate\Support\Facades\App;
+//use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
 
 class TeacherController extends Controller
@@ -95,19 +98,32 @@ class TeacherController extends Controller
 
         $record_model = [];
         foreach ($examtype_skills as $item) {
-            var_dump($item);
-            var_dump($class_id);
-            var_dump($skill_id);
-            var_dump($exam_type_id);
-            var_dump($book_map_id);
 
-            $record_model[$item] = DB::table($item)->where(['class_id' => $class_id, 'type_user' => $code_user,
+            $records[$item] = DB::table($item)->where(['class_id' => $class_id, 'type_user' => $code_user,
                 'skill_id' => $skill_id, 'exam_type_id' => $exam_type_id])
                 ->whereIn('bookmap_id', $book_map_id)->get();
-            dd($record_model);
+
+            foreach ($records[$item] as $record) {
+                $record->content_json = json_decode($record->content_json);
+            }
+
+            $record_model[$item] = $records[$item];
         }
 
-        dd($record_model);
+
+//        $pdf = App::make('dompdf.wrapper');
+//        $pdf->loadView('frontend.teachers.elementary.show');
+//        return $pdf->stream();
+
+//        $pdf = PDF::loadView('frontend.teachers.elementary.show', $record_model);
+//        return $pdf->download('invoice.pdf');
+
+        $pdf = PDF::loadView('frontend.teachers.elementary.show', compact('record_model'))->setPaper('a4', 'portrait');
+        return $pdf->stream();
+
+//        return $pdf->stream();
+
+//        return view('frontend.teachers.elementary.show', compact('record_model'));
     }
 
     public function secondary()

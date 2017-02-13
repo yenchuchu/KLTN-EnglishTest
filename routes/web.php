@@ -111,6 +111,14 @@ Route::group(['middleware' => 'auth'], function () {
                     ->name('frontend.teacher.elementary.get.examtype.ofSkill');
 
                 Route::post('/create', 'frontend\TeacherController@store')->name('frontend.teacher.elementary.store');
+                Route::get('/show', 'frontend\TeacherController@show')->name('frontend.teacher.elementary.show');
+
+                Route::get('/pdf', function () {
+                    $pdf = App::make('dompdf.wrapper');
+                    $pdf->loadHTML('<h1>Test</h1>');
+                    return $pdf->stream();
+                });
+
 
             });
 
