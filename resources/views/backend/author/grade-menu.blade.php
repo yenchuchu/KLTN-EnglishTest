@@ -67,7 +67,7 @@
                             <i class="fa fa-dashboard fa-fw"></i>Multiple Choices</a>
                     </div>
                     <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.tick-cricle-true-false', $class_code)}}">
+                        <a href="{{route('backend.manager.author.tick-circle-true-false', $class_code)}}">
                             <i class="fa fa-dashboard fa-fw"></i>Tick Cricle True Flase</a>
                     </div>
                     <div class="col-lg-3 type-exam">

@@ -77,6 +77,19 @@ Route::group(['middleware' => 'auth'], function () {
 
                 });
 
+                Route::group(array('prefix' => 'tick-circle-true-false'), function () {
+                    Route::get('/{class_code}', 'backend\author\TickCircleTrueFalseController@index')
+                        ->name('backend.manager.author.tick-circle-true-false');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\TickCircleTrueFalseController@create')
+                        ->name('backend.manager.author.tick-circle-true-false.create');
+
+                    Route::post('/store', 'backend\author\TickCircleTrueFalseController@store')
+                        ->name('backend.manager.author.tick-circle-true-false.store');
+
+
+                });
+
                 Route::get('/classify-word/{class_code}',
                     'backend\AuthorController@classify_words')->name('backend.manager.author.classify-word');
                 Route::get('/complete-word/{class_code}',
@@ -112,13 +125,6 @@ Route::group(['middleware' => 'auth'], function () {
 
                 Route::post('/create', 'frontend\TeacherController@store')->name('frontend.teacher.elementary.store');
                 Route::get('/show', 'frontend\TeacherController@show')->name('frontend.teacher.elementary.show');
-
-                Route::get('/pdf', function () {
-                    $pdf = App::make('dompdf.wrapper');
-                    $pdf->loadHTML('<h1>Test</h1>');
-                    return $pdf->stream();
-                });
-
 
             });
 

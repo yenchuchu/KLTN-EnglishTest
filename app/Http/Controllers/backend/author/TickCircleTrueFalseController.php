@@ -9,12 +9,13 @@ use App\ExamType;
 use App\Http\Controllers\Controller;
 use App\Level;
 use App\Skill;
+use App\TickCircleTrueFalse;
 use App\User;
 use Illuminate\Http\Request;
 use Route;
 use Config;
 
-class AnswerQuestionsController extends Controller
+class TickCircleTrueFalseController extends Controller
 {
     protected $levels;
     protected $skill;
@@ -39,7 +40,7 @@ class AnswerQuestionsController extends Controller
 
     public function index()
     {
-        $ans_questions_all = AnswerQuestion::orderBy('level_id', 'ASC')
+        $ans_questions_all = TickCircleTrueFalse::orderBy('level_id', 'ASC')
             ->with('skills', 'levels')
             ->get();
 
@@ -77,7 +78,7 @@ class AnswerQuestionsController extends Controller
             $name_code = 'High School ';
         }
 
-        return view('backend.author.answer_question.index',
+        return view('backend.author.tick-circle-true-false.index',
             compact('ans_for_students', 'ans_for_teachers', 'class_code', 'name_code'));
     }
 
@@ -98,11 +99,11 @@ class AnswerQuestionsController extends Controller
             $exam_types = ExamType::all();
             $book_maps = BookMap::all();
 
-            return view('backend.author.answer_question.create',
+            return view('backend.author.tick-circle-true-false.create',
                 compact('levels', 'class_code', 'code_user', 'classes', 'exam_types', 'book_maps'));
         }
 
-        return view('backend.author.answer_question.create', compact('levels', 'class_code', 'code_user', 'classes'));
+        return view('backend.author.tick-circle-true-false.create', compact('levels', 'class_code', 'code_user', 'classes'));
     }
 
     /**
@@ -114,7 +115,7 @@ class AnswerQuestionsController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-//dd($all_data);
+
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }
@@ -137,7 +138,7 @@ class AnswerQuestionsController extends Controller
         foreach ($all_data['answer_question'] as $data) {
 
             $answer_question_content_question = $data['content-choose-ans-question'];
-            $answer_question = new AnswerQuestion();
+            $answer_question = new TickCircleTrueFalse();
 
             $answer_question->title = $data['title-answer-question'];
             $answer_question->content = $data['content-answer-question'];
@@ -154,7 +155,7 @@ class AnswerQuestionsController extends Controller
             $answer_question->save();
         }
 
-        return Redirect()->route('backend.manager.author.answer-question', $class_id);
+        return Redirect()->route('backend.manager.author.tick-circle-true-false', $class_id);
     }
 
     /**

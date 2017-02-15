@@ -5,12 +5,12 @@
 @stop
 
 @section('header')
-    <h1 class="page-header">Add exam 'answer question'</h1>
+    <h1 class="page-header">Add exam 'tick-circle-true-false'</h1>
 @stop
 
 @section('content')
 
-    {{ Form::open(['route' => 'backend.manager.author.answer-question.store', 'method' => 'post']) }}
+    {{ Form::open(['route' => 'backend.manager.author.tick-circle-true-false.store', 'method' => 'post']) }}
 
     <div class="row">
         <div class="col-lg-3">
@@ -81,7 +81,12 @@
                                               placeholder="enter content" required></textarea>
                             </div>
                             <div class="span-choose-answer">
-                                <input type="text" class="form-control" name="answer_question[1][content-choose-ans-question][1][answer]">
+                                <span>
+                                    <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="1" class="ans-true"><strong>T</strong>
+                                </span>
+                                <span>
+                                     <input type="radio" name="answer_question[1][content-choose-ans-question][1][answer]" value="0" class="ans-false"><strong>F</strong>
+                                </span>
                             </div>
                         </div>
 
@@ -114,5 +119,5 @@
 @stop
 
 @section('script')
-    @include('backend.author.answer_question.scritp')
+    @include('backend.author.tick-circle-true-false.scritp')
 @stop

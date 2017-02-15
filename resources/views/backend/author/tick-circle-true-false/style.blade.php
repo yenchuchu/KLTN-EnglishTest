@@ -65,7 +65,7 @@
     }
 
     .span-text-question {
-        width: 100%;
+        width: 75%;
         float: left;
     }
 

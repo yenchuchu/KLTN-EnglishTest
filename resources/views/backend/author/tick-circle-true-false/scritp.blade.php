@@ -34,19 +34,19 @@
                 '1' +
                 '</div>' +
 
-                '<div class="form-group" style="width:98%; float:left;">'+
                 '<div class="span-text-question">' +
                 '<textarea type="text" class="form-control" ' +
                 'name="answer_question['+ j +'][content-choose-ans-question][1][content]"' +
                 'placeholder="enter content" required></textarea>' +
                 '</div>' +
-                '</div>' +
 
-                '<div class="col-lg-12" style="padding-left: 0;margin-left: 17px;width: 100%">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" ' +
-                'name="answer_question['+ j +'][content-choose-ans-question][1][answer]">' +
-                '</div>' +
+                '<div class="span-choose-answer" >' +
+                '<span>' +
+                '<input type="radio" name="answer_question['+ j +'][content-choose-ans-question][1][answer]" value="1" class="ans-true"><strong>T</strong>' +
+                '</span>' +
+                '<span>' +
+                '<input type="radio" name="answer_question['+ j +'][content-choose-ans-question][1][answer]" value="0" class="ans-false"><strong>F</strong>' +
+                '</span>' +
                 '</div>' +
 
                 '</div>' +
@@ -73,20 +73,18 @@
                  '<div class="span-numb-question" id="id-numb-question-'+ item_this +'">' +
                  item_this +
                  '</div>' +
-
-                 '<div class="form-group" style="width:98%; float:left;">'+
                  '<div class="span-text-question">' +
                  '<textarea type="text" class="form-control" ' +
                  'name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][content]"' +
                  'placeholder="enter content" ></textarea>' +
                  '</div>' +
-                 '</div>' +
-
-                 '<div class="col-lg-12" style="padding-left: 0;margin-left: 17px;width: 100%">' +
-                 '<div class="form-group">' +
-                 '<input type="text" class="form-control" placeholder="enter answer" ' +
-                 'name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]">' +
-                 '</div>' +
+                 '<div class="span-choose-answer" >' +
+                 '<span>' +
+                 '<input type="radio" name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]" value="1" class="ans-true">' +
+                 '<strong>T</strong> </span>' +
+                 '<span>' +
+                 '<input type="radio" name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]" value="0" class="ans-false">' +
+                 '<strong>F</strong> </span>' +
                  '</div>' +
                  '</div>');
 

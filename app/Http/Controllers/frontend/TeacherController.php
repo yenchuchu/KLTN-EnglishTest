@@ -86,8 +86,11 @@ class TeacherController extends Controller
 
         if (!isset($request_all['skill_id'])) {
             $skill_id = null;
+            $code_skill = '';
         } else {
             $skill_id = $request_all['skill_id'];
+            $find_skill = Skill::find($skill_id);
+            $code_skill = $find_skill->code;
         }
 
         if (!isset($request_all['book_map_id'])) {
@@ -101,29 +104,22 @@ class TeacherController extends Controller
 
             $records[$item] = DB::table($item)->where(['class_id' => $class_id, 'type_user' => $code_user,
                 'skill_id' => $skill_id, 'exam_type_id' => $exam_type_id])
-                ->whereIn('bookmap_id', $book_map_id)->get();
+                ->whereIn('bookmap_id', $book_map_id)
+                ->get();
 
             foreach ($records[$item] as $record) {
+
                 $record->content_json = json_decode($record->content_json);
+                $record->type_model = $item;
             }
 
             $record_model[$item] = $records[$item];
         }
 
-
-//        $pdf = App::make('dompdf.wrapper');
-//        $pdf->loadView('frontend.teachers.elementary.show');
+        return view('frontend.teachers.elementary.show', compact('record_model', 'code_skill'));
+//        $pdf = PDF::loadView('frontend.teachers.elementary.show', compact('record_model', 'code_skill'))->setPaper('a4', 'portrait');
 //        return $pdf->stream();
-
-//        $pdf = PDF::loadView('frontend.teachers.elementary.show', $record_model);
 //        return $pdf->download('invoice.pdf');
-
-        $pdf = PDF::loadView('frontend.teachers.elementary.show', compact('record_model'))->setPaper('a4', 'portrait');
-        return $pdf->stream();
-
-//        return $pdf->stream();
-
-//        return view('frontend.teachers.elementary.show', compact('record_model'));
     }
 
     public function secondary()

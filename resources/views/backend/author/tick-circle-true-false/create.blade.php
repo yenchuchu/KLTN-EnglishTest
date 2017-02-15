@@ -7,16 +7,16 @@
 @section('header')
     <h1 class="page-header">
         @if($code_user == 'ST')
-            Add exam 'answer question' for Student test online
+            Add exam 'tick-circle-true-false' for Student test online
         @elseif($code_user == 'TC')
-            Add exam 'answer question' for Teacher
+            Add exam 'tick-circle-true-false' for Teacher
         @endif
     </h1>
 @stop
 
 @section('content')
 
-    {{ Form::open(['route' => 'backend.manager.author.answer-question.store', 'method' => 'post']) }}
+    {{ Form::open(['route' => 'backend.manager.author.tick-circle-true-false.store', 'method' => 'post']) }}
 
     <div class="row">
         @if($code_user == 'ST')
@@ -69,10 +69,10 @@
                     @endforeach
                 </select>
                 {{--@foreach($book_maps as $book)--}}
-                {{--<div class="form-group bookmap_form">--}}
-                {{--<input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">--}}
-                {{--<label for="bookmap_{{$book->id}}">{{$book->title}}</label>--}}
-                {{--</div>--}}
+                    {{--<div class="form-group bookmap_form">--}}
+                        {{--<input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">--}}
+                        {{--<label for="bookmap_{{$book->id}}">{{$book->title}}</label>--}}
+                    {{--</div>--}}
                 {{--@endforeach--}}
 
             </div>
@@ -113,18 +113,22 @@
                             <div class="span-numb-question" id="id-numb-question-1">
                                 1
                             </div>
-                            <div class="form-group" style="width:98%; float:left;">
-                                <div class="span-text-question">
+                            <div class="span-text-question">
                                     <textarea type="text" class="form-control"
                                               name="answer_question[1][content-choose-ans-question][1][content]"
                                               placeholder="enter content" required></textarea>
-                                </div>
                             </div>
-                            <div class="col-lg-12" style="padding-left: 0;margin-left: 17px;width: 100%">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="enter answer"
-                                           name="answer_question[1][content-choose-ans-question][1][answer]">
-                                </div>
+                            <div class="span-choose-answer">
+                                <span>
+                                    <input type="radio"
+                                           name="answer_question[1][content-choose-ans-question][1][answer]" value="1"
+                                           class="ans-true"><strong>T</strong>
+                                </span>
+                                <span>
+                                     <input type="radio"
+                                            name="answer_question[1][content-choose-ans-question][1][answer]" value="0"
+                                            class="ans-false"><strong>F</strong>
+                                </span>
                             </div>
                         </div>
 
