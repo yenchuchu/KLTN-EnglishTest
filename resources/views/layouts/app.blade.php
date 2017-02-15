@@ -13,7 +13,7 @@
 {{--<title>English App - Free</title>--}}
 
 <!-- Bootstrap Core CSS -->
-    <link href="{{URL::asset('backend/assets/plugins/bootstrap/bootstrap.css')}}" rel="stylesheet" />
+    <link href="{{URL::asset('backend/assets/plugins/bootstrap/bootstrap.css')}}" rel="stylesheet"/>
 
     <!-- My CSS -->
     <link href="{{URL::asset('frontend/mystyle.css')}}" rel="stylesheet">
@@ -22,7 +22,7 @@
     <link href="{{URL::asset('frontend/theme_css/css/freelancer.min.css')}}" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="{{URL::asset('backend/assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet" />
+    <link href="{{URL::asset('backend/assets/font-awesome/css/font-awesome.css')}}" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet"
           type="text/css">
@@ -43,15 +43,36 @@
     </script>
 
     @yield('style')
+    @yield('style-menu-main')
+
+    <style>
+        #menu-nav-top {
+            background-color: #0c8db9;
+        }
+
+        #menu-nav-top .navbar-brand,
+        #menu-nav-top #username-auth,
+        .guest-app>a {
+            color: white !important;
+        }
+
+        #menu-nav-top .nav a:hover,
+        #menu-nav-top .nav a:active {
+            background-color: #2aadda;
+        }
+
+    </style>
+
 </head>
 <body>
 <div id="app">
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-default navbar-static-top" id="menu-nav-top">
         <div class="container">
             <div class="navbar-header">
 
                 <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#app-navbar-collapse">
                     <span class="sr-only">Toggle Navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -64,22 +85,24 @@
                 </a>
             </div>
 
-        {{--<div class="collapse navbar-collapse" id="app-navbar-collapse">--}}
-
-        <!-- Right Side Of Navbar -->
+            {{--<div class="collapse navbar-collapse" id="app-navbar-collapse">--}}
 
             @include('partials.menu-top-right')
             {{--</div>--}}
         </div>
     </nav>
+    <div class="container">
 
-    @yield('content')
+        @yield('menu-main')
+        @yield('content')
+
+    </div>
 
 </div>
 
 <!-- Core Scripts - Include with every page -->
 <script src="{{URL::asset('backend/assets/plugins/jquery-1.10.2.js')}}"></script>
-<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{{URL::asset('backend/assets/plugins/bootstrap/bootstrap.min.js')}}"></script>
 
 <script src="{{URL::asset('js/sweet-alert/sweetalert2.js')}}"></script>

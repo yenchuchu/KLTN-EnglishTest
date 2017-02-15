@@ -151,6 +151,8 @@ Route::group(['middleware' => 'auth'], function () {
 
             // dashboard
             Route::get('/', 'frontend\StudentController@index')->name('frontend.dashboard.student.index');
+            Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
+                ->name('frontend.dashboard.student.redirect');
 
         });
 

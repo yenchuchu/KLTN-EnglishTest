@@ -1,7 +1,7 @@
 @if (Auth::guest())
     <ul class="nav navbar-nav navbar-right">
-        <li><a href="{{ url('/login') }}">Login</a></li>
-        <li><a href="{{ url('/register') }}">Register</a></li>
+        <li class="guest-app"><a href="{{ url('/login') }}">Login</a></li>
+        <li class="guest-app"><a href="{{ url('/register') }}">Register</a></li>
     </ul>
 @else
 
@@ -212,12 +212,8 @@
                 </a>
                 <!-- dropdown user-->
                 <ul class="dropdown-menu dropdown-user">
-                    {{--<li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>--}}
-                    {{--</li>--}}
-                    {{--<li><a href="#"><i class="fa fa-gear fa-fw"></i>Settings</a>--}}
-                    {{--</li>--}}
-                    {{--<li class="divider"></li>--}}
-                    {{--<li><a href="login.html"><i class="fa fa-sign-out fa-fw"></i>Logout</a>--}}
+                    <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                    </li>
                     <li>
                         <a href="{{ url('/logout') }}"
                            onclick="event.preventDefault();
@@ -241,15 +237,17 @@
         <ul class="nav navbar-nav navbar-right">
             <!-- Authentication Links -->
             @if (Auth::guest())
-                <li><a href="{{ url('/login') }}">Login</a></li>
-                <li><a href="{{ url('/register') }}">Register</a></li>
+                <li class="guest-app"><a href="{{ url('/login') }}">Login</a></li>
+                <li class="guest-app"><a href="{{ url('/register') }}">Register</a></li>
             @else
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <a href="#" class="dropdown-toggle"  id="username-auth" data-toggle="dropdown" role="button" aria-expanded="false">
                         {{ Auth::user()->user_name }} <span class="caret"></span>
                     </a>
 
-                    <ul class="dropdown-menu" role="menu">
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        </li>
                         <li>
                             <a href="{{ url('/logout') }}"
                                onclick="event.preventDefault();
