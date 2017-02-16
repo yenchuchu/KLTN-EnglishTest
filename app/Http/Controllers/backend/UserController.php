@@ -38,7 +38,19 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $id = 1;
+        $validator = Validator::make($data, [
+            'name'         => 'required',
+            'address'      => 'required',
+            'contact_name' => 'required',
+            'telephone'    => 'required',
+            'email'        => 'required|email',
+        ]);
+        if ($validator->fails()) {
+            return redirect('/school/' . $id . '/edit')->withErrors($validator)->withInput();
+        }
+        Session::flash('message', 'Xóa trường thành công');
     }
 
     /**

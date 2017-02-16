@@ -127,32 +127,7 @@
             <!--End Page Header -->
         </div>
 
-        <div class="row">
-            <!-- Welcome -->
-            <div class="col-lg-12">
-                @if (count($errors) > 0)
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li> {{ $error }}</li>
-                            @endforeach
-
-                        </ul>
-                    </div>
-                @endif
-                @if (session('message'))
-                    <div class="alert alert-success">
-                        {{ session('message') }}
-                    </div>
-                @endif
-                @if (session('error'))
-                    <div class="alert alert-danger">
-                        <p class="fa fa-warning"></p> {{ session('error') }}
-                    </div>
-                @endif
-            </div>
-            <!--end  Welcome -->
-        </div>
+        @include('errors.errors')
 
         @yield('content')
 
@@ -170,8 +145,6 @@
 <script src="{{URL::asset('backend/assets/plugins/pace/pace.js')}}"></script>
 <!-- Page-Level Plugin Scripts-->
 <script src="{{URL::asset('backend/assets/plugins/morris/raphael-2.1.0.min.js')}}"></script>
-{{--<script src="{{URL::asset('backend/assets/plugins/morris/morris.js')}}"></script>--}}
-{{--<script src="{{URL::asset('backend/assets/scripts/dashboard-demo.js')}}"></script>--}}
 
 {{-- set dataTable--}}
 <script src="{{URL::asset('table/datatables/media/js/jquery.dataTables.min.js')}}"></script>

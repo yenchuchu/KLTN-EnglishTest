@@ -52,7 +52,7 @@
 
         #menu-nav-top .navbar-brand,
         #menu-nav-top #username-auth,
-        .guest-app>a {
+        .guest-app > a {
             color: white !important;
         }
 
@@ -85,15 +85,13 @@
                 </a>
             </div>
 
-            {{--<div class="collapse navbar-collapse" id="app-navbar-collapse">--}}
-
             @include('partials.menu-top-right')
-            {{--</div>--}}
         </div>
     </nav>
     <div class="container">
 
         @yield('menu-main')
+        @include('errors.errors')
         @yield('content')
 
     </div>
