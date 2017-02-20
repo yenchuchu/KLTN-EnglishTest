@@ -59,4 +59,9 @@ class User extends Authenticatable
         return !!$role->intersect($this->roles)->count();
     }
 
+    public function user_skills()
+    {
+        return $this->hasMany(UserSkill::class, 'user_id');
+    }
+
 }

@@ -3,7 +3,11 @@
 namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
+use App\Console\Commands\StudentCommand;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Foundation\Inspiring;
+use DB;
+use Illuminate\Support\Facades\Redirect;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +17,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+//        StudentCommand::class,
+//        \App\Console\Commands\Inspire::class,
     ];
 
     /**
@@ -24,8 +29,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+
+//        $schedule->call(function () {
+//            return redirect()->route('frontend.teacher.index');
+//            $user = DB::table('users')->first();
+//            var_dump($user);
+//        })->everyMinute();
+
+//         $schedule->command('student:command')
+//                  ->everyMinute();
     }
 
     /**

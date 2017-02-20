@@ -21,5 +21,21 @@
         padding-bottom: 16px;
     }
 
+    #testing-id {
+       /*border: 1px solid #e6e6e6;*/
+        background: #fafaf3;
+        padding-top: 15px;
+    }
+
+    #title-level-testing>h3{
+        margin-top: 0px;
+    }
+
+    .wrap-test-class {
+        padding-right: 15px;
+        padding-left: 15px;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
 
 </style>

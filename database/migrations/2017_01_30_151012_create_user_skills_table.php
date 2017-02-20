@@ -17,7 +17,8 @@ class CreateUserSkillsTable extends Migration
             $table->increments('id');
 
             $table->integer('user_id');
-            $table->integer('skill_id');
+            $table->string('skill_json')->comment('{skill_id: , point: }');
+            $table->string('test_id');
             $table->integer('point');
 
         });

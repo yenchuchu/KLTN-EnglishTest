@@ -12,7 +12,13 @@ return [
             'underlines' => 'Underlines',
         ],
         'Listen' => [
-
+            'complete_tables' => 'Complete Table',
+            'table_ticks' => 'Table Tick',
+            'table_matchs' => 'Table Matchs',
+            'complete_sentences' => 'Complete Sentences',
+            'listen_ticks' => 'Listen and Tick',
+            'tick_crosses' => 'Tick Cross',
+            'fill_numbers' => 'Listen And Fill In One Number',
         ],
         'Write' => [],
         'Speak' => []

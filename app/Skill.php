@@ -25,4 +25,5 @@ class Skill extends Model
     {
         return $this->belongsTo(AnswerQuestion::class);
     }
+
 }
