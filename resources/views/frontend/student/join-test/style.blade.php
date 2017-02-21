@@ -38,4 +38,8 @@
         margin-right: 0px;
     }
 
+    .question-checkbox input {
+        margin-right: 10px;
+    }
+
 </style>

@@ -19,7 +19,7 @@ class CreateCompleteWordsTable extends Migration
             $table->string('title');
             $table->string('content');
             $table->integer('point')->default(0);
-            $table->string('content_json');
+            $table->string('content_json')->comment('{content: nội dung câu hỏi, suggest: đưa ra 4 lựa chọn, answer: đáp án}');
             $table->string('type_user');
             $table->integer('class_id')->nullable();
             $table->integer('exam_type_id')->nullable();

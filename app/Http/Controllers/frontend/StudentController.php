@@ -22,11 +22,13 @@ class StudentController extends Controller
 
     protected $skill_read;
     protected $skill_listen;
+    protected $code_student;
 
     public function __construct()
     {
         $this->skill_read = Config::get('constants.skill.Read');
         $this->skill_listen = Config::get('constants.skill.Listen');
+        $this->code_student = 'ST';
     }
 
     public function index()
@@ -43,7 +45,8 @@ class StudentController extends Controller
         $user = Auth::user();
         $user_id = $user->id;
 
-        $level_chosen = Level::whereId($level_id)->get();
+        $level_chosen = Level::whereId($level_id)->first();
+
         if(!isset($level)) {
             // noti message
         }
@@ -105,44 +108,60 @@ class StudentController extends Controller
         }
 
         $items = [];
+        $items['listen'][] = '';
+        $items['read'][] = '';
 
         if (!isset($check_listen)) {
             // listen chỉ có 1 dạng bài.
-//           $listen_table = $random_type_listen::
+
         } else {
 
         }
 
         if (!isset($check_read)) {
             foreach ($random_type_read as $read) {
-                $read_table = DB::table($read)->get()->toArray();
+                $read_table = DB::table($read)
+                    ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                    ->get()->toArray();
 
                 if(count($read_table) != 0) {
                     $max = count($read_table) - 1;
                     $rand = rand(0, $max);
 
+//                    foreach ($read_table[$rand] as $record) {
+//                        dd($record['content_json']);
+//                        $record->content_json = json_decode();
+//                    }
+//dd($read_table[$rand]);
                     $items['read'][] = $read_table[$rand];
+
                 }
             }
         } else {
             // read chỉ có 1 dạng bài.
-            $read_table = DB::table($random_type_read)->get()->toArray();
+            $read_table = DB::table($random_type_read)
+                ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                ->get()->toArray();
 
             if(count($read_table) != 0) {
                 $max = count($read_table) - 1;
                 $rand = rand(0, $max);
 
+//                foreach ($read_table[$rand] as $record) {
+//                    dd($record['content_json']);
+//                        $record->content_json = json_decode();
+//                }
+//                dd($read_table[$rand]);
+
                 $items['read'][] = $read_table[$rand];
             }
         }
 
+//        dd($items);
 
-        dd($items);
-//        dd($random_type_listen);
-        dd($random_type_read);
         // class, level, user_id_auth, => join user_skill.
 
-        return view('frontend.student.join-test.index', compact('class_id', 'level_chosen', 'levels'));
+        return view('frontend.student.join-test.index', compact('class_id', 'level_chosen', 'levels', 'items'));
     }
 
     public function ShowTest() {
