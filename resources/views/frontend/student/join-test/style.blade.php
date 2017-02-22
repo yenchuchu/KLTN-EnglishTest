@@ -25,6 +25,7 @@
        /*border: 1px solid #e6e6e6;*/
         background: #fafaf3;
         padding-top: 15px;
+        margin-bottom: 30px;
     }
 
     #title-level-testing>h3{
@@ -40,6 +41,32 @@
 
     .question-checkbox input {
         margin-right: 10px;
+    }
+
+    .space-exam {
+        margin-bottom: 5px;
+    }
+
+    .space-exam article {
+        margin-bottom: 10px;
+    }
+
+    .space-exam article,
+    .space-exam .content_question {
+        font-size: 15px;
+    }
+
+    .wrap_question_details {
+        padding-left: 15px;
+        margin-bottom: 10px;
+    }
+
+    .huge-number {
+        margin-right: 5px;
+    }
+
+    .btn-submit-test {
+        margin-bottom: 20px;
     }
 
 </style>

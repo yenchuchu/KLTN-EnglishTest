@@ -10,41 +10,77 @@
 
 @section('content')
     <div class="row wrap-test-class" id="title-level-testing">
-       <h3>Testing {{$level_chosen->title}}</h3>
+        <h3>Testing {{$level_chosen->title}}</h3>
     </div>
 
     <div class="row wrap-test-class" id="testing-id">
+        {{ Form::open(['route' => 'frontend.student.testing.handle', 'method' => 'post']) }}
+        <p id="demo"></p>
+
+        <button id='demnguoc'>Còn<span id='dem'></span> <span id='donvi'></span></button>
+        <button id='click'>Click để đếm</button>
+
         <?php $i_skill = 1;
-              $j_title = 1;
-              $k_question = 1;
+        $j_title = 1;
+        $k_question = 1;
         ?>
         @foreach($items as $key => $item)
             <h4>{{$i_skill}}. {{$key}}</h4>
 
             @foreach($item as $key_item => $detail)
                 @if(!empty($detail))
-                    <p>{{$j_title}}. {{$detail->title}}</p>
-                    <article>{{$detail->content}}</article>
-                    <?php $list_question = json_decode($detail->content_json) ; ?>
-                    @foreach($list_question as $question)
-                        <div class="col-lg-8">
-                            <p>{{$k_question}}. {{$question->content}}</p>
-                        </div>
+                    <div class="col-lg-12 space-exam">
+                        <p>{{$j_title}}. {{$detail->title}}</p>
+                        <article>{{$detail->content}}</article>
+                        <?php $list_question = json_decode($detail->content_json); ?>
+                        @foreach($list_question as $question)
+                            <?php
+                            switch ($detail->table) {
+                            case "answer_questions": ?>
+                                @include('frontend.student.join-test.temp_answer_question',
+                                ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question,
+                                'question_content' =>$question->content])
+                            <?php  break;
+                            case "classify_words":
+                                echo "classify_words!";
+                                break;
+                            case "complete_words":
+                                echo "complete_words!";
+                                break;
+                            case "find_errors":
+                                echo "find_errors!";
+                                break;
+                            case "multiple_choices":
+                                echo "multiple_choices!";
+                                break;
+                            case "tick_circle_true_falses": ?>
+                                @include('frontend.student.join-test.temp_tick_circle_true_false',
+                                ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question,
+                                'question_content' =>$question->content])
+                            <?php break;
+                            case "underlines":
+                                echo "underlines!";
+                                break;
+                            default:
+                                echo "Your favorite color is neither red, blue, nor green!";
+                            }
+                            ?>
 
-                        @include('frontend.student.join-test.temp_tick_circle_true_false',
-                        ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question])
-
-                        <?php $k_question++; ?>
-                    @endforeach
-
+                            <?php $k_question++; ?>
+                        @endforeach
+                    </div>
                     <?php $j_title++; ?>
                 @endif
-
             @endforeach
 
 
             <?php $i_skill++; ?>
         @endforeach
+
+        <div class="col-lg-offset-10 col-lg-2">
+            <button type="submit" title="Submit" class="btn btn-success btn-submit-test">Submit</button>
+        </div>
+        {{ Form::close() }}
     </div>
 @stop
 
@@ -53,5 +89,7 @@
     <script type="text/javascript">
 
     </script>
+
+    @include('frontend.student.join-test.script')
 
 @stop

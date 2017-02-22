@@ -112,4 +112,15 @@
         float: left;
     }
 
+    .div-wrap-option-answers {
+        padding-left: 0;
+        margin-left: 17px;
+        width: 100%
+    }
+
+    .div-wrap-option-answers .col-lg-11 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
 </style>

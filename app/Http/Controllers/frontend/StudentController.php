@@ -133,6 +133,8 @@ class StudentController extends Controller
 //                        $record->content_json = json_decode();
 //                    }
 //dd($read_table[$rand]);
+                    $read_table[$rand]->table = $read;
+//                    $items['read']['tables'][] = $read;
                     $items['read'][] = $read_table[$rand];
 
                 }
@@ -153,6 +155,7 @@ class StudentController extends Controller
 //                }
 //                dd($read_table[$rand]);
 
+                $items['read']['tables'][] = $random_type_read;
                 $items['read'][] = $read_table[$rand];
             }
         }
@@ -161,7 +164,13 @@ class StudentController extends Controller
 
         // class, level, user_id_auth, => join user_skill.
 
-        return view('frontend.student.join-test.index', compact('class_id', 'level_chosen', 'levels', 'items'));
+        return view('frontend.student.join-test.index',
+            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read'));
+    }
+
+    public function hanglingResult(Request $request) {
+        $requets_all = $request->all();
+        dd($requets_all);
     }
 
     public function ShowTest() {

@@ -68,12 +68,6 @@
                         <option value="{{$book->id}}">{{$book->title}}</option>
                     @endforeach
                 </select>
-                {{--@foreach($book_maps as $book)--}}
-                {{--<div class="form-group bookmap_form">--}}
-                {{--<input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">--}}
-                {{--<label for="bookmap_{{$book->id}}">{{$book->title}}</label>--}}
-                {{--</div>--}}
-                {{--@endforeach--}}
 
             </div>
         @endif
@@ -120,10 +114,49 @@
                                               placeholder="enter content" required></textarea>
                                 </div>
                             </div>
-                            <div class="col-lg-12" style="padding-left: 0;margin-left: 17px;width: 100%">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" placeholder="enter answer"
+                            <div class="col-lg-12 div-wrap-option-answers" >
+                                <div class="col-lg-1">
+                                    <input type="radio" value="1"
                                            name="answer_question[1][content-choose-ans-question][1][answer]">
+                                </div>
+                                <div class="col-lg-11">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="enter answer" index="1"
+                                               name="answer_question[1][content-choose-ans-question][1][option-answer][1]">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <input type="radio" value="2"
+                                           name="answer_question[1][content-choose-ans-question][1][answer]">
+                                </div>
+                                <div class="col-lg-11">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="enter answer" index="2"
+                                               name="answer_question[1][content-choose-ans-question][1][option-answer][2]">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <input type="radio" value="3"
+                                           name="answer_question[1][content-choose-ans-question][1][answer]">
+                                </div>
+                                <div class="col-lg-11">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="enter answer" index="3"
+                                               name="answer_question[1][content-choose-ans-question][1][option-answer][3]">
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-1">
+                                    <input type="radio" value="4"
+                                           name="answer_question[1][content-choose-ans-question][1][answer]">
+                                </div>
+                                <div class="col-lg-11">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" placeholder="enter answer" index="4"
+                                               name="answer_question[1][content-choose-ans-question][1][option-answer][4]">
+                                    </div>
                                 </div>
                             </div>
                         </div>

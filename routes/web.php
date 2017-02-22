@@ -154,6 +154,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
 
+            Route::post('handling-result', 'frontend\StudentController@hanglingResult')
+                ->name('frontend.student.testing.handle');
+
         });
 
     });
