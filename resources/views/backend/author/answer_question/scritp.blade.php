@@ -48,21 +48,22 @@
                 'name="answer_question['+ j +'][content-choose-ans-question][1][answer]">' +
                 '</div>' +
                 '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
 
-                '</div>' +
-                '</div>' +
                 '<div class="form-group">' +
-                '<a href="#" id="add_item_question_' + j + '" item_this="1" item="' + j + '" ' +
-                'class="add-question" onclick="add_item_question(this.id)">+</a>' +
+                '<span id="add_item_question_' + j + '" item_this="1" item="' + j + '" ' +
+                'class="add-question" onclick="add_item_question_AQ(this.id)">+</span>' +
                 '</div>' +
-                '</div>' +
-
 
                 '</div>' +
                 '</div>');
+
+        j++;
     });
 
-     function add_item_question(id) {
+     function add_item_question_AQ(id) {
 
          item = $('#' + id).attr('item');
          item_this =  $('#' + id).attr('item_this');
@@ -88,13 +89,10 @@
                  'name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][answer]">' +
                  '</div>' +
                  '</div>' +
+
                  '</div>');
 
          $('#add_item_question_'+ item).attr('item_this', item_this);
-     }
-
-     function remove_item(id) {
-         $('#'+id).parent().remove();
      }
 
     /**

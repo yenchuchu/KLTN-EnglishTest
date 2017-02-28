@@ -1,7 +1,8 @@
 @extends('layouts.app-backend')
 
 @section('style')
-    @include('backend.author.answer_question.style')
+    @include('backend.author.tick-circle-true-false.style')
+    @include('backend.author.style-common')
 @stop
 
 @section('header')
@@ -23,7 +24,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
 
-                    <select name="level_id" class="form-control" id="add-answer-question-level">
+                    <select name="level_id" class="form-control" id="add-tick-true-false-level">
                         @foreach($levels as $level)
                             <option value="{{$level->id}}">{{$level->title}} - {{$level->point}}  </option>
                         @endforeach
@@ -33,7 +34,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
 
-                    <select name="class_id" class="form-control" id="answer-question-class">
+                    <select name="class_id" class="form-control" id="tick-true-false-class">
                         @foreach($classes as $class)
                             <option value="{{$class->id}}">{{$class->title}}</option>
                         @endforeach
@@ -44,7 +45,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
 
-                    <select name="class_id" class="form-control" id="answer-question-class">
+                    <select name="class_id" class="form-control" id="tick-true-false-class">
                         @foreach($classes as $class)
                             <option value="{{$class->id}}">{{$class->title}}</option>
                         @endforeach
@@ -54,7 +55,7 @@
             <div class="col-lg-3">
                 <div class="form-group">
 
-                    <select name="exam_type_id" class="form-control" id="answer-question-examtype">
+                    <select name="exam_type_id" class="form-control" id="tick-true-false-examtype">
                         @foreach($exam_types as $types)
                             <option value="{{$types->id}}" code="{{$types->code}}">{{$types->title}}</option>
                         @endforeach
@@ -63,17 +64,11 @@
             </div>
             <div class="col-lg-3" id="wrap_bookmap_form">
 
-                <select name="book_map_id" class="form-control" id="answer-question-bookmap">
+                <select name="book_map_id" class="form-control" id="tick-true-false-bookmap">
                     @foreach($book_maps as $book)
                         <option value="{{$book->id}}">{{$book->title}}</option>
                     @endforeach
                 </select>
-                {{--@foreach($book_maps as $book)--}}
-                    {{--<div class="form-group bookmap_form">--}}
-                        {{--<input type="checkbox" name="book_map_id[]" id="bookmap_{{$book->id}}" value="{{$book->id}}">--}}
-                        {{--<label for="bookmap_{{$book->id}}">{{$book->title}}</label>--}}
-                    {{--</div>--}}
-                {{--@endforeach--}}
 
             </div>
         @endif
@@ -81,8 +76,8 @@
         <input type="hidden" value="{{$code_user}}" name="code_user">
         <input type="hidden" value="{{$class_code}}" name="class_code">
     </div>
-    <div class="row" id="wrap_add_answer_question">
-        <div class="col-lg-12 col_add_answer_question">
+    <div class="row" id="wrap_add_tick_true_false">
+        <div class="col-lg-12 col_add_tick_true_false">
 
             <!-- Advanced Tables -->
             <div class="panel panel-default">
@@ -92,21 +87,21 @@
 
                         <div class="col-lg-10" style="padding-left: 0;">
                             <div class="form-group">
-                                <input type="text" name="answer_question[1][title-answer-question]"
+                                <input type="text" name="tick_true_false[1][title-tick-true-false]"
                                        class="form-control" required>
                             </div>
                         </div>
                         <div class="col-lg-2" style=" padding-right: 0;">
                             <div class="form-group">
                                 <label class="lable-point">Point: </label>
-                                <input type="number" name="answer_question[1][point]"
+                                <input type="number" name="tick_true_false[1][point]"
                                        class="form-control input-point" required>
                             </div>
                         </div>
 
                         <div class="form-group">
                                 <textarea type="text" class="form-control"
-                                          name="answer_question[1][content-answer-question]"
+                                          name="tick_true_false[1][content-tick-true-false]"
                                           placeholder="enter content" required></textarea>
                         </div>
                         <div class="form-group" style="width:100%; float:left;">
@@ -115,19 +110,21 @@
                             </div>
                             <div class="span-text-question">
                                     <textarea type="text" class="form-control"
-                                              name="answer_question[1][content-choose-ans-question][1][content]"
+                                              name="tick_true_false[1][content-choose-ans-question][1][content]"
                                               placeholder="enter content" required></textarea>
                             </div>
-                            <div class="span-choose-answer">
+                            <div class="span-choose-tick-true-false">
                                 <span>
-                                    <input type="radio"
-                                           name="answer_question[1][content-choose-ans-question][1][answer]" value="1"
-                                           class="ans-true"><strong>T</strong>
+                                    <input type="radio" id="check-answer_1_1_T"
+                                           name="tick_true_false[1][content-choose-ans-question][1][answer]" value="T"
+                                           class="ans-true">
+                                    <label for="check-answer_1_1_T" style="cursor: pointer">T</label>
                                 </span>
                                 <span>
-                                     <input type="radio"
-                                            name="answer_question[1][content-choose-ans-question][1][answer]" value="0"
-                                            class="ans-false"><strong>F</strong>
+                                     <input type="radio" id="check-answer_1_1_F"
+                                            name="tick_true_false[1][content-choose-ans-question][1][answer]" value="F"
+                                            class="ans-false">
+                                    <label for="check-answer_1_1_F" style="cursor: pointer">F</label>
                                 </span>
                             </div>
                         </div>
@@ -135,8 +132,8 @@
                     </div>
 
                     <div class="form-group">
-                        <a href="#" id="add_item_question_1" item_this="1" item="1"
-                           class="add-question" onclick="add_item_question(this.id)" title="Add">+</a>
+                        <span id="add_item_question_1" item_this="1" item="1"
+                           class="add-question" onclick="add_item_question_TF(this.id)" title="Add">+</span>
                     </div>
 
                 </div>
@@ -148,10 +145,10 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12">
-            <a href="#" class="add-item">+</a>
+            <spam class="add-item">+</spam>
         </div>
         <div class="col-lg-12 col-md-12">
-            <button class="save-answer-questions btn" title="Save" type="submit">
+            <button class="save-tick-true-false btn" title="Save" type="submit">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i></button>
         </div>
     </div>
@@ -161,5 +158,6 @@
 @stop
 
 @section('script')
-    @include('backend.author.answer_question.scritp')
+    @include('backend.author.tick-circle-true-false.scritp')
+    @include('backend.author.script-common')
 @stop

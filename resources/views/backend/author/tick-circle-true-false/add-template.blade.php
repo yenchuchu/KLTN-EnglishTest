@@ -1,4 +1,4 @@
-<div class="col-lg-12 col_add_answer_question">
+<div class="col-lg-12 col_add_tick_true_false">
 
     <!-- Advanced Tables -->
     <div class="panel panel-default">

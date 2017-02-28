@@ -86,20 +86,52 @@ Route::group(['middleware' => 'auth'], function () {
 
                     Route::post('/store', 'backend\author\TickCircleTrueFalseController@store')
                         ->name('backend.manager.author.tick-circle-true-false.store');
-
-
                 });
 
-                Route::get('/classify-word/{class_code}',
-                    'backend\AuthorController@classify_words')->name('backend.manager.author.classify-word');
-                Route::get('/complete-word/{class_code}',
-                    'backend\AuthorController@complete_words')->name('backend.manager.author.complete-word');
-                Route::get('/find-errors/{class_code}',
-                    'backend\AuthorController@find_errors')->name('backend.manager.author.find-errors');
-                Route::get('/multiple-choice/{class_code}',
-                    'backend\AuthorController@multiple_choice')->name('backend.manager.author.multiple-choice');
-                Route::get('/tick-cricle-true-false/{class_code}',
-                    'backend\AuthorController@tick_circle_true_false')->name('backend.manager.author.tick-cricle-true-false');
+                Route::group(array('prefix' => 'multiple-choice'), function () {
+                    Route::get('/{class_code}', 'backend\author\MultipleChoiceController@index')
+                        ->name('backend.manager.author.multiple-choice');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\MultipleChoiceController@create')
+                        ->name('backend.manager.author.multiple-choice.create');
+
+                    Route::post('/store', 'backend\author\MultipleChoiceController@store')
+                        ->name('backend.manager.author.multiple-choice.store');
+                });
+
+                Route::group(array('prefix' => 'classify-word'), function () {
+                    Route::get('/{class_code}', 'backend\author\ClassifyWordController@index')
+                        ->name('backend.manager.author.classify-word');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\ClassifyWordController@create')
+                        ->name('backend.manager.author.classify-word.create');
+
+                    Route::post('/store', 'backend\author\ClassifyWordController@store')
+                        ->name('backend.manager.author.classify-word.store');
+                });
+
+                Route::group(array('prefix' => 'complete-word'), function () {
+                    Route::get('/{class_code}', 'backend\author\CompleteWordController@index')
+                        ->name('backend.manager.author.complete-word');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\CompleteWordController@create')
+                        ->name('backend.manager.author.complete-word.create');
+
+                    Route::post('/store', 'backend\author\CompleteWordController@store')
+                        ->name('backend.manager.author.complete-word.store');
+                });
+
+                Route::group(array('prefix' => 'find-errors'), function () {
+                    Route::get('/{class_code}', 'backend\author\FindErrorController@index')
+                        ->name('backend.manager.author.find-errors');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\FindErrorController@create')
+                        ->name('backend.manager.author.find-errors.create');
+
+                    Route::post('/store', 'backend\author\FindErrorController@store')
+                        ->name('backend.manager.author.find-errors.store');
+                });
+
             });
 
         });

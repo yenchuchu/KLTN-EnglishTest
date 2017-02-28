@@ -1,7 +1,7 @@
 @extends('layouts.app-backend')
 
 @section('header')
-    <h1 class="page-header">Tick Circle True False for {{$name_code}}</h1>
+    <h1 class="page-header">Multiple choices for {{$name_code}}</h1>
 @stop
 @section('content')
     <div class="row">
@@ -20,12 +20,12 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Tick Circle True False's Students Tables
-                    <a href="{{route('backend.manager.author.tick-circle-true-false.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
+                    Multiple Choice's Students Tables
+                    <a href="{{route('backend.manager.author.complete-word.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_students">
-                        @include('backend.author.tick-circle-true-false.table-students-index')
+                        @include('backend.author.answer_question.table-students-index')
                     </div>
 
                 </div>
@@ -36,12 +36,12 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Tick Circle True False's Teacher Tables
-                    <a href="{{route('backend.manager.author.tick-circle-true-false.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
+                    Multiple Choice's Teacher Tables
+                    <a href="{{route('backend.manager.author.complete-word.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_teachers">
-                        @include('backend.author.tick-circle-true-false.table-teachers-index')
+                        @include('backend.author.answer_question.table-teachers-index')
                     </div>
 
                 </div>
@@ -54,8 +54,8 @@
 
 @section('script')
     <script>
-        setTableInit('manager_tick_true_false_students');
-        setTableInit('manager_tick_true_false_teachers');
+        setTableInit('manager_multiple_choices_students');
+        setTableInit('manager_multiple_choices_teachers');
 
     </script>
 @stop

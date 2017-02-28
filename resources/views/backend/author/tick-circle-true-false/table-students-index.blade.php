@@ -1,4 +1,4 @@
-<table class="table table-hover" id="manager_answer_questions_students">
+<table class="table table-hover" id="manager_tick_true_false_students">
     <thead>
     <tr>
         <th>STT</th>
@@ -22,8 +22,8 @@
                     </a>
                 </button>
 
-                <button class="btn btn-sm btn-danger" id="answer_question_{{$item->id}}" title="Delete"
-                        onclick="deleteQuestion({{$item->id}})">
+                <button class="btn btn-sm btn-danger" id="tick_true_false_{{$item->id}}" title="Delete"
+                        onclick="deleteQuestionTrueFalse({{$item->id}})">
                     <i class="fa fa-times" data-toggle="tooltip" data-placement="top"
                        title="Delete"> </i>
                 </button>

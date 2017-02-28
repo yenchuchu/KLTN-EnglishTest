@@ -21,4 +21,16 @@
         text-align: center;
     }
 
+    .option-as-details>input {
+        width: 5%;
+        float: left;
+        margin-top: 10px;
+    }
+
+    .option-as-details>.form-group {
+        width: 82%;
+        float: left;
+        margin-left: 10px;
+    }
+
 </style>
