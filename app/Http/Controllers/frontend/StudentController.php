@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\frontend;
 
+use App\AnswerQuestion;
 use App\Classes;
 use App\Skill;
+use App\TickCircleTrueFalse;
 use App\User;
 use App\Level;
 use App\UserSkill;
@@ -117,13 +119,17 @@ class StudentController extends Controller
         } else {
 
         }
-//dd($random_type_read);
+
+//        $ans = TickCircleTrueFalse::where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+//            ->get()->toArray();
+//        dd($ans);
+//var_dump($random_type_read);
         if (!isset($check_read)) {
             foreach ($random_type_read as $read) {
                 $read_table = DB::table($read)
                     ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
                     ->get()->toArray();
-
+//var_dump(count($read_table));
                 if(count($read_table) != 0) {
                     $max = count($read_table) - 1;
                     $rand = rand(0, $max);
