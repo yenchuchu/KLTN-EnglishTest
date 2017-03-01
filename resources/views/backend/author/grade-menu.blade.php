@@ -30,10 +30,20 @@
             border-radius: 5px;
             margin-right: 15px;
             margin-bottom: 10px;
+            cursor: pointer;
+        }
+
+        .type-exam:hover {
+            background: rgba(10, 185, 122, 0.74);
+        }
+
+        .type-exam>a:hover {
+            text-decoration: none;
         }
 
         .type-exam>a {
             color: white;
+            padding: 11% 17%;
         }
 
     </style>
@@ -43,38 +53,48 @@
     <section id="grade-menu-wrap">
         <div class="container">
             <div class="row">
+                <div class="col-lg-6">
+                    <h1>Reading</h1>
 
-                <div class="main-body">
+                    <div class="main-body">
 
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.answer-question', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Answer Questions</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.classify-word', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Classify Words</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.complete-word', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Complete Words</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.find-errors', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Find Errors</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.multiple-choice', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Multiple Choices</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.tick-circle-true-false', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Tick Cricle True Flase</a>
-                    </div>
-                    <div class="col-lg-3 type-exam">
-                        <a href="{{route('backend.manager.author.underlines', $class_code)}}">
-                            <i class="fa fa-dashboard fa-fw"></i>Underlines</a>
-                    </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.answer-question', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Answer Questions</a>
+                        </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.complete-word', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Complete Words</a>
+                        </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.find-errors', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Find Errors</a>
+                        </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.multiple-choice', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Multiple Choices</a>
+                        </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.tick-circle-true-false', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Tick Cricle True Flase</a>
+                        </div>
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.underlines', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Underlines</a>
+                        </div>
 
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.classify-word', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Classify Words</a>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="main-body">
+                        <h1>Listening</h1>
+                    </div>
                 </div>
             </div>
         </div>

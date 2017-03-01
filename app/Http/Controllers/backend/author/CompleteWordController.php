@@ -5,6 +5,7 @@ namespace App\Http\Controllers\backend\author;
 use App\AnswerQuestion;
 use App\BookMap;
 use App\Classes;
+use App\CompleteWord;
 use App\ExamType;
 use App\Http\Controllers\Controller;
 use App\Level;
@@ -114,7 +115,7 @@ class CompleteWordController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-        dd($all_data);
+
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }
@@ -134,24 +135,23 @@ class CompleteWordController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
-        foreach ($all_data['answer_question'] as $data) {
+        foreach ($all_data['complete_words'] as $data) {
 
-            $answer_question_content_question = $data['content-choose-ans-question'];
-            $answer_question = new AnswerQuestion();
+            $complete_word_content_question = $data['content-choose-ans-question'];
+            $complete_word = new CompleteWord();
 
-            $answer_question->title = $data['title-answer-question'];
-            $answer_question->content = $data['content-answer-question'];
-            $answer_question->point = $data['point'];
-            $answer_question->type_user = $code_user;
-            $answer_question->content_json = json_encode($answer_question_content_question);
-            $answer_question->skill_id = $skill->id;
-            $answer_question->exam_type_id = $exam_type_id;
-            $answer_question->level_id = $level_id;
-            $answer_question->class_id = $class_id;
-//            $answer_question->bookmap_json_id = json_encode($book_map_id);
-            $answer_question->bookmap_id = $book_map_id;
+            $complete_word->title = $data['title-complete-word'];
+            $complete_word->point = $data['point'];
+            $complete_word->type_user = $code_user;
+            $complete_word->content_json = json_encode($complete_word_content_question);
+            $complete_word->skill_id = $skill->id;
+            $complete_word->exam_type_id = $exam_type_id;
+            $complete_word->level_id = $level_id;
+            $complete_word->class_id = $class_id;
+//            $complete_word->bookmap_json_id = json_encode($book_map_id);
+            $complete_word->bookmap_id = $book_map_id;
 
-            $answer_question->save();
+            $complete_word->save();
         }
 
         return Redirect()->route('backend.manager.author.complete-word', $class_id);

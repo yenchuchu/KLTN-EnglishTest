@@ -99,11 +99,6 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                                <textarea type="text" class="form-control"
-                                          name="complete_words[1][content-complete-word]"
-                                          placeholder="enter content" required></textarea>
-                        </div>
                         <div class="form-group" style="width:100%; float:left;">
                             <div class="span-numb-question" id="id-numb-question-1">
                                 1

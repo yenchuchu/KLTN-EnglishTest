@@ -6,6 +6,7 @@ use App\AnswerQuestion;
 use App\BookMap;
 use App\Classes;
 use App\ExamType;
+use App\FindError;
 use App\Http\Controllers\Controller;
 use App\Level;
 use App\Skill;
@@ -102,7 +103,7 @@ class FindErrorController extends Controller
                 compact('levels', 'class_code', 'code_user', 'classes', 'exam_types', 'book_maps'));
         }
 
-        return view('backend.author.classify_words.create', compact('levels', 'class_code', 'code_user', 'classes'));
+        return view('backend.author.find_errors.create', compact('levels', 'class_code', 'code_user', 'classes'));
     }
 
     /**
@@ -114,7 +115,7 @@ class FindErrorController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-        dd($all_data);
+
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }
@@ -134,24 +135,23 @@ class FindErrorController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
-        foreach ($all_data['answer_question'] as $data) {
+        foreach ($all_data['find_errors'] as $data) {
 
-            $answer_question_content_question = $data['content-choose-ans-question'];
-            $answer_question = new AnswerQuestion();
+            $find_error_content_question = $data['content-choose-ans-question'];
+            $find_error = new FindError();
 
-            $answer_question->title = $data['title-answer-question'];
-            $answer_question->content = $data['content-answer-question'];
-            $answer_question->point = $data['point'];
-            $answer_question->type_user = $code_user;
-            $answer_question->content_json = json_encode($answer_question_content_question);
-            $answer_question->skill_id = $skill->id;
-            $answer_question->exam_type_id = $exam_type_id;
-            $answer_question->level_id = $level_id;
-            $answer_question->class_id = $class_id;
-//            $answer_question->bookmap_json_id = json_encode($book_map_id);
-            $answer_question->bookmap_id = $book_map_id;
+            $find_error->title = $data['title-find-errors'];
+            $find_error->point = $data['point'];
+            $find_error->type_user = $code_user;
+            $find_error->content_json = json_encode($find_error_content_question);
+            $find_error->skill_id = $skill->id;
+            $find_error->exam_type_id = $exam_type_id;
+            $find_error->level_id = $level_id;
+            $find_error->class_id = $class_id;
+//            $find_error->bookmap_json_id = json_encode($book_map_id);
+            $find_error->bookmap_id = $book_map_id;
 
-            $answer_question->save();
+            $find_error->save();
         }
 
         return Redirect()->route('backend.manager.author.find-errors', $class_id);

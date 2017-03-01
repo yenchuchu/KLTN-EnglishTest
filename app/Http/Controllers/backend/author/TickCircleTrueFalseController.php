@@ -87,7 +87,6 @@ class TickCircleTrueFalseController extends Controller
         $levels = $this->levels;
         $all_classes = $this->classes;
 
-
         $class_code = $this->url_parameters['class_code'];
         $code_user = $this->url_parameters['code_user'];
 
@@ -135,24 +134,24 @@ class TickCircleTrueFalseController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
-        foreach ($all_data['answer_question'] as $data) {
+        foreach ($all_data['tick_true_false'] as $data) {
 
-            $answer_question_content_question = $data['content-choose-ans-question'];
-            $answer_question = new TickCircleTrueFalse();
+            $tick_true_false_content_question = $data['content-choose-ans-question'];
+            $tick_true_false = new TickCircleTrueFalse();
 
-            $answer_question->title = $data['title-answer-question'];
-            $answer_question->content = $data['content-answer-question'];
-            $answer_question->point = $data['point'];
-            $answer_question->type_user = $code_user;
-            $answer_question->content_json = json_encode($answer_question_content_question);
-            $answer_question->skill_id = $skill->id;
-            $answer_question->exam_type_id = $exam_type_id;
-            $answer_question->level_id = $level_id;
-            $answer_question->class_id = $class_id;
-//            $answer_question->bookmap_json_id = json_encode($book_map_id);
-            $answer_question->bookmap_id = $book_map_id;
+            $tick_true_false->title = $data['title-tick-true-false'];
+            $tick_true_false->content = $data['content-tick-true-false'];
+            $tick_true_false->point = $data['point'];
+            $tick_true_false->type_user = $code_user;
+            $tick_true_false->content_json = json_encode($tick_true_false_content_question);
+            $tick_true_false->skill_id = $skill->id;
+            $tick_true_false->exam_type_id = $exam_type_id;
+            $tick_true_false->level_id = $level_id;
+            $tick_true_false->class_id = $class_id;
+//            $tick_true_false->bookmap_json_id = json_encode($book_map_id);
+            $tick_true_false->bookmap_id = $book_map_id;
 
-            $answer_question->save();
+            $tick_true_false->save();
         }
 
         return Redirect()->route('backend.manager.author.tick-circle-true-false', $class_id);

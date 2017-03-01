@@ -20,8 +20,8 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Multiple Choice's Students Tables
-                    <a href="{{route('backend.manager.author.multiple-choice.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
+                    Find errors's Students Tables
+                    <a href="{{route('backend.manager.author.find-errors.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_students">
@@ -37,7 +37,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     Multiple Choice's Teacher Tables
-                    <a href="{{route('backend.manager.author.multiple-choice.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
+                    <a href="{{route('backend.manager.author.find-errors.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_teachers">

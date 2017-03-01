@@ -8,6 +8,8 @@ use App\Classes;
 use App\ExamType;
 use App\Http\Controllers\Controller;
 use App\Level;
+use App\MultipleChoice;
+use App\MultipleChoiceDetail;
 use App\Skill;
 use App\User;
 use Illuminate\Http\Request;
@@ -114,7 +116,7 @@ class MultipleChoiceController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-        dd($all_data);
+
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }
@@ -134,24 +136,37 @@ class MultipleChoiceController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
-        foreach ($all_data['answer_question'] as $data) {
+        foreach ($all_data['multiple_choice'] as $data) {
 
-            $answer_question_content_question = $data['content-choose-ans-question'];
-            $answer_question = new AnswerQuestion();
+            $multiple_choice_content_question = $data['content-choose-ans-question'];
+            $multiple_choice = new MultipleChoice();
 
-            $answer_question->title = $data['title-answer-question'];
-            $answer_question->content = $data['content-answer-question'];
-            $answer_question->point = $data['point'];
-            $answer_question->type_user = $code_user;
-            $answer_question->content_json = json_encode($answer_question_content_question);
-            $answer_question->skill_id = $skill->id;
-            $answer_question->exam_type_id = $exam_type_id;
-            $answer_question->level_id = $level_id;
-            $answer_question->class_id = $class_id;
-//            $answer_question->bookmap_json_id = json_encode($book_map_id);
-            $answer_question->bookmap_id = $book_map_id;
+            $multiple_choice->title = $data['title-multiple-choice'];
+            $multiple_choice->content = $data['content-multiple-choice'];
+            $multiple_choice->point = $data['point'];
+            $multiple_choice->type_user = $code_user;
+//            $multiple_choice->content_json = json_encode($multiple_choice_content_question);
+            $multiple_choice->skill_id = $skill->id;
+            $multiple_choice->exam_type_id = $exam_type_id;
+            $multiple_choice->level_id = $level_id;
+            $multiple_choice->class_id = $class_id;
+//            $multiple_choice->bookmap_json_id = json_encode($book_map_id);
+            $multiple_choice->bookmap_id = $book_map_id;
 
-            $answer_question->save();
+            $multiple_choice->save();
+
+            foreach ($multiple_choice_content_question as $detail) {
+                $multiple_choice_details = new MultipleChoiceDetail();
+
+                $multiple_choice_details->content = $detail['content'];
+                $multiple_choice_details->answer = $detail['answer'];
+                $multiple_choice_details->multiple_choice_id = $multiple_choice->id;
+
+                $detail_json = $detail['option-answer'];
+                $multiple_choice_details->content_json = json_encode($detail_json);
+
+                $multiple_choice_details->save();
+            }
         }
 
         return Redirect()->route('backend.manager.author.multiple-choice', $class_id);

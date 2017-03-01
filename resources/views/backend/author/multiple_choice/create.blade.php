@@ -121,7 +121,7 @@
                                            name="multiple_choice[1][content-choose-ans-question][1][answer]">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="enter answer" index="1"
-                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][1]">
+                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][A]">
                                     </div>
                                 </div>
 
@@ -130,7 +130,7 @@
                                            name="multiple_choice[1][content-choose-ans-question][1][answer]">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="enter answer" index="2"
-                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][2]">
+                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][B]">
                                     </div>
                                 </div>
 
@@ -139,7 +139,7 @@
                                            name="multiple_choice[1][content-choose-ans-question][1][answer]">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="enter answer" index="3"
-                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][3]">
+                                               name="multiple_choice[1][content-choose-ans-question][1][option-answer][C]">
                                     </div>
                                 </div>
 

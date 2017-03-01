@@ -25,10 +25,6 @@
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
-                '<textarea type="text" class="form-control" name="complete_words[' + j + '][content-complete-word]' +
-                'placeholder="enter content" required></textarea>' +
-                '</div>' +
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
                 '1' +
@@ -101,7 +97,7 @@
                 '<div class="col-lg-4 option-as-details">' +
                 '<div class="form-group">' +
                 '<input type="text" class="form-control" placeholder="enter suggest" index="1"' +
-                'name="complete_words [' + item + '][content-choose-ans-question][' + item_this + '][option-answer]">' +
+                'name="complete_words[' + item + '][content-choose-ans-question][' + item_this + '][option-answer]">' +
                 ' </div>' +
                 ' </div>' +
 

@@ -1,7 +1,7 @@
 @extends('layouts.app-backend')
 
 @section('header')
-    <h1 class="page-header">Multiple choices for {{$name_code}}</h1>
+    <h1 class="page-header">Classify word  for {{$name_code}}</h1>
 @stop
 @section('content')
     <div class="row">
@@ -20,8 +20,8 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Multiple Choice's Students Tables
-                    <a href="{{route('backend.manager.author.multiple-choice.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
+                    Classify word 's Students Tables
+                    <a href="{{route('backend.manager.author.classify-word.create', ['ST' , $class_code])}}" target="_blank">Add Student Test</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_students">
@@ -36,8 +36,8 @@
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Multiple Choice's Teacher Tables
-                    <a href="{{route('backend.manager.author.multiple-choice.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
+                   Classify word 's Teacher Tables
+                    <a href="{{route('backend.manager.author.classify-word.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload_table_ans_for_teachers">

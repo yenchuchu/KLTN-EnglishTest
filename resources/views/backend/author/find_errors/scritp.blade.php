@@ -1,8 +1,8 @@
 <script>
     var j = 2;
     $('.add-item').click(function () {
-        $("#wrap_add_multiple_choice").append('' +
-                '<div class="col-lg-12" class="col_add_multiple_choice">' +
+        $("#wrap_add_find_errors").append('' +
+                '<div class="col-lg-12" class="col_add_find_errors">' +
 
                 '<i class="fa fa-times col-lg-2 col-lg-offset-10 i-remove-item" id="remove-item-' + j + '" ' +
                 'aria-hidden="true" title="remove" onclick="remove_item(this.id)"></i>' +
@@ -15,20 +15,16 @@
 
                 '<div class="col-lg-10" style="padding-left: 0;">' +
                 '<div class="form-group">' +
-                '<input type="text" name="multiple_choice[' + j + '][title-multiple-choice] " class="form-control" required>' +
+                '<input type="text" name="find_errors[' + j + '][title-find-errors] " class="form-control" required>' +
                 '</div>' +
                 '</div>' +
                 '<div class="col-lg-2" style=" padding-right: 0;">' +
                 '<div class="form-group">' +
                 '<label class="lable-point">Point: </label>' +
-                '<input type="number" name="multiple_choice[' + j + '][point]" class="form-control input-point" required>' +
+                '<input type="number" name="find_errors[' + j + '][point]" class="form-control input-point" required>' +
                 '</div>' +
                 '</div>' +
 
-                '<div class="form-group">' +
-                '<textarea type="text" class="form-control" name="multiple_choice[' + j + '][content-multiple-choice]' +
-                'placeholder="enter content" required></textarea>' +
-                '</div>' +
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
                 '1' +
@@ -37,7 +33,7 @@
                 '<div class="form-group" style="width:98%; float:left;">' +
                 '<div class="span-text-question">' +
                 '<textarea type="text" class="form-control" ' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][content]"' +
+                'name="find_errors[' + j + '][content-choose-ans-question][1][content]"' +
                 'placeholder="enter content" required></textarea>' +
                 '</div>' +
                 '</div>' +
@@ -45,32 +41,14 @@
 
                 '<div class="col-lg-12 div-wrap-option-answers" >' +
 
-                '<div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="A"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
-                '<div class="form-group">' +
+                '<div class="col-lg-8 option-as-details">' +
+                '<label class="col-lg-2" style="padding-right: 0px;" for="find_errors_' + j + '_answer_1">Answer: </label>' +
+                '<div class="form-group col-lg-10" style="width: 43%;padding-left: 0; margin-left: 0">' +
                 '<input type="text" class="form-control" placeholder="enter answer" index="1"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][1]">' +
+                'name="find_errors[' + j + '][content-choose-ans-question][1][answer]"' +
+                'id="find_errors_' + j + '_answer_1">' +
                 ' </div>' +
                 ' </div>' +
-
-                ' <div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="B"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
-                '<div class="form-group">' +
-                ' <input type="text" class="form-control" placeholder="enter answer" index="2"' +
-                ' name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][2]">' +
-                '</div>' +
-                '</div>' +
-
-                '<div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="C"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="3"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][3]">' +
-                '</div>' +
-                '</div>' +
 
                 '</div>' +
                 '</div>' +
@@ -79,7 +57,7 @@
 
                 '<div class="form-group">' +
                 '<span id="add_item_question_' + j + '" item_this="1" item="' + j + '" ' +
-                'class="add-question" onclick="add_item_question_MT(this.id)">+</span>' +
+                'class="add-question" onclick="add_item_question_find_error(this.id)">+</span>' +
                 '</div>' +
 
                 '</div>' +
@@ -88,7 +66,7 @@
         j++;
     });
 
-    function add_item_question_MT(id) {
+    function add_item_question_find_error(id) {
 
         item = $('#' + id).attr('item');
         item_this = $('#' + id).attr('item_this');
@@ -103,39 +81,21 @@
                 '<div class="form-group" style="width:98%; float:left;">' +
                 '<div class="span-text-question">' +
                 '<textarea type="text" class="form-control" ' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][content]"' +
+                'name="find_errors[' + item + '][content-choose-ans-question][' + item_this + '][content]"' +
                 'placeholder="enter content" ></textarea>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="col-lg-12 div-wrap-option-answers" >' +
 
-                '<div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="A"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
-                '<div class="form-group">' +
+                '<div class="col-lg-8 option-as-details">' +
+                '<label class="col-lg-2" style="padding-right: 0px;" for="find_errors_' + item + '_answer_' + item_this + '">Answer: </label>' +
+                '<div class="form-group col-lg-10" style="width: 43%;padding-left: 0; margin-left: 0">' +
                 '<input type="text" class="form-control" placeholder="enter answer" index="1"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][1]">' +
+                'name="find_errors[' + item + '][content-choose-ans-question][' + item_this + '][answer]"' +
+                'id="find_errors_' + item + '_answer_' + item_this + '">' +
                 ' </div>' +
                 ' </div>' +
-
-                ' <div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="B"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
-                '<div class="form-group">' +
-                ' <input type="text" class="form-control" placeholder="enter answer" index="2"' +
-                ' name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][2]">' +
-                '</div>' +
-                '</div>' +
-
-                '<div class="col-lg-4 option-as-details">' +
-                '<input type="radio" value="C"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
-                '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="3"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][3]">' +
-                '</div>' +
-                '</div>' +
 
                 '</div>' +
 
@@ -148,15 +108,15 @@
      * hiển thị các unit khi chọn kiểm tra thường xuyên
      * @type {any}
      */
-    var code_exam_type = $('#multiple-choice-examtype').find(":selected").attr('code');
+    var code_exam_type = $('#find-errors-examtype').find(":selected").attr('code');
     if (code_exam_type == 'test_15') {
         $('#wrap_bookmap_form').show();
     } else {
         $('#wrap_bookmap_form').hide();
     }
 
-    $('#multiple-choice-examtype').change(function () {
-        var code_exam_type = $('#multiple-choice-examtype').find(":selected").attr('code');
+    $('#find-errors-examtype').change(function () {
+        var code_exam_type = $('#find-errors-examtype').find(":selected").attr('code');
         if (code_exam_type == 'test_15') {
             $('#wrap_bookmap_form').show();
         } else {

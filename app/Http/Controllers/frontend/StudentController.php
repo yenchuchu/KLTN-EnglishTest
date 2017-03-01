@@ -117,7 +117,7 @@ class StudentController extends Controller
         } else {
 
         }
-
+//dd($random_type_read);
         if (!isset($check_read)) {
             foreach ($random_type_read as $read) {
                 $read_table = DB::table($read)

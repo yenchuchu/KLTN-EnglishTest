@@ -49,8 +49,8 @@
                 '<input type="radio" value="A"' +
                 'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="1"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][1]">' +
+                '<input type="text" class="form-control" placeholder="enter answer" index="A"' +
+                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][A]">' +
                 ' </div>' +
                 ' </div>' +
 
@@ -58,8 +58,8 @@
                 '<input type="radio" value="B"' +
                 'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
                 '<div class="form-group">' +
-                ' <input type="text" class="form-control" placeholder="enter answer" index="2"' +
-                ' name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][2]">' +
+                ' <input type="text" class="form-control" placeholder="enter answer" index="B"' +
+                ' name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][B]">' +
                 '</div>' +
                 '</div>' +
 
@@ -67,8 +67,8 @@
                 '<input type="radio" value="C"' +
                 'name="multiple_choice[' + j + '][content-choose-ans-question][1][answer]">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="3"' +
-                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][3]">' +
+                '<input type="text" class="form-control" placeholder="enter answer" index="C"' +
+                'name="multiple_choice[' + j + '][content-choose-ans-question][1][option-answer][C]">' +
                 '</div>' +
                 '</div>' +
 
@@ -114,8 +114,8 @@
                 '<input type="radio" value="A"' +
                 'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="1"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][1]">' +
+                '<input type="text" class="form-control" placeholder="enter answer" index="A"' +
+                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][A]">' +
                 ' </div>' +
                 ' </div>' +
 
@@ -123,8 +123,8 @@
                 '<input type="radio" value="B"' +
                 'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
                 '<div class="form-group">' +
-                ' <input type="text" class="form-control" placeholder="enter answer" index="2"' +
-                ' name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][2]">' +
+                ' <input type="text" class="form-control" placeholder="enter answer" index="B"' +
+                ' name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][B]">' +
                 '</div>' +
                 '</div>' +
 
@@ -132,8 +132,8 @@
                 '<input type="radio" value="C"' +
                 'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][answer]">' +
                 '<div class="form-group">' +
-                '<input type="text" class="form-control" placeholder="enter answer" index="3"' +
-                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][3]">' +
+                '<input type="text" class="form-control" placeholder="enter answer" index="C"' +
+                'name="multiple_choice[' + item + '][content-choose-ans-question][' + item_this + '][option-answer][C]">' +
                 '</div>' +
                 '</div>' +
 

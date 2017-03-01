@@ -36,4 +36,8 @@ class MultipleChoice extends Model
     public function levels() {
         return $this->hasMany(Level::class, 'id', 'level_id');
     }
+
+    public function multiple_choice_detail() {
+        return $this->hasMany(MultipleChoiceDetail::class, 'id', 'multiple_choice_id');
+    }
 }

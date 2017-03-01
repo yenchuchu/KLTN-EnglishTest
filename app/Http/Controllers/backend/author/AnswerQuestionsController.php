@@ -114,7 +114,7 @@ class AnswerQuestionsController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-dd($all_data);
+
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }

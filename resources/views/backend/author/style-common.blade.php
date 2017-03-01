@@ -30,7 +30,8 @@
     .save-answer-questions,
     .save-tick-true-false,
     .save-multiple-choice,
-    .save-complete-word {
+    .save-complete-word,
+    .save-find-errors {
         background: rgb(69, 224, 32);
         border-radius: 24px;
         color: white;
@@ -47,7 +48,8 @@
     .save-answer-questions:hover, .save-answer-questions:focus,
     .save-tick-true-false:hover, .save-tick-true-false:focus,
     .save-multiple-choice:hover, .save-multiple-choice:focus,
-    .save-complete-word:hover, .save-complete-word:focus {
+    .save-complete-word:hover, .save-complete-word:focus,
+    .save-find-errors:hover, .save-find-errors:focus {
         color: snow;
         text-decoration: underline;
         background: rgba(69, 224, 32, 0.69);

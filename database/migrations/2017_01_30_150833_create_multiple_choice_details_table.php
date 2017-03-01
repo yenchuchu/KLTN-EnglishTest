@@ -17,8 +17,8 @@ class CreateMultipleChoiceDetailsTable extends Migration
             $table->increments('id');
 
             $table->integer('multiple_choice_id');
-            $table->string('title');
-            $table->string('content_json');
+            $table->text('title');
+            $table->text('content_json');
             $table->string('answer');
 
             $table->timestamps();
