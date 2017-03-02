@@ -30,10 +30,7 @@
     <!-- sweet alert -->
     <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/loader.css')}}"/>
     <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/page_loaders.css')}}"/>
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/sweetalert2.min.css')}}"/>
-
-    <!-- Styles -->
-{{--    <link href="{{URL::asset('css/app.css')}}" rel="stylesheet">--}}
+    <link rel="stylesheet" href="{{URL::asset('sweetalert/dist/sweetalert.css')}}"/>
 
 <!-- Scripts -->
     <script>
@@ -102,8 +99,7 @@
 <script src="{{URL::asset('backend/assets/plugins/jquery-1.10.2.js')}}"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{{URL::asset('backend/assets/plugins/bootstrap/bootstrap.min.js')}}"></script>
-
-<script src="{{URL::asset('js/sweet-alert/sweetalert2.js')}}"></script>
+<script src="{{URL::asset('sweetalert/dist/sweetalert.min.js')}}"></script>
 
 <script>
     $.ajaxSetup({
@@ -124,6 +120,7 @@
     $('.dropdown').click(function () {
         $('.dropdown-menu').toggle();
     });
+
 </script>
 
 </body>

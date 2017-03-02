@@ -58,6 +58,7 @@ class StudentController extends Controller
 
         $skills = $user->user_skills()->get();
 
+        // lấy lượt thi gần đây nhất của học sinh.
         $all_code_test = [];
         $max_code = 1;
         foreach ($skills as $key => $skill) {
@@ -74,86 +75,92 @@ class StudentController extends Controller
             return $skill->user_id == $user_id && $skill->test_id == $test_id;
         });
 
-        // lấy điểm của từng kỹ năng. so sánh, kỹ năng nào có điểm thấp hơn thì cho nhiều bài tập hơn.
-        // nếu chưa có phần thi nào => số bài của 2 kĩ năng = nhau.
+        $status_testing = $filter_skills->pluck('status')->toArray()[0];
 
-        $skill_json = [];
-        foreach ($filter_skills as $diff) {
-            $de_json = json_decode($diff->skill_json);
+        if($status_testing == 0) { // status = 0: chưa hoàn thiện bài trước đó, join bảng item lấy phần dữ liệu đang làm dở.
 
-            $code_skill = Skill::select('code')->whereId($de_json->role_id)->first();
-            $skill_json[$code_skill->code] = $de_json->point;
-        }
+        } else { // status =1: đã hoàn thiện bài làm trước đó. lấy dữ liệu so sánh và đưa bài test mới cho hs.
 
-        if($skill_json['Read'] > $skill_json['Listen']) {
-            $type_exam_read = $this->skill_read;
-            $random_type_read = array_rand($type_exam_read, 1);
-            $check_read = 'read';
+            // lấy điểm của từng kỹ năng. so sánh, kỹ năng nào có điểm thấp hơn thì cho nhiều bài tập hơn.
+            // nếu chưa có phần thi nào => số bài của 2 kĩ năng = nhau.
 
-            $type_exam_listen = $this->skill_listen;
-            $random_type_listen = array_rand($type_exam_listen, 3);
+            $skill_json = [];
+            foreach ($filter_skills as $diff) {
+                $de_json = json_decode($diff->skill_json);
 
-        } else if($skill_json['Listen'] > $skill_json['Read']) {
-            $type_exam_read = $this->skill_read;
-            $random_type_read = array_rand($type_exam_read, 3);
+                $code_skill = Skill::select('code')->whereId($de_json->role_id)->first();
+                $skill_json[$code_skill->code] = $de_json->point;
+            }
 
-            $type_exam_listen = $this->skill_listen;
-            $random_type_listen = array_rand($type_exam_listen, 1);
-            $check_listen = 'listen';
+            if($skill_json['Read'] > $skill_json['Listen']) {
+                $type_exam_read = $this->skill_read;
+                $random_type_read = array_rand($type_exam_read, 1);
+                $check_read = 'read';
 
-        } else {
-            $type_exam_read = $this->skill_read;
-            $random_type_read = array_rand($type_exam_read, 2);
+                $type_exam_listen = $this->skill_listen;
+                $random_type_listen = array_rand($type_exam_listen, 3);
 
-            $type_exam_listen = $this->skill_listen;
-            $random_type_listen = array_rand($type_exam_listen, 2);
-        }
+            } else if($skill_json['Listen'] > $skill_json['Read']) {
+                $type_exam_read = $this->skill_read;
+                $random_type_read = array_rand($type_exam_read, 3);
 
-        $items = [];
-        $items['listen'][] = '';
-        $items['read'][] = '';
+                $type_exam_listen = $this->skill_listen;
+                $random_type_listen = array_rand($type_exam_listen, 1);
+                $check_listen = 'listen';
 
-        if (!isset($check_listen)) {
-            // listen chỉ có 1 dạng bài.
+            } else {
+                $type_exam_read = $this->skill_read;
+                $random_type_read = array_rand($type_exam_read, 2);
 
-        } else {
+                $type_exam_listen = $this->skill_listen;
+                $random_type_listen = array_rand($type_exam_listen, 2);
+            }
 
-        }
+            $items = [];
+            $items['listen'][] = '';
+            $items['read'][] = '';
+
+            if (!isset($check_listen)) {
+                // listen chỉ có 1 dạng bài.
+
+            } else {
+
+            }
 
 //        $ans = TickCircleTrueFalse::where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
 //            ->get()->toArray();
 //        dd($ans);
-//var_dump($random_type_read);
-        if (!isset($check_read)) {
-            foreach ($random_type_read as $read) {
-                $read_table = DB::table($read)
-                    ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
-                    ->get()->toArray();
+            var_dump($random_type_read);
+            if (!isset($check_read)) {
+                foreach ($random_type_read as $read) {
+                    $read_table = DB::table($read)
+                        ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                        ->get()->toArray();
 //var_dump(count($read_table));
-                if(count($read_table) != 0) {
-                    $max = count($read_table) - 1;
-                    $rand = rand(0, $max);
+                    if(count($read_table) != 0) {
+                        $max = count($read_table) - 1;
+                        $rand = rand(0, $max);
 
 //                    foreach ($read_table[$rand] as $record) {
 //                        dd($record['content_json']);
 //                        $record->content_json = json_decode();
 //                    }
 //dd($read_table[$rand]);
-                    $read_table[$rand]->table = $read;
+                        $read_table[$rand]->table = $read;
 //                    $items['read']['tables'][] = $read;
-                    $items['read'][] = $read_table[$rand];
+                        $items['read'][] = $read_table[$rand];
 
+                    }
                 }
-            }
-        } else {
-            // read chỉ có 1 dạng bài.
-            $read_table = DB::table($random_type_read)
-                ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
-                ->get()->toArray();
+            } else {
+                // read chỉ có 1 dạng bài.
+                $read_table = DB::table($random_type_read)
+                    ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                    ->get()->toArray();
 
-            if(count($read_table) != 0) {
-                $max = count($read_table) - 1;
-                $rand = rand(0, $max);
+                if(count($read_table) != 0) {
+                    $max = count($read_table) - 1;
+                    $rand = rand(0, $max);
 
 //                foreach ($read_table[$rand] as $record) {
 //                    dd($record['content_json']);
@@ -161,12 +168,11 @@ class StudentController extends Controller
 //                }
 //                dd($read_table[$rand]);
 
-                $items['read']['tables'][] = $random_type_read;
-                $items['read'][] = $read_table[$rand];
+                    $items['read']['tables'][] = $random_type_read;
+                    $items['read'][] = $read_table[$rand];
+                }
             }
         }
-
-//        dd($items);
 
         // class, level, user_id_auth, => join user_skill.
 

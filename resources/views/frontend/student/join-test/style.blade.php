@@ -69,4 +69,16 @@
         margin-bottom: 20px;
     }
 
+    #click,
+    #demnguoc {
+        width: 10%;
+        border: 1px solid;
+        border-radius: 5px;
+        padding: 7px 13px;
+    }
+
+    #demnguoc>i {
+        margin-right: 5px;
+    }
+
 </style>

@@ -1,52 +1,80 @@
+{{--<script src="dist/sweetalert.min.js"></script>--}}
 <script>
-    // Set the date we're counting down to
-    var countDownDate = new Date("Jan 5, 2018 15:37:25").getTime();
-
-    // Update the count down every 1 second
-    var x = setInterval(function() {
-
-        // Get todays date and time
-        var now = new Date().getTime();
-
-        // Find the distance between now an the count down date
-        var distance = countDownDate - now;
-
-        // Time calculations for days, hours, minutes and seconds
-        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result in the element with id="demo"
-        document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-                + minutes + "m " + seconds + "s ";
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-            clearInterval(x);
-            document.getElementById("demo").innerHTML = "EXPIRED";
-        }
-    }, 1000);
-
-
     //thoi gian bắt đầu đếm lùi
-    var thoigian = 100000;
+    var thoigian = 3600;
     //đơn vị đếm là giây hoặc phút
-    var donvi = "giây";
+    var donvi = "";
     //khoach cách giữa 2 lần giảm, đơn vị là ms
     var khoangcach = 1000; // =1s
     if (donvi == "phút") khoangcach = 60000; //=1 phút
     //cố định giá trị thời gian bằng biến bandau
     var bandau = thoigian;
-    //đưa thời gian bắt đầu đếm vào button
-    document.getElementById("dem").innerHTML = " "+thoigian.toString();
-    //tạo sự kiện mở tab mới
-    document.getElementById("click").addEventListener("click", opennewtab, false);
-    //ẩn nút click
-    document.getElementById("demnguoc").style.display = 'none';
-    //đưa đơn vị là giây hoặc phút vào button
-    document.getElementById("donvi").innerHTML = donvi;
-    function demlui() {
+
+    function auto_finish() {
+        url = '{{ route('frontend.student.testing.handle') }}';
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {
+                absent_request_id: id,
+            },
+            success: function (data) {
+
+                // hay trả về data mảng dạng {code, message, data};
+                if (data.code == 200) {  // mặc định 200 là thành công
+
+                    $('.class-loader-css1').css('display', 'none');
+                    $(".row button").prop('disabled', false);
+
+                    $('.checked_absent_request_' + id).html('<i class="fa fa-check-square-o" aria-hidden="true"></i>');
+
+                    count_done = count_done -1;
+
+                    if(count_done == 0) {
+                        $('#'+ key_absent_request).css({"color": "white", "font-size": "16px"});
+                    }
+
+                    $('#'+ key_absent_request).attr('count_done', count_done);
+
+                    if (typeof window["reload_sidebar_teacher"] === "function")
+                        window["reload_sidebar_teacher"]();
+
+                    // Alert message success
+                    swal(data.message, '', 'success');
+                }
+
+                if (data.code == 404 || data.code == 32) {
+                    $('.class-loader-css1').css('display', 'none');
+                    $(".row button").prop('disabled', false);
+
+                    swal('', data.message, 'error').catch(swal.noop);
+                }
+
+            },
+            error: function () {
+                $('.class-loader-css1').css('display', 'none');
+                $(".row button").prop('disabled', false);
+
+                swal('', 'Không thực hiện được hành động này!', 'error').catch(swal.noop);
+            }
+        });
+    }
+    function format_time(seconds) {
+
+        if(seconds < 10) {
+            seconds = "0" + seconds;
+        }
+
+        return seconds;
+    }
+
+    function demlui(thoigian) {
+
+        //đưa thời gian bắt đầu đếm vào button
+        var minutes_st = Math.floor((thoigian / (60)));
+        var seconds_st = Math.floor((thoigian % 60));
+        document.getElementById("dem").innerHTML =  " " + minutes_st.toString() + ":" + format_time(seconds_st.toString());
+
         //khi nào bắt đầu đếm thì ẩn nút click và hiện thời gian
         document.getElementById("click").style.display = 'none';
         document.getElementById("demnguoc").style.display = 'block';
@@ -57,28 +85,44 @@
                 //nếu đếm xong thì hiện nút click và ẩn thời gian
                 document.getElementById("demnguoc").style.display = 'none';
                 document.getElementById("click").style.display = 'block';
+
+
+
                 //reset timer
                 clearInterval(timer);
+                var minutes = Math.floor((bandau / (60)));
+                var seconds = Math.floor((bandau % 60));
                 //đặt lại time để chạy ltowisclick tới
-                document.getElementById("dem").innerHTML = " "+bandau.toString();
+                document.getElementById("dem").innerHTML =  " " + minutes.toString() + ":" + format_time(seconds.toString());
                 thoigian = bandau;
             } else {
+                var minutes = Math.floor((thoigian / (60)));
+                var seconds = Math.floor((thoigian % 60));
                 //nếu chưa đếm xong thì đưa thoigian=thoigian-1 vào button
-                document.getElementById("dem").innerHTML = " "+thoigian.toString();
+                document.getElementById("dem").innerHTML = " " + minutes.toString() + ":" + format_time(seconds.toString());
             }
         }, khoangcach);
     };
-    //khi click thì mới chạy hàm demlui
-    document.getElementById("click").onclick = demlui;
-    //hàm mở tab mới
-    function opennewtab(){
-        return false;
-//        var a = document.createElement("a");
-//        a.href = "//sinhvienit.net/forum/u/717343";
-//        var evt = document.createEvent("MouseEvents");
-//        evt.initMouseEvent("click", true, true, window, 0, 0, 0, 0, 0,
-//                true, false, false, false, 0, null);
-//        a.dispatchEvent(evt);
-    }
+
+    swal({
+        title: "Are you sure?",
+        text: "Bạn muốn tiếp tục hay làm lại bài thi?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Restart",
+        cancelButtonText: "Continue",
+        closeOnConfirm: true,
+        closeOnCancel: true
+    },
+    function(isConfirm){
+        if (isConfirm) { // true: restart
+            demlui(thoigian);
+
+//            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+        } else { // false: continue testing
+            swal("Cancelled", "Your imaginary file is safe :)", "error");
+        }
+    });
 
 </script>

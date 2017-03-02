@@ -17,12 +17,11 @@
         {{ Form::open(['route' => 'frontend.student.testing.handle', 'method' => 'post']) }}
         <p id="demo"></p>
 
-        <button id='demnguoc'>Còn<span id='dem'></span> <span id='donvi'></span></button>
-        <button id='click'>Click để đếm</button>
+        <div id='demnguoc'><i class="fa fa-clock-o" aria-hidden="true"></i><span id='dem'></span> <span id='donvi'></span></div>
 
         <?php $i_skill = 1;
         $j_title = 1;
-        $k_question = 1;
+
         ?>
         @foreach($items as $key => $item)
             <h4>{{$i_skill}}. {{$key}}</h4>
@@ -32,7 +31,9 @@
                     <div class="col-lg-12 space-exam">
                         <p>{{$j_title}}. {{$detail->title}}</p>
                         <article>{{$detail->content}}</article>
-                        <?php $list_question = json_decode($detail->content_json); ?>
+                        <?php $list_question = json_decode($detail->content_json);
+                              $k_question = 1;
+                        ?>
                         @foreach($list_question as $question)
                             <?php
                             switch ($detail->table) {
@@ -55,7 +56,7 @@
                                 break;
                             case "tick_circle_true_falses": ?>
                                 @include('frontend.student.join-test.temp_tick_circle_true_false',
-                                ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question,
+                                ['key' => $key, 'table' => $detail->table, 'k_question' => $k_question,
                                 'question_content' =>$question->content])
                             <?php break;
                             case "underlines":
