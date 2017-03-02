@@ -32,6 +32,7 @@
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
                 '1' +
+                '<input type="hidden" name="answer_question['+ j +'][content-choose-ans-question][1][id]" value="1">' +
                 '</div>' +
 
                 '<div class="form-group" style="width:98%; float:left;">'+
@@ -73,6 +74,8 @@
          $("#wrap-content-exam-" + item ).append('<div class="form-group" style="width:100%; float:left;">' +
                  '<div class="span-numb-question" id="id-numb-question-'+ item_this +'">' +
                  item_this +
+                 '<input type="hidden" value="'+ item_this +'"' +
+                 'name="answer_question['+ item +'][content-choose-ans-question]['+ item_this +'][id]">' +
                  '</div>' +
 
                  '<div class="form-group" style="width:98%; float:left;">'+

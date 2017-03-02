@@ -107,6 +107,7 @@
                         <div class="form-group" style="width:100%; float:left;">
                             <div class="span-numb-question" id="id-numb-question-1">
                                 1
+                                <input type="hidden" name="answer_question[1][content-choose-ans-question][1][id]" value="1">
                             </div>
                             <div class="form-group" style="width:98%; float:left;">
                                 <div class="span-text-question">

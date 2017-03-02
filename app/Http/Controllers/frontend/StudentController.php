@@ -88,8 +88,10 @@ class StudentController extends Controller
             foreach ($filter_skills as $diff) {
                 $de_json = json_decode($diff->skill_json);
 
-                $code_skill = Skill::select('code')->whereId($de_json->role_id)->first();
-                $skill_json[$code_skill->code] = $de_json->point;
+                foreach ($de_json as $de) {
+                    $code_skill = Skill::select('code')->whereId($de->skill_id)->first();
+                    $skill_json[$code_skill->code] = $de->point;
+                }
             }
 
             if($skill_json['Read'] > $skill_json['Listen']) {
@@ -173,11 +175,12 @@ class StudentController extends Controller
                 }
             }
         }
-
+//dd($items);
         // class, level, user_id_auth, => join user_skill.
 
         return view('frontend.student.join-test.index',
-            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read'));
+            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read',
+                'status_testing'));
     }
 
     public function hanglingResult(Request $request) {

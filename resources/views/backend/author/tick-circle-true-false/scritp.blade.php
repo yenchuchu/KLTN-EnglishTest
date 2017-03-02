@@ -31,7 +31,8 @@
                 '</div>' +
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
-                '1' +
+                '1 ' +
+                '<input type="hidden" name="tick_true_false[' + j + '][content-choose-ans-question][1][id]" value="1">' +
                 '</div>' +
 
                 '<div class="span-text-question">' +
@@ -78,6 +79,8 @@
         $("#wrap-content-exam-" + item).append('<div class="form-group" style="width:100%; float:left;">' +
                 '<div class="span-numb-question" id="id-numb-question-' + item_this + '">' +
                 item_this +
+                '<input type="hidden" value="' + item_this + '"' +
+                'name="tick_true_false[' + item + '][content-choose-ans-question][' + item_this + '][id]">' +
                 '</div>' +
                 '<div class="span-text-question">' +
                 '<textarea type="text" class="form-control" ' +

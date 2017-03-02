@@ -1,5 +1,7 @@
 {{--<script src="dist/sweetalert.min.js"></script>--}}
 <script>
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
     //thoi gian bắt đầu đếm lùi
     var thoigian = 3600;
     //đơn vị đếm là giây hoặc phút
@@ -10,55 +12,33 @@
     //cố định giá trị thời gian bằng biến bandau
     var bandau = thoigian;
 
-    function auto_finish() {
+    // tự động cập nhật kết quả lên serve 15s 1 lần
+    function auto_sent_answer(list_answer) {
         url = '{{ route('frontend.student.testing.handle') }}';
         $.ajax({
             url: url,
             type: "post",
             data: {
-                absent_request_id: id,
+                list_answer: list_answer,
+                _token: CSRF_TOKEN
             },
             success: function (data) {
 
                 // hay trả về data mảng dạng {code, message, data};
                 if (data.code == 200) {  // mặc định 200 là thành công
-
-                    $('.class-loader-css1').css('display', 'none');
-                    $(".row button").prop('disabled', false);
-
-                    $('.checked_absent_request_' + id).html('<i class="fa fa-check-square-o" aria-hidden="true"></i>');
-
-                    count_done = count_done -1;
-
-                    if(count_done == 0) {
-                        $('#'+ key_absent_request).css({"color": "white", "font-size": "16px"});
-                    }
-
-                    $('#'+ key_absent_request).attr('count_done', count_done);
-
-                    if (typeof window["reload_sidebar_teacher"] === "function")
-                        window["reload_sidebar_teacher"]();
-
-                    // Alert message success
                     swal(data.message, '', 'success');
                 }
-
                 if (data.code == 404 || data.code == 32) {
-                    $('.class-loader-css1').css('display', 'none');
-                    $(".row button").prop('disabled', false);
-
                     swal('', data.message, 'error').catch(swal.noop);
                 }
-
             },
             error: function () {
-                $('.class-loader-css1').css('display', 'none');
-                $(".row button").prop('disabled', false);
-
-                swal('', 'Không thực hiện được hành động này!', 'error').catch(swal.noop);
+                swal('', 'Không thực hiện được hành động này!', 'error');
             }
         });
     }
+
+    // nếu giây có 1 chữ số => thêm số 0 vào trước.
     function format_time(seconds) {
 
         if(seconds < 10) {
@@ -68,6 +48,7 @@
         return seconds;
     }
 
+    // đếm ngược thời gian cho tới 00:00
     function demlui(thoigian) {
 
         //đưa thời gian bắt đầu đếm vào button
@@ -76,18 +57,10 @@
         document.getElementById("dem").innerHTML =  " " + minutes_st.toString() + ":" + format_time(seconds_st.toString());
 
         //khi nào bắt đầu đếm thì ẩn nút click và hiện thời gian
-        document.getElementById("click").style.display = 'none';
-        document.getElementById("demnguoc").style.display = 'block';
         //sau một khoảng thời gian là khoangcach thì thời gian trừ đi 1
         var timer = setInterval(function () {
             thoigian--;
             if (thoigian < 0) {
-                //nếu đếm xong thì hiện nút click và ẩn thời gian
-                document.getElementById("demnguoc").style.display = 'none';
-                document.getElementById("click").style.display = 'block';
-
-
-
                 //reset timer
                 clearInterval(timer);
                 var minutes = Math.floor((bandau / (60)));
@@ -104,25 +77,52 @@
         }, khoangcach);
     };
 
-    swal({
-        title: "Are you sure?",
-        text: "Bạn muốn tiếp tục hay làm lại bài thi?",
-        type: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#DD6B55",
-        confirmButtonText: "Restart",
-        cancelButtonText: "Continue",
-        closeOnConfirm: true,
-        closeOnCancel: true
-    },
-    function(isConfirm){
-        if (isConfirm) { // true: restart
-            demlui(thoigian);
+    // lọc những phần tử giống nhau trong 1 mảng
+    function unique(list) {
+        var result = [];
+        $.each(list, function(i, e) {
+            if ($.inArray(e, result) == -1) result.push(e);
+        });
+        return result;
+    }
 
-//            swal("Deleted!", "Your imaginary file has been deleted.", "success");
-        } else { // false: continue testing
-            swal("Cancelled", "Your imaginary file is safe :)", "error");
-        }
+    // lọc những object giống nhau trong 1 mảng
+    function dedupe(arr) {
+        return arr.reduce(function (p, c) {
+            var key = [c.name_table, c.id_record, c.id_question, c.answer_student].join('|');
+            if (p.temp.indexOf(key) === -1) {
+                p.out.push(c);
+                p.temp.push(key);
+            }
+            return p;
+        }, { temp: [], out: [] }).out;
+    }
+
+    $('#btn-submit-test').click(function () {
+        list_answer = [];
+        unique_list_answer = [];
+
+        $("[id^='your_answer_']").each(function () {
+            name_table = $(this).attr('name_table');
+            id_record = $(this).attr('id_record');
+            id_question = $(this).attr('id_question');
+
+            if(name_table == 'tick_circle_true_falses') {
+                answer_student = $('input[name="your_answer_['+name_table+']['+id_record+']['+id_question+'][]"]:checked').val();
+            } else {
+                answer_student = $(this).val();
+            }
+
+            list_answer.push({
+                'name_table': name_table,
+                'id_record': id_record,
+                'id_question': id_question,
+                'answer_student': answer_student
+            });
+
+            unique_list_answer = dedupe(list_answer);
+        });
+        auto_sent_answer(unique_list_answer);
     });
 
 </script>
