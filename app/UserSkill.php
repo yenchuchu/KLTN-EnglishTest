@@ -18,7 +18,7 @@ class UserSkill extends Model
      * @var array
      */
     protected $fillable = [
-        'user_id', 'skill_json', 'test_id'
+        'user_id', 'skill_json', 'test_id', 'level_id'
     ];
 
     public function answer_questions()

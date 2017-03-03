@@ -27,8 +27,8 @@
           type="text/css">
 
     <!-- sweet alert -->
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/loader.css')}}"/>
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/page_loaders.css')}}"/>
+    {{--<link rel="stylesheet" href="{{URL::asset('css/sweet-alert/loader.css')}}"/>--}}
+    {{--<link rel="stylesheet" href="{{URL::asset('css/sweet-alert/page_loaders.css')}}"/>--}}
     <link rel="stylesheet" href="{{URL::asset('sweetalert/dist/sweetalert.css')}}"/>
 
 <!-- Scripts -->

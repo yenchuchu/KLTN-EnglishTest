@@ -2,22 +2,19 @@
 
 namespace App\Http\Controllers\frontend;
 
-use App\AnswerQuestion;
-use App\Classes;
-use App\Skill;
-use App\TickCircleTrueFalse;
-use App\User;
-use App\Level;
-use App\UserSkill;
-
-use Auth;
-use Route;
-use Config;
-use DB;
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Item;
+use App\Level;
+use App\Skill;
+use App\User;
+use App\UserSkill;
+use Auth;
+use Carbon\Carbon;
+use Config;
+use DB;
 use Illuminate\Http\Request;
+use Route;
 
 class StudentController extends Controller
 {
@@ -41,7 +38,8 @@ class StudentController extends Controller
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
-    public function redirectToTest() {
+    public function redirectToTest()
+    {
         $this->url_parameters = Route::getCurrentRoute()->parameters();
         $level_id = $this->url_parameters['level_id'];
         $user = Auth::user();
@@ -49,7 +47,7 @@ class StudentController extends Controller
 
         $level_chosen = Level::whereId($level_id)->first();
 
-        if(!isset($level)) {
+        if (!isset($level)) {
             // noti message
         }
 
@@ -58,28 +56,18 @@ class StudentController extends Controller
 
         $skills = $user->user_skills()->get();
 
-        // lấy lượt thi gần đây nhất của học sinh.
-        $all_code_test = [];
-        $max_code = 1;
-        foreach ($skills as $key => $skill) {
-            $test_id = $skill->test_id;
-            $max_test_id = explode('_', $test_id);
-            $all_code_test[] = $max_test_id[1];
-            $max_code = max($all_code_test);
-        }
+        // kiểm tra lượt thi đã tồn tại hay chưa ( được lưu ở bảng Items).
+        $check_exist_item = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
+        if (count($check_exist_item) == 0) {
 
-        // Lấy kết quả lần thi gần đây nhất.
-        $filter_skills =  $skills->filter(function ($skill) use ($user_id, $max_code) {
-            $test_id = $user_id.'_'.$max_code;
+            $max_code = $this->getMaxCodeTest($skills);
 
-            return $skill->user_id == $user_id && $skill->test_id == $test_id;
-        });
+            // Lấy kết quả lần thi gần đây nhất.
+            $filter_skills = $skills->filter(function ($skill) use ($user_id, $max_code) {
+                $test_id = $user_id . '_' . $max_code;
 
-        $status_testing = $filter_skills->pluck('status')->toArray()[0];
-
-        if($status_testing == 0) { // status = 0: chưa hoàn thiện bài trước đó, join bảng item lấy phần dữ liệu đang làm dở.
-
-        } else { // status =1: đã hoàn thiện bài làm trước đó. lấy dữ liệu so sánh và đưa bài test mới cho hs.
+                return $skill->user_id == $user_id && $skill->test_id == $test_id;
+            });
 
             // lấy điểm của từng kỹ năng. so sánh, kỹ năng nào có điểm thấp hơn thì cho nhiều bài tập hơn.
             // nếu chưa có phần thi nào => số bài của 2 kĩ năng = nhau.
@@ -94,7 +82,7 @@ class StudentController extends Controller
                 }
             }
 
-            if($skill_json['Read'] > $skill_json['Listen']) {
+            if ($skill_json['Read'] > $skill_json['Listen']) {
                 $type_exam_read = $this->skill_read;
                 $random_type_read = array_rand($type_exam_read, 1);
                 $check_read = 'read';
@@ -102,20 +90,22 @@ class StudentController extends Controller
                 $type_exam_listen = $this->skill_listen;
                 $random_type_listen = array_rand($type_exam_listen, 3);
 
-            } else if($skill_json['Listen'] > $skill_json['Read']) {
-                $type_exam_read = $this->skill_read;
-                $random_type_read = array_rand($type_exam_read, 3);
-
-                $type_exam_listen = $this->skill_listen;
-                $random_type_listen = array_rand($type_exam_listen, 1);
-                $check_listen = 'listen';
-
             } else {
-                $type_exam_read = $this->skill_read;
-                $random_type_read = array_rand($type_exam_read, 2);
+                if ($skill_json['Listen'] > $skill_json['Read']) {
+                    $type_exam_read = $this->skill_read;
+                    $random_type_read = array_rand($type_exam_read, 3);
 
-                $type_exam_listen = $this->skill_listen;
-                $random_type_listen = array_rand($type_exam_listen, 2);
+                    $type_exam_listen = $this->skill_listen;
+                    $random_type_listen = array_rand($type_exam_listen, 1);
+                    $check_listen = 'listen';
+
+                } else {
+                    $type_exam_read = $this->skill_read;
+                    $random_type_read = array_rand($type_exam_read, 2);
+
+                    $type_exam_listen = $this->skill_listen;
+                    $random_type_listen = array_rand($type_exam_listen, 2);
+                }
             }
 
             $items = [];
@@ -129,27 +119,18 @@ class StudentController extends Controller
 
             }
 
-//        $ans = TickCircleTrueFalse::where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
-//            ->get()->toArray();
-//        dd($ans);
             var_dump($random_type_read);
             if (!isset($check_read)) {
                 foreach ($random_type_read as $read) {
                     $read_table = DB::table($read)
-                        ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                        ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
                         ->get()->toArray();
-//var_dump(count($read_table));
-                    if(count($read_table) != 0) {
+
+                    if (count($read_table) != 0) {
                         $max = count($read_table) - 1;
                         $rand = rand(0, $max);
 
-//                    foreach ($read_table[$rand] as $record) {
-//                        dd($record['content_json']);
-//                        $record->content_json = json_decode();
-//                    }
-//dd($read_table[$rand]);
                         $read_table[$rand]->table = $read;
-//                    $items['read']['tables'][] = $read;
                         $items['read'][] = $read_table[$rand];
 
                     }
@@ -157,38 +138,159 @@ class StudentController extends Controller
             } else {
                 // read chỉ có 1 dạng bài.
                 $read_table = DB::table($random_type_read)
-                    ->where(['class_id' => $class_id, 'type_user' =>  $this->code_student, 'level_id' => $level_id])
+                    ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
                     ->get()->toArray();
 
-                if(count($read_table) != 0) {
+                if (count($read_table) != 0) {
                     $max = count($read_table) - 1;
                     $rand = rand(0, $max);
-
-//                foreach ($read_table[$rand] as $record) {
-//                    dd($record['content_json']);
-//                        $record->content_json = json_decode();
-//                }
-//                dd($read_table[$rand]);
 
                     $items['read']['tables'][] = $random_type_read;
                     $items['read'][] = $read_table[$rand];
                 }
             }
+
+            $noti_not_complete = 0;
+        } elseif (count($check_exist_item) == 1) {
+            $noti_not_complete = 1;
+
+//            $json_answer = json_decode($check_exist_item->update_json_answer);
+//            $time = $check_exist_item->time;
         }
+//        }
+
+
 //dd($items);
         // class, level, user_id_auth, => join user_skill.
 
         return view('frontend.student.join-test.index',
-            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read',
-                'status_testing'));
+            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read', 'noti_not_complete'));
     }
 
-    public function hanglingResult(Request $request) {
+    public function hanglingResult(Request $request)
+    {
         $requets_all = $request->all();
-        dd($requets_all);
+
+        $array_tables = collect($requets_all['list_answer'])->pluck('name_table');
+        $table_all = array_unique($array_tables->toArray());
+
+        foreach ($requets_all['list_answer'] as $ans) {
+
+            if($ans['skill_name'] == 'read') {
+                foreach ($table_all as $table) {
+                    if ($ans['name_table'] == $table) {
+
+                        if(!isset($ans['answer_student'])) {
+                            $ans['answer_student'] = '';
+                        }
+
+                        $data = [
+                            'order' => $ans['number_title'], // số thứ tự của bài đang test. ( bài 1 bài 2)
+                          'id_record' => $ans['id_record'],
+                          'id_question' => $ans['id_question'],
+                          'answer_student' => $ans['answer_student']
+                        ];
+                        $json_answer['read'][$table][] = $data;
+                    }
+                }
+            } else if($ans['skill_name'] == 'listen') {
+                foreach ($table_all as $table) {
+                    if ($ans['name_table'] == $table) {
+
+                        if(!isset($ans['answer_student'])) {
+                            $ans['answer_student'] = '';
+                        }
+
+                        $data = [
+                            'order' => $ans['number_title'], // số thứ tự của bài đang test. ( bài 1 bài 2)
+                            'id_record' => $ans['id_record'],
+                            'id_question' => $ans['id_question'],
+                            'answer_student' => $ans['answer_student']
+                        ];
+                        $json_answer['listen'][$table][] = $data;
+                    }
+                }
+            }
+
+        }
+
+        $json_answer_encode = json_encode($json_answer);
+        $user_id = Auth::user()->id;
+        $level_id = $requets_all['level_id'];
+//        $time = $requets_all['time'];
+        $time = 2700;
+        if ($time == 3600) {
+            $done = 1;
+            // gọi hàm đối chiếu đáp án & tính điểm
+//            checkAnswer();
+        } else {
+            if ($time < 3600) {
+                $done = 0;
+            }
+        }
+
+        $check_item_exist = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
+        if ($done == 0) {
+            if (count($check_item_exist) == 0) {
+                $items = new Item();
+
+                $items->level_id = $level_id;
+                $items->user_id = $user_id;
+                $items->time = Carbon::now();
+                $items->update_json_answer = $json_answer_encode;
+
+                $items->save();
+            } else {
+                $check_item_exist->time = Carbon::now();
+                $check_item_exist->update_json_answer = $json_answer_encode;
+
+                $check_item_exist->save();
+            }
+        } else {
+            $add_user_skill = new UserSkill();
+
+            $user = User::find($user_id);
+
+            // lấy số lần đã thi của user
+            $skills = $user->user_skills()->get();
+            $max_code = $this->getMaxCodeTest($skills) + 1;
+            $test_id = $user_id."_".$max_code;
+
+            $add_user_skill->user_id = $user_id;
+            $add_user_skill->level_id = $level_id;
+            $add_user_skill->status = 1;
+            $add_user_skill->test_id = $test_id;
+
+            $add_user_skill->skill_json = 'lấy kết quả skill_id, point từ hàm đối chiếu kquar khi done =1';
+
+            $check_item_exist->delete();
+        }
+
     }
 
-    public function ShowTest() {
+    // lấy lượt thi gần đây nhất của học sinh.
+    public function getMaxCodeTest($skills) {
+        $all_code_test = [];
+        $max_code = 1;
+        foreach ($skills as $key => $skill) {
+            $test_id = $skill->test_id;
+            $max_test_id = explode('_', $test_id);
+            $all_code_test[] = $max_test_id[1];
+            $max_code = max($all_code_test);
+        }
+
+        return $max_code;
+    }
+
+    // tạo code ( test_id) cho lượt thi của học sinh
+    public function create_code_test_id($max_code, $user_id) {
+        $code = $user_id."_".$max_code;
+
+        return $code;
+    }
+
+    public function ShowTest()
+    {
 
     }
 

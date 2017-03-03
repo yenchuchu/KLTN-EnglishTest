@@ -13,13 +13,14 @@
     var bandau = thoigian;
 
     // tự động cập nhật kết quả lên serve 15s 1 lần
-    function auto_sent_answer(list_answer) {
+    function auto_sent_answer(list_answer, level_id) {
         url = '{{ route('frontend.student.testing.handle') }}';
         $.ajax({
             url: url,
             type: "post",
             data: {
                 list_answer: list_answer,
+                level_id: level_id,
                 _token: CSRF_TOKEN
             },
             success: function (data) {
@@ -61,13 +62,16 @@
         var timer = setInterval(function () {
             thoigian--;
             if (thoigian < 0) {
-                //reset timer
-                clearInterval(timer);
-                var minutes = Math.floor((bandau / (60)));
-                var seconds = Math.floor((bandau % 60));
-                //đặt lại time để chạy ltowisclick tới
-                document.getElementById("dem").innerHTML =  " " + minutes.toString() + ":" + format_time(seconds.toString());
-                thoigian = bandau;
+
+                get_answer_consecutive();
+
+//                //reset timer
+//                clearInterval(timer);
+//                var minutes = Math.floor((bandau / (60)));
+//                var seconds = Math.floor((bandau % 60));
+//                //đặt lại time để chạy ltowisclick tới
+//                document.getElementById("dem").innerHTML =  " " + minutes.toString() + ":" + format_time(seconds.toString());
+//                thoigian = bandau;
             } else {
                 var minutes = Math.floor((thoigian / (60)));
                 var seconds = Math.floor((thoigian % 60));
@@ -98,14 +102,19 @@
         }, { temp: [], out: [] }).out;
     }
 
-    $('#btn-submit-test').click(function () {
+    function get_answer_consecutive() {
         list_answer = [];
+        list_answer_details = [];
         unique_list_answer = [];
+
+        level_id = $('#level-tesing-hidden').val();
 
         $("[id^='your_answer_']").each(function () {
             name_table = $(this).attr('name_table');
             id_record = $(this).attr('id_record');
             id_question = $(this).attr('id_question');
+            number_title = $(this).attr('number_title');
+            skill_name = $(this).attr('skill_name');
 
             if(name_table == 'tick_circle_true_falses') {
                 answer_student = $('input[name="your_answer_['+name_table+']['+id_record+']['+id_question+'][]"]:checked').val();
@@ -117,12 +126,22 @@
                 'name_table': name_table,
                 'id_record': id_record,
                 'id_question': id_question,
-                'answer_student': answer_student
+                'answer_student': answer_student,
+                'number_title': number_title,
+                'skill_name': skill_name
             });
 
             unique_list_answer = dedupe(list_answer);
         });
-        auto_sent_answer(unique_list_answer);
+
+        auto_sent_answer(unique_list_answer, level_id);
+    }
+
+    // cứ 15s gửi đáp án lên serve 1 lần
+//    setInterval(function(){ get_answer_consecutive(); }, 1500);
+
+    $('#btn-submit-test').click(function () {
+        get_answer_consecutive();
     });
 
 </script>

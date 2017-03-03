@@ -9,19 +9,23 @@
 @stop
 
 @section('content')
-    <div class="row wrap-test-class" id="title-level-testing">
-        <h3>Testing {{$level_chosen->title}}</h3>
-    </div>
-    <div class="row wrap-test-class" id="testing-id">
+    <div class="refresh" onload="test()">
+        <div class="row wrap-test-class" id="title-level-testing">
+            <h3>Testing {{$level_chosen->title}}</h3>
+            <input type="hidden" id="level-tesing-hidden" value="{{$level_chosen->id}}">
+        </div>
+        <div class="row wrap-test-class" id="testing-id">
 
-        @include('frontend.student.join-test.index_start')
+            @include('frontend.student.join-test.index_start')
+        </div>
     </div>
 @stop
 
 @section('script')
     @include('frontend.student.join-test.script')
 
-    @if($status_testing == 0)
+    {{-- có bản ghi trong bảng Items -> chưa làm xong --}}
+    @if($noti_not_complete == 1)
         <script type="text/javascript">
             swal({
                         title: "Are you sure?",
