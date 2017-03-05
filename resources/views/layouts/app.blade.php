@@ -115,7 +115,35 @@
 
 @yield('script')
 
+
 <script>
+
+    var CSRF_TOKEN_MENU = $('meta[name="csrf-token"]').attr('content');
+
+    function redirect_to_test(level_id) {
+        {{--url = '{{ route('frontend.dashboard.student.redirect') }}';--}}
+        $.ajax({
+            url: url,
+            type: "get",
+            data: {
+                level_id: level_id,
+                _token: CSRF_TOKEN_MENU
+            },
+            success: function (data) {
+                if (typeof data.code != 'undefined') {
+                    $('#refresh-page-testing').html(data);
+                } else if (data.code == 404 || data.code == 32) {
+                    swal('', data.message, 'error').catch(swal.noop);
+                    return false;
+                }
+            },
+            error: function () {
+                swal('', 'Không thực hiện được hành động này!', 'error');
+            }
+        });
+    }
+
+
     $('.dropdown').click(function () {
         $('.dropdown-menu').toggle();
     });

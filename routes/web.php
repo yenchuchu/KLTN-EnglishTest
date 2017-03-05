@@ -188,6 +188,8 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::post('handling-result', 'frontend\StudentController@hanglingResult')
                 ->name('frontend.student.testing.handle');
+            Route::post('restart-delete-item', 'frontend\StudentController@restartDeleteItem')
+                ->name('frontend.student.testing.restart.delete.item');
 
         });
 

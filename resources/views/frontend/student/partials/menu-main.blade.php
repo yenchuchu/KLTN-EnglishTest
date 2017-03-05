@@ -6,7 +6,7 @@
             <ul class="dropdown-menu dropdown-messages">
                 @foreach($levels as $level)
                     <li>
-                        <a href="{{route('frontend.dashboard.student.redirect', $level->id)}}">{{$level->title}}</a>
+                        <a href="{{route('frontend.dashboard.student.redirect', $level->id)}}" id="href_level_{{$level->id}}">{{$level->title}}</a>
                     </li>
                 @endforeach
             </ul>
@@ -18,4 +18,3 @@
         <li><a href="#">FORUM</a></li>
     </ul>
 </nav>
-

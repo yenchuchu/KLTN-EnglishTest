@@ -9,24 +9,19 @@
 @stop
 
 @section('content')
-    <div class="refresh" onload="test()">
-        <div class="row wrap-test-class" id="title-level-testing">
-            <h3>Testing {{$level_chosen->title}}</h3>
-            <input type="hidden" id="level-tesing-hidden" value="{{$level_chosen->id}}">
-        </div>
-        <div class="row wrap-test-class" id="testing-id">
-
-            @include('frontend.student.join-test.index_start')
-        </div>
+    <div id="refresh-page-testing" >
+        @include('frontend.student.join-test.index_start')
     </div>
 @stop
 
 @section('script')
     @include('frontend.student.join-test.script')
 
+
     {{-- có bản ghi trong bảng Items -> chưa làm xong --}}
     @if($noti_not_complete == 1)
         <script type="text/javascript">
+
             swal({
                         title: "Are you sure?",
                         text: "Bạn muốn tiếp tục hay làm lại bài thi?",
@@ -42,18 +37,25 @@
                         if (isConfirm) { // true: restart
                             // xóa record gần nhất ( record của cái lần vừa được restart)
                             // bắt đầu thêm lại và update.
+                            restart_test('{{$level_chosen->id}}');
+
                             demlui(thoigian);
 
 //            swal("Deleted!", "Your imaginary file has been deleted.", "success");
                         } else { // false: continue testing
                             // cập nhật tiếp dữ liệu ở bản ghi trong user_skill table.
-                            swal("Cancelled", "Your imaginary file is safe :)", "error");
+                            // cứ 15s gửi đáp án lên serve 1 lần
+                            // tgian: lay tu time trong bang item. chua set duoc time.
+//                            demlui(thoigian);
+
+                            setInterval(function(){ get_answer_consecutive(); }, 1500);
                         }
                     });
         </script>
     @else
         <script>
             demlui(thoigian);
+            setInterval(function(){ get_answer_consecutive(); }, 1500);
         </script>
     @endif
 

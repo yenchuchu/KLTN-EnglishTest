@@ -137,8 +137,32 @@
         auto_sent_answer(unique_list_answer, level_id);
     }
 
-    // cứ 15s gửi đáp án lên serve 1 lần
-//    setInterval(function(){ get_answer_consecutive(); }, 1500);
+    // khi chọn nút restart => gọi ajax xóa bản ghi có level_id và user_id.
+    function restart_test(level_id) {
+        url = '{{ route('frontend.student.testing.restart.delete.item') }}';
+        $.ajax({
+            url: url,
+            type: "post",
+            data: {
+                level_id: level_id,
+                _token: CSRF_TOKEN
+            },
+            success: function (data) {
+                if (data.code == 404) {
+                    swal('', data.message, 'error').catch(swal.noop);
+                    return false;
+                } else if (data.code == 200) {
+                    console.log('reset success');
+                    window.location=document.getElementById('href_level_' + level_id).href;
+                    // cứ 15s gửi đáp án lên serve 1 lần
+                    setInterval(function(){ get_answer_consecutive(); }, 1500);
+                }
+            },
+            error: function () {
+                swal('', 'Không thực hiện được hành động này!', 'error');
+            }
+        });
+    }
 
     $('#btn-submit-test').click(function () {
         get_answer_consecutive();

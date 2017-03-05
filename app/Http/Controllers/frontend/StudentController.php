@@ -9,12 +9,14 @@ use App\Level;
 use App\Skill;
 use App\User;
 use App\UserSkill;
+
 use Auth;
 use Carbon\Carbon;
 use Config;
 use DB;
 use Illuminate\Http\Request;
 use Route;
+use Session;
 
 class StudentController extends Controller
 {
@@ -38,8 +40,9 @@ class StudentController extends Controller
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
-    public function redirectToTest()
+    public function redirectToTest(Request $request)
     {
+//        $request_all =$request->all();
         $this->url_parameters = Route::getCurrentRoute()->parameters();
         $level_id = $this->url_parameters['level_id'];
         $user = Auth::user();
@@ -153,15 +156,44 @@ class StudentController extends Controller
             $noti_not_complete = 0;
         } elseif (count($check_exist_item) == 1) {
             $noti_not_complete = 1;
+            $items_old = Item::where([
+                'user_id' => $user_id,
+                'level_id' => $level_id
+            ])->get();
 
-//            $json_answer = json_decode($check_exist_item->update_json_answer);
-//            $time = $check_exist_item->time;
+            $items = [];
+            foreach ($items_old as $item) {
+                $json_decode_answer = json_decode($item->update_json_answer);
+            }
+
+            foreach ($json_decode_answer as $skill => $ans) {
+
+                foreach ($ans as $table => $tb) {
+                    $find = DB::table($table)->where([
+                        'id' => $tb[0]->id_record
+                    ])->first();
+
+                    if($find == null) {
+                        Session::flash('message', 'Không thực hiện được hành động này!');
+
+                        return redirect()->route('frontend.dashboard.student.index');
+                    }
+
+                    $find->table = $table;
+                    foreach ($tb as $t) {
+                        $find->old_answer[$t->id_question] = [
+                            'id_question' => $t->id_question,
+                            'answer_student' => $t->answer_student
+                        ];
+                    }
+
+                    $items[$skill][$tb[0]->order] = $find;
+                }
+            }
+
         }
-//        }
 
-
-//dd($items);
-        // class, level, user_id_auth, => join user_skill.
+//        dd($items);
 
         return view('frontend.student.join-test.index',
             compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read', 'noti_not_complete'));
@@ -241,10 +273,20 @@ class StudentController extends Controller
 
                 $items->save();
             } else {
-                $check_item_exist->time = Carbon::now();
-                $check_item_exist->update_json_answer = $json_answer_encode;
+//                dd($check_item_exist);
+                $data = [
+                    'time' => Carbon::now(),
+                    'update_json_answer' => $json_answer_encode
+                ];
+//                $check_item_exist->time = Carbon::now();
+//                $check_item_exist->update_json_answer = $json_answer_encode;
 
-                $check_item_exist->save();
+//                $check_item_exist->save();
+
+                Item::where([
+                    'user_id' => $user_id,
+                    'level_id' => $level_id])
+                    ->update($data);
             }
         } else {
             $add_user_skill = new UserSkill();
@@ -263,9 +305,42 @@ class StudentController extends Controller
 
             $add_user_skill->skill_json = 'lấy kết quả skill_id, point từ hàm đối chiếu kquar khi done =1';
 
-            $check_item_exist->delete();
+            deleteItems($check_item_exist);
         }
 
+    }
+
+    // xoas 1 item trong bang Items
+    public function deleteItems($check_item_exist) {
+        $check_item_exist->delete();
+    }
+
+    // xoas 1 item trong bang Items khi ajax goi restart.
+    public function restartDeleteItem(Request $request) {
+        $request_all = $request->all();
+
+        $check_item_exist = Item::where(['user_id' => Auth::user()->id, 'level_id' => $request_all['level_id']]);
+
+        if(count($check_item_exist) == 0 ) {
+            return response()->json([
+                'code'    => 404,
+                'message' => 'Bài làm trước đó chưa tồn tại!',
+            ]);
+        }
+
+        $check_item_exist->delete();
+
+        if($check_item_exist == true) {
+            return response()->json([
+                'code'    => 200,
+                'message' => '',
+            ]);
+        } else {
+            return response()->json([
+                'code'    => 404,
+                'message' => 'Không thực hiện được hành động này!',
+            ]);
+        }
     }
 
     // lấy lượt thi gần đây nhất của học sinh.
