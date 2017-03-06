@@ -13,7 +13,7 @@
                     <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
                            id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_true" number_title="{{$j_title}}"
                            skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
-                           name_table="{{$table}}" value="T" checked>True 1
+                           name_table="{{$table}}" value="T" checked>True
                 </label>
                 <label class="checkbox-inline">
                     <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
@@ -33,23 +33,35 @@
                     <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
                            id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_false" number_title="{{$j_title}}"
                            skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
-                           name_table="{{$table}}" value="F" checked>False0
+                           name_table="{{$table}}" value="F" checked>False
                 </label>
             @else
                 <label class="checkbox-inline">
                     <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
                            id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_true" number_title="{{$j_title}}"
                            skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
-                           name_table="{{$table}}" value="T">True""
+                           name_table="{{$table}}" value="T">True
                 </label>
                 <label class="checkbox-inline">
                     <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
                            id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_false" number_title="{{$j_title}}"
                            skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
-                           name_table="{{$table}}" value="F">False""
+                           name_table="{{$table}}" value="F">False
                 </label>
             @endif
-
+        @else
+            <label class="checkbox-inline">
+                <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
+                       id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_true" number_title="{{$j_title}}"
+                       skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
+                       name_table="{{$table}}" value="T">True
+            </label>
+            <label class="checkbox-inline">
+                <input type="radio" name="your_answer_[{{$table}}][{{$id_record}}][{{$id_question}}][]"
+                       id="your_answer_{{$table}}_{{$id_record}}_{{$id_question}}_false" number_title="{{$j_title}}"
+                       skill_name="{{$key}}" id_record="{{$id_record}}" id_question="{{$id_question}}"
+                       name_table="{{$table}}" value="F">False
+            </label>
         @endif
     </div>
 </div>

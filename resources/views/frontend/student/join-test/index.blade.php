@@ -9,7 +9,8 @@
 @stop
 
 @section('content')
-    <div id="refresh-page-testing" >
+    <a style="display: none;" href="{{route('frontend.dashboard.student.index')}}" id="href_goto_index"></a>
+    <div id="refresh-page-testing">
         @include('frontend.student.join-test.index_start')
     </div>
 @stop
@@ -39,23 +40,29 @@
                             // bắt đầu thêm lại và update.
                             restart_test('{{$level_chosen->id}}');
 
-                            demlui(thoigian);
-
-//            swal("Deleted!", "Your imaginary file has been deleted.", "success");
+                            if (cancelled == false) {
+                                demlui(thoigian);
+                            }
                         } else { // false: continue testing
                             // cập nhật tiếp dữ liệu ở bản ghi trong user_skill table.
                             // cứ 15s gửi đáp án lên serve 1 lần
                             // tgian: lay tu time trong bang item. chua set duoc time.
-//                            demlui(thoigian);
+                            if (cancelled == false) {
+                                demlui(thoigian);
+                            }
 
-                            setInterval(function(){ get_answer_consecutive(); }, 1500);
+                            interval = setInterval(function () { get_answer_consecutive(0); }, 1500);
                         }
                     });
         </script>
     @else
         <script>
-            demlui(thoigian);
-            setInterval(function(){ get_answer_consecutive(); }, 1500);
+            cancelled = demlui(thoigian);
+
+            interval = setInterval(function () { get_answer_consecutive(0); }, 1500);
+//
+//            countdown_autoSentAjax(cancelled)
+
         </script>
     @endif
 

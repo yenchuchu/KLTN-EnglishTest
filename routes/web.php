@@ -199,6 +199,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 //Route::group(array('middleware' => 'guest'), function () {
 // dashboard
+//Route::group(array('middleware' => 'checkRole:TC|AU|guest'), function () {
     Route::get('/', 'DashboardController@index')->name('dashboard');
 //});
 

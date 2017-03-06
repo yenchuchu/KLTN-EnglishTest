@@ -23,6 +23,7 @@ class CreateUserSkillsTable extends Migration
             $table->string('test_id');
             $table->integer('point');
 
+            $table->timestamps();
         });
     }
 

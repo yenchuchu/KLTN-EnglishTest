@@ -1,6 +1,6 @@
 <nav class="navbar">
     <ul class="nav navbar-nav" id="ul-menu-main">
-        <li class="active"><a href="{{route('frontend.dashboard.student.index')}}">Home</a></li>
+        <li class="active"><a href="{{route('frontend.dashboard.student.index')}}">HOME</a></li>
         <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"> VÀO THI </a>
             <ul class="dropdown-menu dropdown-messages">

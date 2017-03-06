@@ -14,6 +14,7 @@ use Auth;
 use Carbon\Carbon;
 use Config;
 use DB;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Route;
 use Session;
@@ -40,6 +41,7 @@ class StudentController extends Controller
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
+    // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
     public function redirectToTest(Request $request)
     {
 //        $request_all =$request->all();
@@ -57,7 +59,7 @@ class StudentController extends Controller
         $class_id = Auth::user()->class_id;
         $levels = Level::all();
 
-        $skills = $user->user_skills()->get();
+        $skills = $user->user_skills()->where(['level_id' => $level_id])->get();
 
         // kiểm tra lượt thi đã tồn tại hay chưa ( được lưu ở bảng Items).
         $check_exist_item = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
@@ -85,35 +87,34 @@ class StudentController extends Controller
                 }
             }
 
-            if ($skill_json['Read'] > $skill_json['Listen']) {
-                $type_exam_read = $this->skill_read;
-                $random_type_read = array_rand($type_exam_read, 1);
-                $check_read = 'read';
-
-                $type_exam_listen = $this->skill_listen;
-                $random_type_listen = array_rand($type_exam_listen, 3);
-
-            } else {
-                if ($skill_json['Listen'] > $skill_json['Read']) {
+            if(!empty($skill_json)) {
+                if ($skill_json['Read'] > $skill_json['Listen']) {
                     $type_exam_read = $this->skill_read;
-                    $random_type_read = array_rand($type_exam_read, 3);
+                    $random_type_read = array_rand($type_exam_read, 1);
+                    $check_read = 'Read';
 
                     $type_exam_listen = $this->skill_listen;
-                    $random_type_listen = array_rand($type_exam_listen, 1);
-                    $check_listen = 'listen';
+                    $random_type_listen = array_rand($type_exam_listen, 3);
 
                 } else {
-                    $type_exam_read = $this->skill_read;
-                    $random_type_read = array_rand($type_exam_read, 2);
+                        $type_exam_read = $this->skill_read;
+                        $random_type_read = array_rand($type_exam_read, 3);
 
-                    $type_exam_listen = $this->skill_listen;
-                    $random_type_listen = array_rand($type_exam_listen, 2);
+                        $type_exam_listen = $this->skill_listen;
+                        $random_type_listen = array_rand($type_exam_listen, 1);
+                        $check_listen = 'Listen';
                 }
+            } else {
+                $type_exam_read = $this->skill_read;
+                $random_type_read = array_rand($type_exam_read, 2);
+
+                $type_exam_listen = $this->skill_listen;
+                $random_type_listen = array_rand($type_exam_listen, 2);
             }
 
             $items = [];
-            $items['listen'][] = '';
-            $items['read'][] = '';
+            $items['Listen'][] = '';
+            $items['Read'][] = '';
 
             if (!isset($check_listen)) {
                 // listen chỉ có 1 dạng bài.
@@ -134,7 +135,7 @@ class StudentController extends Controller
                         $rand = rand(0, $max);
 
                         $read_table[$rand]->table = $read;
-                        $items['read'][] = $read_table[$rand];
+                        $items['Read'][] = $read_table[$rand];
 
                     }
                 }
@@ -148,8 +149,8 @@ class StudentController extends Controller
                     $max = count($read_table) - 1;
                     $rand = rand(0, $max);
 
-                    $items['read']['tables'][] = $random_type_read;
-                    $items['read'][] = $read_table[$rand];
+                    $items['Read']['tables'][] = $random_type_read;
+                    $items['Read'][] = $read_table[$rand];
                 }
             }
 
@@ -199,6 +200,7 @@ class StudentController extends Controller
             compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read', 'noti_not_complete'));
     }
 
+    // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh.
     public function hanglingResult(Request $request)
     {
         $requets_all = $request->all();
@@ -208,7 +210,7 @@ class StudentController extends Controller
 
         foreach ($requets_all['list_answer'] as $ans) {
 
-            if($ans['skill_name'] == 'read') {
+            if($ans['skill_name'] == 'Read') {
                 foreach ($table_all as $table) {
                     if ($ans['name_table'] == $table) {
 
@@ -222,10 +224,10 @@ class StudentController extends Controller
                           'id_question' => $ans['id_question'],
                           'answer_student' => $ans['answer_student']
                         ];
-                        $json_answer['read'][$table][] = $data;
+                        $json_answer['Read'][$table][] = $data;
                     }
                 }
-            } else if($ans['skill_name'] == 'listen') {
+            } else if($ans['skill_name'] == 'Listen') {
                 foreach ($table_all as $table) {
                     if ($ans['name_table'] == $table) {
 
@@ -239,7 +241,7 @@ class StudentController extends Controller
                             'id_question' => $ans['id_question'],
                             'answer_student' => $ans['answer_student']
                         ];
-                        $json_answer['listen'][$table][] = $data;
+                        $json_answer['Listen'][$table][] = $data;
                     }
                 }
             }
@@ -251,13 +253,16 @@ class StudentController extends Controller
         $level_id = $requets_all['level_id'];
 //        $time = $requets_all['time'];
         $time = 2700;
-        if ($time == 3600) {
+
+        if($requets_all['submit'] == 1) {
             $done = 1;
-            // gọi hàm đối chiếu đáp án & tính điểm
-//            checkAnswer();
         } else {
-            if ($time < 3600) {
-                $done = 0;
+            if ($time == 3600) {
+                $done = 1;
+            } else {
+                if ($time < 3600) {
+                    $done = 0;
+                }
             }
         }
 
@@ -289,7 +294,36 @@ class StudentController extends Controller
                     ->update($data);
             }
         } else {
+            // sau khi học sinh nhấn submit hoặc hết tgian
+            $sum_point = Config::get('constants.sum_point'); // điểm của mỗi bài trong mỗi kỹ năng
             $add_user_skill = new UserSkill();
+
+            // gọi hàm đối chiếu đáp án & tính điểm
+            $result_answer = $this->checkAnswer($json_answer);
+            $point_skills = $result_answer['point'];
+            $point_total = $result_answer['point_total'];
+
+            $fix_answer_error = $result_answer['check_correct'];
+
+            $array_point_skills = [];
+            $i_item = 1;
+            foreach ($point_skills as $skill => $point) {
+
+                $find_skill = Skill::where(['code' => $skill])->first();
+                $array_point_skills[$i_item] = [
+                  'skill_id' => $find_skill->id,
+                  'point' => $point
+                ];
+
+                $i_item++;
+            }
+            // chưa có bài test cho phần Listening => gán tạm
+            $array_point_skills[2] = [
+                'skill_id' => 1,
+                'point' => 20
+            ];
+
+            $encode_point = json_encode($array_point_skills);
 
             $user = User::find($user_id);
 
@@ -303,11 +337,72 @@ class StudentController extends Controller
             $add_user_skill->status = 1;
             $add_user_skill->test_id = $test_id;
 
-            $add_user_skill->skill_json = 'lấy kết quả skill_id, point từ hàm đối chiếu kquar khi done =1';
+            $add_user_skill->skill_json = $encode_point;
 
-            deleteItems($check_item_exist);
+            $add_user_skill->save();
+
+            Item::where(['user_id' => $user_id, 'level_id' => $level_id])->delete();
+
+            return response()->json([
+                'code'    => 200,
+                'data' => $fix_answer_error,
+                'message' => 'Bạn đã hoàn thành bài thi với '. round($point_total,2)  .'/'. $sum_point .' điểm. '
+            ]);
         }
 
+    }
+
+    // hàm kiểm tra đáp án và tính điểm.
+    public function checkAnswer($json_answer) {
+        $check_correct = [];
+        $count_correct = 0;
+        $count_incorrect = 0;
+        $point_total = 0;
+        $point = []; // điểm theo từng kỹ năng.
+
+        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
+        foreach ($json_answer as $skill => $items) {
+            $point[$skill] = 0;
+            foreach ($items as $table => $qts_asn) {
+                $total_qts = count($qts_asn); // tổng số câu trong 1 bài ( 1 bài trong 1 kĩ năng)
+                $point_each_qts = $point_constant/$total_qts;  // điểm trung bình của từng question trong bài đấy.
+
+                $id_record = $qts_asn[0]['id_record'];
+                $found_record = DB::table($table)->where(['id' => $id_record])->get()->toArray();
+                $answer_correct = json_decode($found_record[0]->content_json);
+                $answer_correct_array = [];
+
+                foreach ($answer_correct as $check) {
+                    $answer_correct_array[$check->id] = preg_replace('/\s+/', ' ', trim($check->answer));
+                }
+
+                foreach ($qts_asn as $item) {
+                    $id_question = $item['id_question'];
+                    $answer_student = preg_replace('/\s+/', ' ', trim($item['answer_student']));
+
+                    $text_answer_correct = $answer_correct_array[$id_question];
+                   if(strcmp($text_answer_correct, $answer_student) == 0) {
+//                       $check_correct[$table][$id_record][$id_question] = 1; // đúng kết quả
+                       $count_correct++; // số câu đúng
+
+                   } else {
+                       // gán kết quả đúng để show cho học sinh.
+                       $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
+//                       $check_correct['review'] = 1;
+
+                       $count_incorrect++; // số câu sai
+                   }
+
+
+                }
+            }
+            $point[$skill] += $count_correct*$point_each_qts;
+            $point_total += $point[$skill];
+
+        }
+
+
+        return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
     }
 
     // xoas 1 item trong bang Items

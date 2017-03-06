@@ -24,5 +24,8 @@ return [
         'Speak' => []
 
     ],
+    // point = 20 tương ứng với mỗi bài. chia đều 20 điểm cho tất cả số câu trong bài.
+    'point' => 25,
+    'sum_point' => 100,
 
 ];
