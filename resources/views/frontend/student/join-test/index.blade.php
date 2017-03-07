@@ -17,6 +17,4 @@
 
 @section('script')
     @include('frontend.student.join-test.script')
-
-
 @stop

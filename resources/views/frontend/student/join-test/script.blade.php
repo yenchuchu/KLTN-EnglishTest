@@ -1,4 +1,3 @@
-{{--<script src="dist/sweetalert.min.js"></script>--}}
 <script>
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -6,7 +5,8 @@
     var timer = null;
 
     //thoi gian bắt đầu đếm lùi
-    var thoigian = 3600;
+    //    var thoigian = 3600;
+    var thoigian = $('#demnguoc').attr('time_remaining');
     //đơn vị đếm là giây hoặc phút
     var donvi = "";
     //khoach cách giữa 2 lần giảm, đơn vị là ms
@@ -22,7 +22,7 @@
 
 
     // tự động cập nhật kết quả lên serve 15s 1 lần
-    function auto_sent_answer(list_answer, level_id, submit) {
+    function auto_sent_answer(list_answer, level_id, time_remaning, submit) {
         url = '{{ route('frontend.student.testing.handle') }}';
         $.ajax({
             url: url,
@@ -30,6 +30,7 @@
             data: {
                 list_answer: list_answer,
                 level_id: level_id,
+                time_remaning: time_remaning,
                 submit: submit,
                 _token: CSRF_TOKEN
             },
@@ -63,25 +64,20 @@
                                         $('#' + name_id + '_false').parent().parent().append('' +
                                                 '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
                                     }
-
                                 }
 
                                 $('#' + name_id).css('border', '1px solid red');
                                 $('#' + name_id).parent().append('' +
                                         '<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
-
                             }
-
                         }
                     }
 
                     clearInterval(timer); // stop the interval
                     clearInterval(interval); // stop the interval
                     $('#btn-submit-test').remove();
-//                    $('#demnguoc').remove();
 
                     return false;
-
                 }
                 if (data.code == 404) {
                     swal('', data.message, 'error').catch(swal.noop);
@@ -103,30 +99,6 @@
         }
 
         return seconds;
-    }
-
-    // đếm ngược thời gian cho tới 00:00
-    function demlui(thoigian) {
-        //sau một khoảng thời gian là khoangcach thì thời gian trừ đi 1
-        var timer = setInterval(function () {
-            thoigian--;
-            if (thoigian == 0) {
-
-                clearInterval(timer); // stop the interval
-                clearInterval(interval); // stop the interval
-
-                // = 1: hết tgian thì tự động gán submit = 1.
-                get_answer_consecutive(1);
-            } else if (thoigian < 0) {
-                $('#demnguoc').remove();
-                return false;
-            } else {
-                var minutes = Math.floor((thoigian / (60)));
-                var seconds = Math.floor((thoigian % 60));
-                //nếu chưa đếm xong thì đưa thoigian=thoigian-1 vào button
-                document.getElementById("dem").innerHTML = " " + minutes.toString() + ":" + format_time(seconds.toString());
-            }
-        }, khoangcach);
     }
 
     // lọc những phần tử giống nhau trong 1 mảng
@@ -156,6 +128,7 @@
         unique_list_answer = [];
 
         level_id = $('#level-tesing-hidden').val();
+        time_remaning = $('#demnguoc').attr('time_remaining');
 
         $("[id^='your_answer_']").each(function () {
             name_table = $(this).attr('name_table');
@@ -182,7 +155,7 @@
             unique_list_answer = dedupe(list_answer);
         });
 
-        auto_sent_answer(unique_list_answer, level_id, submit);
+        auto_sent_answer(unique_list_answer, level_id, time_remaning, submit);
     }
 
     // khi chọn nút restart => gọi ajax xóa bản ghi có level_id và user_id.
@@ -240,6 +213,7 @@
 
                         timer = setInterval(function () {
                             thoigian--;
+                            $('#demnguoc').attr('time_remaining', thoigian);
                             if (thoigian == 0) {
 
                                 clearInterval(timer); // stop the interval
@@ -257,8 +231,6 @@
                                 document.getElementById("dem").innerHTML = " " + minutes.toString() + ":" + format_time(seconds.toString());
                             }
                         }, khoangcach);
-                        console.log(timer);
-//                            demlui(thoigian);
                     } else { // false: continue testing
                         // cập nhật tiếp dữ liệu ở bản ghi trong user_skill table.
                         // cứ 15s gửi đáp án lên serve 1 lần
@@ -266,8 +238,8 @@
 
                         timer = setInterval(function () {
                             thoigian--;
+                            $('#demnguoc').attr('time_remaining', thoigian);
                             if (thoigian == 0) {
-
                                 clearInterval(timer); // stop the interval
                                 clearInterval(interval); // stop the interval
 
@@ -283,7 +255,6 @@
                                 document.getElementById("dem").innerHTML = " " + minutes.toString() + ":" + format_time(seconds.toString());
                             }
                         }, khoangcach);
-                        console.log("trong vong " + timer);
 
                         interval = setInterval(function () {
                             get_answer_consecutive(0);
@@ -297,11 +268,12 @@
 
         timer = setInterval(function () {
             thoigian--;
+            $('#demnguoc').attr('time_remaining', thoigian);
             if (thoigian == 0) {
 
                 clearInterval(timer); // stop the interval
                 clearInterval(interval); // stop the interval
-//                cancelled = true;
+
                 // = 1: hết tgian thì tự động gán submit = 1.
                 get_answer_consecutive(1);
             } else if (thoigian < 0) {

@@ -5,9 +5,8 @@
 
 <div class="row wrap-test-class" id="testing-id">
 
-    <p id="demo"></p>
-
-    <div id='demnguoc'><i class="fa fa-clock-o" aria-hidden="true"></i><span id='dem'></span> <span id='donvi'></span>
+    <div id='demnguoc' time_remaining="{{$time_remaining}}"><i class="fa fa-clock-o" aria-hidden="true"></i><span
+                id='dem'></span> <span id='donvi'></span>
     </div>
 
     <?php $i_skill = 1;
@@ -80,7 +79,8 @@
     @endforeach
 
     <div class="col-lg-offset-10 col-lg-2">
-        <button type="submit" title="Submit" id="btn-submit-test" class="btn btn-success btn-submit-test">Submit</button>
+        <button type="submit" title="Submit" id="btn-submit-test" class="btn btn-success btn-submit-test">Submit
+        </button>
     </div>
 
 </div>
