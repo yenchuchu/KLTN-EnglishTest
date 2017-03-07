@@ -45,6 +45,9 @@ class StudentController extends Controller
     public function redirectToTest(Request $request)
     {
 //        $request_all =$request->all();
+
+//        $var = date('H:i');
+
         $this->url_parameters = Route::getCurrentRoute()->parameters();
         $level_id = $this->url_parameters['level_id'];
         $user = Auth::user();
