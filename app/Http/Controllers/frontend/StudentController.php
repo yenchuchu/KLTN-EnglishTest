@@ -119,7 +119,7 @@ class StudentController extends Controller
 
             }
 
-            var_dump($random_type_read);
+//            var_dump($random_type_read);
             if (!isset($check_read)) {
                 foreach ($random_type_read as $read) {
                     $read_table = DB::table($read)
@@ -255,10 +255,10 @@ class StudentController extends Controller
         if ($requets_all['submit'] == 1) {
             $done = 1; // học sinh nộp bài
         } else {
-            if ($time_remaining == 0) {
+            if ($time_remaining == -1) {
                 $done = 1; // hết thơi gian làm bài
             } else {
-                if ($time_remaining != 0) {
+                if ($time_remaining != -1) {
                     $done = 0; // chưa hết tgian và học sinh cũng chưa nộp bài
                 }
             }

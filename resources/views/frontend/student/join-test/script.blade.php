@@ -188,7 +188,6 @@
 
 </script>
 
-
 {{-- có bản ghi trong bảng Items -> chưa làm xong --}}
 @if($noti_not_complete == 1)
     <script type="text/javascript">
@@ -214,16 +213,13 @@
                         timer = setInterval(function () {
                             thoigian--;
                             $('#demnguoc').attr('time_remaining', thoigian);
-                            if (thoigian == 0) {
+                            if (thoigian == -1) {
 
                                 clearInterval(timer); // stop the interval
                                 clearInterval(interval); // stop the interval
 
                                 // = 1: hết tgian thì tự động gán submit = 1.
                                 get_answer_consecutive(1);
-                            } else if (thoigian < 0) {
-                                $('#demnguoc').remove();
-                                return false;
                             } else {
                                 var minutes = Math.floor((thoigian / (60)));
                                 var seconds = Math.floor((thoigian % 60));
@@ -239,15 +235,12 @@
                         timer = setInterval(function () {
                             thoigian--;
                             $('#demnguoc').attr('time_remaining', thoigian);
-                            if (thoigian == 0) {
+                            if (thoigian == -1) {
                                 clearInterval(timer); // stop the interval
                                 clearInterval(interval); // stop the interval
 
                                 // = 1: hết tgian thì tự động gán submit = 1.
                                 get_answer_consecutive(1);
-                            } else if (thoigian < 0) {
-                                $('#demnguoc').remove();
-                                return false;
                             } else {
                                 var minutes = Math.floor((thoigian / (60)));
                                 var seconds = Math.floor((thoigian % 60));
@@ -269,16 +262,13 @@
         timer = setInterval(function () {
             thoigian--;
             $('#demnguoc').attr('time_remaining', thoigian);
-            if (thoigian == 0) {
+            if (thoigian == -1) {
 
                 clearInterval(timer); // stop the interval
                 clearInterval(interval); // stop the interval
 
                 // = 1: hết tgian thì tự động gán submit = 1.
                 get_answer_consecutive(1);
-            } else if (thoigian < 0) {
-                $('#demnguoc').remove();
-                return false;
             } else {
                 var minutes = Math.floor((thoigian / (60)));
                 var seconds = Math.floor((thoigian % 60));
