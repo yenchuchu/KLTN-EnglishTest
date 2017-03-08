@@ -108,7 +108,7 @@
                                 <div class="span-text-question">
                                     <textarea type="text" class="form-control"
                                               name="find_errors[1][content-choose-ans-question][1][content]"
-                                              placeholder="enter content" required></textarea>
+                                              placeholder="This <u>is</u> a <u>example</u> for <u>this</u> question format" required></textarea>
                                 </div>
                             </div>
                             <div class="col-lg-12 div-wrap-option-answers" >
