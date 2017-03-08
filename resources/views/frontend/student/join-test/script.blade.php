@@ -64,11 +64,15 @@
                                         $('#' + name_id + '_false').parent().parent().append('' +
                                                 '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
                                     }
+                                } else if (key == 'find_errors') {
+                                    $('#' + name_id).css('border', '1px solid red');
+                                    $('#' + name_id +'_answer').append('' +
+                                            '<span style="color: red;">Answer:  <b>' + end_obj[end]['answer'] + '<b> </sapn>');
+                                } else {
+                                    $('#' + name_id).css('border', '1px solid red');
+                                    $('#' + name_id).parent().append('' +
+                                            '<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
                                 }
-
-                                $('#' + name_id).css('border', '1px solid red');
-                                $('#' + name_id).parent().append('' +
-                                        '<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
                             }
                         }
                     }
@@ -137,11 +141,14 @@
             number_title = $(this).attr('number_title');
             skill_name = $(this).attr('skill_name');
 
-            if (name_table == 'tick_circle_true_falses') {
+            if (name_table == 'tick_circle_true_falses' || 'find_errors') {
                 answer_student = $('input[name="your_answer_[' + name_table + '][' + id_record + '][' + id_question + '][]"]:checked').val();
             } else {
                 answer_student = $(this).val();
             }
+
+            console.log(answer_student);
+//            return false;
 
             list_answer.push({
                 'name_table': name_table,

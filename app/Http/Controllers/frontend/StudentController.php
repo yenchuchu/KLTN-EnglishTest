@@ -48,8 +48,10 @@ class StudentController extends Controller
 
         $level_chosen = Level::whereId($level_id)->first();
 
-        if (!isset($level)) {
-            // noti message
+        if (!isset($level_chosen)) {
+            Session::flash('message', 'Không thực hiện được hành động này!');
+
+            return redirect()->route('frontend.dashboard.student.index');
         }
 
         $class_id = Auth::user()->class_id;
@@ -119,7 +121,8 @@ class StudentController extends Controller
 
             }
 
-//            var_dump($random_type_read);
+            var_dump($random_type_read);
+
             if (!isset($check_read)) {
                 foreach ($random_type_read as $read) {
                     $read_table = DB::table($read)
@@ -192,6 +195,8 @@ class StudentController extends Controller
 
         }
 
+//        dd($items);
+
         return view('frontend.student.join-test.index',
             compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read',
                 'noti_not_complete', 'time_remaining'));
@@ -246,7 +251,7 @@ class StudentController extends Controller
             }
 
         }
-
+//dd($json_answer);
         $json_answer_encode = json_encode($json_answer);
         $user_id = Auth::user()->id;
         $level_id = $requets_all['level_id'];
@@ -349,6 +354,7 @@ class StudentController extends Controller
     // hàm kiểm tra đáp án và tính điểm.
     public function checkAnswer($json_answer)
     {
+
         $check_correct = [];
         $count_correct = 0;
         $count_incorrect = 0;

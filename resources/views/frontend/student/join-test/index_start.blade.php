@@ -16,11 +16,12 @@
     @foreach($items as $key => $item)
         <h4>{{$i_skill}}. {{$key}}</h4>
         @foreach($item as $key_item => $detail)
-
             @if(!empty($detail))
                 <div class="col-lg-12 space-exam">
                     <p>{{$j_title}}. {{$detail->title}}</p>
-                    <article>{{$detail->content}}</article>
+                    @if(isset($detail->content))
+                        <article> {{$detail->content}} </article>
+                    @endif
                     <?php $list_question = json_decode($detail->content_json);
                     $k_question = 1;
 
@@ -42,9 +43,14 @@
                         case "complete_words":
                             echo "complete_words!";
                             break;
-                        case "find_errors":
-                            echo "find_errors!";
-                            break;
+                        case "find_errors": ?>
+
+                        @include('frontend.student.join-test.temp_find_error',
+                        ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question, 'id_question' => $question->id,
+                        'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table,
+                        'suggest_answer' => $question->suggest_choose])
+                        <?php  break;
+
                         case "multiple_choices": ?>
 
                         @include('frontend.student.join-test.temp_multiple_choice',

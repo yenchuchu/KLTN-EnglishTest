@@ -13,21 +13,16 @@
 
                 '<div class="table-responsive" id="wrap-content-exam-' + j + '">' +
 
-                '<div class="col-lg-10" style="padding-left: 0;">' +
+                '<div class="col-lg-12" style="padding-left: 0;">' +
                 '<div class="form-group">' +
                 '<input type="text" name="find_errors[' + j + '][title-find-errors] " class="form-control" required>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-2" style=" padding-right: 0;">' +
-                '<div class="form-group">' +
-                '<label class="lable-point">Point: </label>' +
-                '<input type="number" name="find_errors[' + j + '][point]" class="form-control input-point" required>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
                 '1' +
+                '<input type="hidden" name="find_errors[' + j + '][content-choose-ans-question][1][id]" value="1">' +
                 '</div>' +
 
                 '<div class="form-group" style="width:98%; float:left;">' +
@@ -76,6 +71,8 @@
         $("#wrap-content-exam-" + item).append('<div class="form-group" style="width:100%; float:left;">' +
                 '<div class="span-numb-question" id="id-numb-question-' + item_this + '">' +
                 item_this +
+                '<input type="hidden"  value="' + item_this + '" ' +
+                'name="find_errors[' + item + '][content-choose-ans-question][' + item_this + '][id]">' +
                 '</div>' +
 
                 '<div class="form-group" style="width:98%; float:left;">' +

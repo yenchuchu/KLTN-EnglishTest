@@ -115,6 +115,7 @@ class FindErrorController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
+//        dd($all_data);
 
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
@@ -135,13 +136,23 @@ class FindErrorController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
+
         foreach ($all_data['find_errors'] as $data) {
 
             $find_error_content_question = $data['content-choose-ans-question'];
+//            $array_suggest_ans ;
+            foreach ($find_error_content_question as $key => $value) {
+
+                $content_qts = $value['content'];
+
+                preg_match_all("~<u\>(.*?)\<\/u\>~", $content_qts, $array_suggest_ans);
+                $find_error_content_question[$key]['suggest_choose'] = $array_suggest_ans[1];
+            }
+
             $find_error = new FindError();
 
             $find_error->title = $data['title-find-errors'];
-            $find_error->point = $data['point'];
+//            $find_error->point = $data['point'];
             $find_error->type_user = $code_user;
             $find_error->content_json = json_encode($find_error_content_question);
             $find_error->skill_id = $skill->id;
@@ -155,6 +166,15 @@ class FindErrorController extends Controller
         }
 
         return Redirect()->route('backend.manager.author.find-errors', $class_id);
+    }
+
+    function get_string_between($string, $start, $end){
+        $string = ' ' . $string;
+        $ini = strpos($string, $start);
+        if ($ini == 0) return '';
+        $ini += strlen($start);
+        $len = strpos($string, $end, $ini) - $ini;
+        return substr($string, $ini, $len);
     }
 
     /**
