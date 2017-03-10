@@ -85,23 +85,24 @@
                 <div class="panel-body">
                     <div class="table-responsive" id="wrap-content-exam-1">
 
-                        <div class="col-lg-10" style="padding-left: 0;">
+                        <div class="col-lg-12" style="padding-left: 0;">
                             <div class="form-group">
                                 <input type="text" name="complete_words[1][title-complete-word]"
                                        class="form-control" required>
                             </div>
                         </div>
-                        <div class="col-lg-2" style=" padding-right: 0;">
-                            <div class="form-group">
-                                <label class="lable-point">Point: </label>
-                                <input type="number" name="complete_words[1][point]"
-                                       class="form-control input-point" required>
-                            </div>
-                        </div>
+                        {{--<div class="col-lg-2" style=" padding-right: 0;">--}}
+                            {{--<div class="form-group">--}}
+                                {{--<label class="lable-point">Point: </label>--}}
+                                {{--<input type="number" name="complete_words[1][point]"--}}
+                                       {{--class="form-control input-point" required>--}}
+                            {{--</div>--}}
+                        {{--</div>--}}
 
                         <div class="form-group" style="width:100%; float:left;">
                             <div class="span-numb-question" id="id-numb-question-1">
                                 1
+                                <input type="hidden" name="complete_words[1][content-choose-ans-question][1][id]" value="1">
                             </div>
                             <div class="form-group" style="width:98%; float:left;">
                                 <div class="span-text-question">
@@ -114,7 +115,7 @@
                                 <div class="col-lg-4 option-as-details">
                                     <div class="form-group">
                                         <input type="text" class="form-control" placeholder="enter suggest" index="1"
-                                               name="complete_words[1][content-choose-ans-question][1][option-answer]">
+                                               name="complete_words[1][content-choose-ans-question][1][suggest_choose]">
                                     </div>
                                 </div>
 

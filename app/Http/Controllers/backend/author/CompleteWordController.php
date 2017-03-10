@@ -115,7 +115,7 @@ class CompleteWordController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-
+//dd($all_data);
         if (!isset($all_data['level_id'])) {
             $all_data['level_id'] = null;
         }
@@ -130,18 +130,21 @@ class CompleteWordController extends Controller
 
         $skill = Skill::where('code', $this->skill)->first();
         $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
         $code_user = $all_data['code_user'];
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
+        $class_id = $all_data['class_id'];
+        $classes = Classes::whereId($class_id)->first();
+
         foreach ($all_data['complete_words'] as $data) {
 
             $complete_word_content_question = $data['content-choose-ans-question'];
+
             $complete_word = new CompleteWord();
 
             $complete_word->title = $data['title-complete-word'];
-            $complete_word->point = $data['point'];
+//            $complete_word->point = $data['point'];
             $complete_word->type_user = $code_user;
             $complete_word->content_json = json_encode($complete_word_content_question);
             $complete_word->skill_id = $skill->id;
@@ -154,7 +157,7 @@ class CompleteWordController extends Controller
             $complete_word->save();
         }
 
-        return Redirect()->route('backend.manager.author.complete-word', $class_id);
+        return Redirect()->route('backend.manager.author.complete-word', $classes->code);
     }
 
     /**

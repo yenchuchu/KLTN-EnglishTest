@@ -136,7 +136,6 @@ class FindErrorController extends Controller
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
-
         foreach ($all_data['find_errors'] as $data) {
 
             $find_error_content_question = $data['content-choose-ans-question'];

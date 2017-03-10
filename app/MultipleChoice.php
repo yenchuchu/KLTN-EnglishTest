@@ -18,7 +18,7 @@ class MultipleChoice extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'content', 'point','content_json', 'type_user', 'created_at', 'updated_at'
+        'title', 'point','content_json', 'type_user', 'created_at', 'updated_at'
     ];
 
     public function skills() {

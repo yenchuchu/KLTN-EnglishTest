@@ -64,14 +64,14 @@
                                         $('#' + name_id + '_false').parent().parent().append('' +
                                                 '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
                                     }
-                                } else if (key == 'find_errors') {
+                                } else if (key == 'find_errors' || 'multiple_choices') {
                                     $('#' + name_id).css('border', '1px solid red');
                                     $('#' + name_id +'_answer').append('' +
                                             '<span style="color: red;">Answer:  <b>' + end_obj[end]['answer'] + '<b> </sapn>');
-                                } else {
+                                } else if(key == 'answer_questions') {
+                                    console.log( end_obj[end]['answer']);
                                     $('#' + name_id).css('border', '1px solid red');
-                                    $('#' + name_id).parent().append('' +
-                                            '<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
+                                    $('#' + name_id).parent().append('<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
                                 }
                             }
                         }
@@ -141,13 +141,15 @@
             number_title = $(this).attr('number_title');
             skill_name = $(this).attr('skill_name');
 
-            if (name_table == 'tick_circle_true_falses' || 'find_errors') {
+            if (name_table == 'tick_circle_true_falses' || 'find_errors' || 'multiple_choices') {
+//                console.log('input[name="your_answer_[' + name_table + '][' + id_record + '][' + id_question + '][]"');
                 answer_student = $('input[name="your_answer_[' + name_table + '][' + id_record + '][' + id_question + '][]"]:checked').val();
+//            console.log(answer_student);
             } else {
                 answer_student = $(this).val();
             }
 
-            console.log(answer_student);
+//            console.log(answer_student);
 //            return false;
 
             list_answer.push({

@@ -94,13 +94,19 @@ class StudentController extends Controller
                     $type_exam_listen = $this->skill_listen;
                     $random_type_listen = array_rand($type_exam_listen, 3);
 
-                } else {
+                } else if ($skill_json['Read'] < $skill_json['Listen']) {
                     $type_exam_read = $this->skill_read;
                     $random_type_read = array_rand($type_exam_read, 3);
 
                     $type_exam_listen = $this->skill_listen;
                     $random_type_listen = array_rand($type_exam_listen, 1);
                     $check_listen = 'Listen';
+                }  else {
+                    $type_exam_read = $this->skill_read;
+                    $random_type_read = array_rand($type_exam_read, 2);
+
+                    $type_exam_listen = $this->skill_listen;
+                    $random_type_listen = array_rand($type_exam_listen, 2);
                 }
             } else {
                 $type_exam_read = $this->skill_read;
@@ -111,12 +117,13 @@ class StudentController extends Controller
             }
 
             $items = [];
-            $items['Listen'][] = '';
-            $items['Read'][] = '';
+//            $items['Listen'][] = [];
+//            $items['Read'][] = [];
+//            dd($items);
 
             if (!isset($check_listen)) {
                 // listen chỉ có 1 dạng bài.
-
+                $items['Listen'][] = [];
             } else {
 
             }
@@ -124,6 +131,7 @@ class StudentController extends Controller
             var_dump($random_type_read);
 
             if (!isset($check_read)) {
+//                echo " k ton tai";
                 foreach ($random_type_read as $read) {
                     $read_table = DB::table($read)
                         ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
@@ -138,7 +146,9 @@ class StudentController extends Controller
 
                     }
                 }
+
             } else {
+//                var_dump($check_read);
                 // read chỉ có 1 dạng bài.
                 $read_table = DB::table($random_type_read)
                     ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
@@ -148,7 +158,8 @@ class StudentController extends Controller
                     $max = count($read_table) - 1;
                     $rand = rand(0, $max);
 
-                    $items['Read']['tables'][] = $random_type_read;
+//                    $items['Read']['tables'][] = $random_type_read;
+                    $read_table[$rand]->table = $random_type_read;
                     $items['Read'][] = $read_table[$rand];
                 }
             }
@@ -206,7 +217,7 @@ class StudentController extends Controller
     public function hanglingResult(Request $request)
     {
         $requets_all = $request->all();
-
+//dd($requets_all);
         $array_tables = collect($requets_all['list_answer'])->pluck('name_table');
         $table_all = array_unique($array_tables->toArray());
 
@@ -303,6 +314,7 @@ class StudentController extends Controller
             $point_total = $result_answer['point_total'];
 
             $fix_answer_error = $result_answer['check_correct'];
+//            dd($fix_answer_error);
 
             $array_point_skills = [];
             $i_item = 1;
@@ -354,7 +366,7 @@ class StudentController extends Controller
     // hàm kiểm tra đáp án và tính điểm.
     public function checkAnswer($json_answer)
     {
-
+//dd($json_answer);
         $check_correct = [];
         $count_correct = 0;
         $count_incorrect = 0;
@@ -365,6 +377,7 @@ class StudentController extends Controller
         foreach ($json_answer as $skill => $items) {
             $point[$skill] = 0;
             foreach ($items as $table => $qts_asn) {
+
                 $total_qts = count($qts_asn); // tổng số câu trong 1 bài ( 1 bài trong 1 kĩ năng)
                 $point_each_qts = $point_constant / $total_qts;  // điểm trung bình của từng question trong bài đấy.
 

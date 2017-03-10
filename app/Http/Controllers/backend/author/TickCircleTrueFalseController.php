@@ -129,10 +129,12 @@ class TickCircleTrueFalseController extends Controller
 
         $skill = Skill::where('code', $this->skill)->first();
         $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
         $code_user = $all_data['code_user'];
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
+
+        $class_id = $all_data['class_id'];
+        $classes = Classes::whereId($class_id)->first();
 
         foreach ($all_data['tick_true_false'] as $data) {
 
@@ -154,7 +156,7 @@ class TickCircleTrueFalseController extends Controller
             $tick_true_false->save();
         }
 
-        return Redirect()->route('backend.manager.author.tick-circle-true-false', $class_id);
+        return Redirect()->route('backend.manager.author.tick-circle-true-false', $classes->code);
     }
 
     /**

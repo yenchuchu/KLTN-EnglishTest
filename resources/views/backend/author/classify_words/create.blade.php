@@ -8,9 +8,9 @@
 @section('header')
     <h1 class="page-header">
         @if($code_user == 'ST')
-            Add exam 'answer question' for Student test online
+            Add exam 'Classify word' for Student test online
         @elseif($code_user == 'TC')
-            Add exam 'answer question' for Teacher
+            Add exam 'Classify word' for Teacher
         @endif
     </h1>
 @stop

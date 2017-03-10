@@ -13,21 +13,16 @@
 
                 '<div class="table-responsive" id="wrap-content-exam-' + j + '">' +
 
-                '<div class="col-lg-10" style="padding-left: 0;">' +
+                '<div class="col-lg-12" style="padding-left: 0;">' +
                 '<div class="form-group">' +
                 '<input type="text" name="complete_words[' + j + '][title-complete-word] " class="form-control" required>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-2" style=" padding-right: 0;">' +
-                '<div class="form-group">' +
-                '<label class="lable-point">Point: </label>' +
-                '<input type="number" name="complete_words[' + j + '][point]" class="form-control input-point" required>' +
                 '</div>' +
                 '</div>' +
 
                 '<div class="form-group" style="width:100%; float:left;" >' +
                 ' <div class="span-numb-question" id="id-numb-question-1" >' +
                 '1' +
+                '<input type="hidden" name="complete_words[' + j + '][content-choose-ans-question][1][id]" value="1">' +
                 '</div>' +
 
                 '<div class="form-group" style="width:98%; float:left;">' +
@@ -44,7 +39,7 @@
                 '<div class="col-lg-4 option-as-details">' +
                 '<div class="form-group">' +
                 '<input type="text" class="form-control" placeholder="enter suggest" index="1"' +
-                'name="complete_words[' + j + '][content-choose-ans-question][1][option-answer]">' +
+                'name="complete_words[' + j + '][content-choose-ans-question][1][suggest_choose]">' +
                 ' </div>' +
                 ' </div>' +
 
@@ -52,7 +47,7 @@
                 '<label class="col-lg-1" for="complete_words[1][content-choose-ans-question][1][answer]">Answer: </label>' +
                 '<div class="form-group col-lg-4" style="width: 43%;">' +
                 ' <input type="text" class="form-control" placeholder="enter answer" index="2"' +
-                ' name="complete_words[' + j + '][content-choose-ans-question][1][option-answer]">' +
+                ' name="complete_words[' + j + '][content-choose-ans-question][1][answer]">' +
                 '</div>' +
                 '</div>' +
 
@@ -82,6 +77,8 @@
         $("#wrap-content-exam-" + item).append('<div class="form-group" style="width:100%; float:left;">' +
                 '<div class="span-numb-question" id="id-numb-question-' + item_this + '">' +
                 item_this +
+                '<input type="hidden"  value="' + item_this + '"' +
+                'name="complete_words[' + item + '][content-choose-ans-question][' + item_this + '][id]">' +
                 '</div>' +
 
                 '<div class="form-group" style="width:98%; float:left;">' +
@@ -97,7 +94,7 @@
                 '<div class="col-lg-4 option-as-details">' +
                 '<div class="form-group">' +
                 '<input type="text" class="form-control" placeholder="enter suggest" index="1"' +
-                'name="complete_words[' + item + '][content-choose-ans-question][' + item_this + '][option-answer]">' +
+                'name="complete_words[' + item + '][content-choose-ans-question][' + item_this + '][suggest_choose]">' +
                 ' </div>' +
                 ' </div>' +
 

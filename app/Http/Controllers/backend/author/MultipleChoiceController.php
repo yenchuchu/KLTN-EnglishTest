@@ -131,21 +131,28 @@ class MultipleChoiceController extends Controller
 
         $skill = Skill::where('code', $this->skill)->first();
         $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
         $code_user = $all_data['code_user'];
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
 
+        $class_id = $all_data['class_id'];
+        $classes = Classes::whereId($class_id)->first();
+
         foreach ($all_data['multiple_choice'] as $data) {
 
             $multiple_choice_content_question = $data['content-choose-ans-question'];
+            foreach ($multiple_choice_content_question as $key_m => $mul) {
+                $ans = $mul['answer'];
+                $multiple_choice_content_question[$key_m]['answer'] = $mul['suggest_choose'][$ans];
+            }
+//            dd($multiple_choice_content_question);
             $multiple_choice = new MultipleChoice();
 
             $multiple_choice->title = $data['title-multiple-choice'];
-            $multiple_choice->content = $data['content-multiple-choice'];
-            $multiple_choice->point = $data['point'];
+//            $multiple_choice->content = $data['content-multiple-choice'];
+//            $multiple_choice->point = $data['point'];
             $multiple_choice->type_user = $code_user;
-//            $multiple_choice->content_json = json_encode($multiple_choice_content_question);
+            $multiple_choice->content_json = json_encode($multiple_choice_content_question);
             $multiple_choice->skill_id = $skill->id;
             $multiple_choice->exam_type_id = $exam_type_id;
             $multiple_choice->level_id = $level_id;
@@ -155,21 +162,21 @@ class MultipleChoiceController extends Controller
 
             $multiple_choice->save();
 
-            foreach ($multiple_choice_content_question as $detail) {
-                $multiple_choice_details = new MultipleChoiceDetail();
-
-                $multiple_choice_details->content = $detail['content'];
-                $multiple_choice_details->answer = $detail['answer'];
-                $multiple_choice_details->multiple_choice_id = $multiple_choice->id;
-
-                $detail_json = $detail['option-answer'];
-                $multiple_choice_details->content_json = json_encode($detail_json);
-
-                $multiple_choice_details->save();
-            }
+//            foreach ($multiple_choice_content_question as $detail) {
+//                $multiple_choice_details = new MultipleChoiceDetail();
+//
+//                $multiple_choice_details->content = $detail['content'];
+//                $multiple_choice_details->answer = $detail['answer'];
+//                $multiple_choice_details->multiple_choice_id = $multiple_choice->id;
+//
+//                $detail_json = $detail['option-answer'];
+//                $multiple_choice_details->content_json = json_encode($detail_json);
+//
+//                $multiple_choice_details->save();
+//            }
         }
 
-        return Redirect()->route('backend.manager.author.multiple-choice', $class_id);
+        return Redirect()->route('backend.manager.author.multiple-choice', $classes->code);
     }
 
     /**

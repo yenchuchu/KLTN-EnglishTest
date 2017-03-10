@@ -78,16 +78,21 @@
                             <a href="{{route('backend.manager.author.tick-circle-true-false', $class_code)}}">
                                 <i class="fa fa-dashboard fa-fw"></i>Tick Cricle True Flase</a>
                         </div>
+
                         <div class="col-lg-5 type-exam">
-                            <a href="{{route('backend.manager.author.underlines', $class_code)}}">
-                                <i class="fa fa-dashboard fa-fw"></i>Underlines</a>
+                            ---------------------------------------
                         </div>
 
                         <div class="col-lg-5 type-exam">
+
                             <a href="{{route('backend.manager.author.classify-word', $class_code)}}">
                                 <i class="fa fa-dashboard fa-fw"></i>Classify Words</a>
                         </div>
 
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.underlines', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>Underlines</a>
+                        </div>
                     </div>
                 </div>
 

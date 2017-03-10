@@ -11,9 +11,9 @@
 
     <?php $i_skill = 1;
     $j_title = 1;
-
     ?>
     @foreach($items as $key => $item)
+
         <h4>{{$i_skill}}. {{$key}}</h4>
         @foreach($item as $key_item => $detail)
             @if(!empty($detail))
@@ -54,8 +54,9 @@
                         case "multiple_choices": ?>
 
                         @include('frontend.student.join-test.temp_multiple_choice',
-                    ['key' => $key, 'table' => $detail->table, 'k_question' => $k_question, 'id_question' => $question->id,
-                    'question_content' =>$question->content])
+                    ['key' => $key, 'id_record'=> $detail->id, 'table' => $detail->table, 'k_question' => $k_question,
+                    'id_question' => $question->id, 'question_content' =>$question->content, 'j_title' => $j_title,
+                    'suggest_answer' => $question->suggest_choose])
                         <?php break;
 
                         case "tick_circle_true_falses": ?>
@@ -65,9 +66,9 @@
                         'question_content' =>$question->content, 'id_record'=> $detail->id])
                         <?php break;
 
-                        case "underlines":
-                            echo "underlines!";
-                            break;
+//                        case "underlines":
+//                            echo "underlines!";
+//                            break;
                         default:
                             echo "Your favorite color is neither red, blue, nor green!";
                         }
@@ -82,6 +83,7 @@
 
 
         <?php $i_skill++; ?>
+        {{--@endif--}}
     @endforeach
 
     <div class="col-lg-offset-10 col-lg-2">

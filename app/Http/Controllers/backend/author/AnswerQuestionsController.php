@@ -129,10 +129,12 @@ class AnswerQuestionsController extends Controller
 
         $skill = Skill::where('code', $this->skill)->first();
         $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
         $code_user = $all_data['code_user'];
         $book_map_id = $all_data['book_map_id'];
         $exam_type_id = $all_data['exam_type_id'];
+
+        $class_id = $all_data['class_id'];
+        $classes = Classes::whereId($class_id)->first();
 
         foreach ($all_data['answer_question'] as $data) {
 
@@ -154,7 +156,7 @@ class AnswerQuestionsController extends Controller
             $answer_question->save();
         }
 
-        return Redirect()->route('backend.manager.author.answer-question', $class_id);
+        return Redirect()->route('backend.manager.author.answer-question', $classes->code);
     }
 
     /**
