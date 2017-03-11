@@ -121,6 +121,17 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('backend.manager.author.complete-word.store');
                 });
 
+                Route::group(array('prefix' => 'complete-paragraph'), function () {
+                    Route::get('/{class_code}', 'backend\author\CompleteParagraphController@index')
+                        ->name('backend.manager.author.complete-paragraph');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\CompleteParagraphController@create')
+                        ->name('backend.manager.author.complete-paragraph.create');
+
+                    Route::post('/store', 'backend\author\CompleteParagraphController@store')
+                        ->name('backend.manager.author.complete-paragraph.store');
+                });
+
                 Route::group(array('prefix' => 'find-errors'), function () {
                     Route::get('/{class_code}', 'backend\author\FindErrorController@index')
                         ->name('backend.manager.author.find-errors');

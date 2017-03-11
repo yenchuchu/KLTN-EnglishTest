@@ -19,7 +19,7 @@ class CreateMultipleChoicesTable extends Migration
             $table->text('title');
             $table->text('content');
             $table->integer('point')->default(0);
-//            $table->string('content_json')->comment('{content: nội dung câu hỏi, suggest: đưa ra 4 lựa chọn, answer: đáp án}');
+            $table->text('content_json')->comment('{content: nội dung câu hỏi, suggest_choose: đưa ra 4 lựa chọn, answer: đáp án}');
             $table->string('type_user');
             $table->integer('class_id')->nullable();
             $table->integer('exam_type_id')->nullable();

@@ -21,7 +21,6 @@ class CreateUserSkillsTable extends Migration
             $table->string('skill_json')->comment('{skill_id: , point: }');
             $table->string('status')->default(0)->comment('0- chưa xong, 1- đã xong');
             $table->string('test_id');
-            $table->integer('point');
 
             $table->timestamps();
         });

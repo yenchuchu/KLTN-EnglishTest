@@ -4,7 +4,7 @@ return [
         // key's name is name model.
         'Read' => [
             'answer_questions' => 'Answer and question',
-            'complete_words' => 'Complete words',
+//            'complete_words' => 'Complete words',
             'find_errors' => 'Find Errors',
             'multiple_choices' => 'Multiple choice',
             'tick_circle_true_falses' => 'Tick circle true or false',
@@ -12,13 +12,13 @@ return [
 //            'underlines' => 'Underlines',
         ],
         'Listen' => [
-            'complete_tables' => 'Complete Table',
-            'table_ticks' => 'Table Tick',
-            'table_matchs' => 'Table Matchs',
-            'complete_sentences' => 'Complete Sentences',
+//            'listen_complete_tables' => 'Complete Table',
+            'listen_table_ticks' => 'Table Tick',
+            'listen_table_matchs' => 'Table Matchs',
+            'listen_complete_sentences' => 'Complete Sentences',
             'listen_ticks' => 'Listen and Tick',
-            'tick_crosses' => 'Tick Cross',
-            'fill_numbers' => 'Listen And Fill In One Number',
+            'listen_tick_crosses' => 'Tick Cross',
+            'listen_fill_numbers' => 'Listen And Fill In One Number',
         ],
         'Write' => [],
         'Speak' => []

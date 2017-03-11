@@ -17,9 +17,9 @@ class CreateCompleteWordDetailsTable extends Migration
             $table->increments('id');
 
             $table->integer('complete_word_id');
-            $table->string('title');
-            $table->string('content_json');
-            $table->string('answer');
+            $table->text('title');
+            $table->text('content_json');
+            $table->text('answer');
 
             $table->timestamps();
         });

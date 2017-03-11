@@ -37,12 +37,12 @@
                         'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table])
                         <?php  break;
 
-                        case "classify_words":
-                            echo "classify_words!";
-                            break;
-                        case "complete_words":
-                            echo "complete_words!";
-                            break;
+                        case "complete_words": ?>
+                            @include('frontend.student.join-test.temp_complete_word',
+                         ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question, 'id_question' => $question->id,
+                         'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table])
+                            <?php  break;
+
                         case "find_errors": ?>
 
                         @include('frontend.student.join-test.temp_find_error',
@@ -69,6 +69,47 @@
 //                        case "underlines":
 //                            echo "underlines!";
 //                            break;
+
+//                            case "classify_words":
+//                                echo "classify_words!";
+//                                break;
+
+                            case "complete_tables":
+                                echo "classify_words!";
+                                break;
+
+                            case "table_ticks":
+                                echo "classify_words!";
+                                break;
+
+                            case "table_matchs":
+                                echo "classify_words!";
+                                break;
+
+                            case "complete_sentences":
+                                echo "classify_words!";
+                                break;
+
+                            case "listen_ticks":
+                                echo "classify_words!";
+                                break;
+
+                            case "tick_crosses":
+                                echo "classify_words!";
+                                break;
+
+                            case "fill_numbers":
+                                echo "classify_words!";
+                                break;
+//
+//                                '' => 'Complete Table',
+//            '' => 'Table Tick',
+//            '' => 'Table Matchs',
+//            '' => 'Complete Sentences',
+//            '' => 'Listen and Tick',
+//            '' => 'Tick Cross',
+//            '' => 'Listen And Fill In One Number',
+
                         default:
                             echo "Your favorite color is neither red, blue, nor green!";
                         }
