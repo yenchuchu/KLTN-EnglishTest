@@ -1,5 +1,6 @@
 <div class="row" id="home-id">
     <div class="col-lg-6">
+
         <h1>LEARN 3000 WORDS with NEWS IN LEVELS</h1>
 
         If you read and listen to two articles every day, your reading and listening skills can improve fast. You can

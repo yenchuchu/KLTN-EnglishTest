@@ -194,9 +194,12 @@ Route::group(['middleware' => 'auth'], function () {
 
             // dashboard
             Route::get('/', 'frontend\StudentController@index')->name('frontend.dashboard.student.index');
+            Route::get('/learn-speak', 'frontend\StudentController@learn_speak')->name('frontend.dashboard.student.learn.speak');
             Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
 
+            Route::post('check_text_speech', 'frontend\StudentController@check_text_speech')
+                ->name('frontend.student.testing.check_text_speech');
             Route::post('handling-result', 'frontend\StudentController@hanglingResult')
                 ->name('frontend.student.testing.handle');
             Route::post('restart-delete-item', 'frontend\StudentController@restartDeleteItem')

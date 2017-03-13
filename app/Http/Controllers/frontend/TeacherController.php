@@ -79,12 +79,17 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $request_all = $request->all();
+
         $class_id = $request_all['class_id'];
         $exam_type_id = $request_all['exam_type_id'];
         $code_user = $request_all['code_user'];
-        $examtype_skills = $request_all['examtype_skills'];
+        if(isset($request_all['examtype_skills'])) {
+            $examtype_skills = $request_all['examtype_skills'];
+        } else {
+            $examtype_skills = '';
+        }
 
-        if (!isset($request_all['skill_id'])) {
+        if (!isset($request_all['skill_id']) || $request_all['skill_id'] == 0) {
             $skill_id = null;
             $code_skill = '';
         } else {
@@ -99,6 +104,7 @@ class TeacherController extends Controller
             $book_map_id = $request_all['book_map_id'];
         }
 
+        // xử lí random bài như của học sinh.
         $record_model = [];
         foreach ($examtype_skills as $item) {
 

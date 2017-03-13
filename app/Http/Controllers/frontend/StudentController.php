@@ -38,6 +38,32 @@ class StudentController extends Controller
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
+    public function learn_speak() {
+        $class_id = Auth::user()->class_id;
+        $levels = Level::all();
+
+        return view('frontend.student.speak_skill', compact('class_id', 'levels'));
+    }
+
+    public function check_text_speech(Request $request) {
+        $all_request = $request->all();
+        $text_demo = $all_request['text_demo'];
+        $text_speak = $all_request['text_speak'];
+
+        if(strcmp($text_demo, $text_speak) == 0) {
+            return response()->json([
+                'code' => 200,
+                'message' => 'Correct'
+            ]);
+        } else {
+            return response()->json([
+                'code' => 32,
+                'message' => 'Incorrect'
+            ]);
+        }
+        dd($all_request);
+    }
+
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
     public function redirectToTest(Request $request)
     {

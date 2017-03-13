@@ -12,6 +12,7 @@
             </ul>
         </li>
         <li><a href="#">LÀM THỬ TEST</a></li>
+        <li><a href="{{route('frontend.dashboard.student.learn.speak')}}">Test Speak</a></li>
         <li><a href="#">KẾT QUẢ THI</a></li>
         <li><a href="#">THỐNG KÊ</a></li>
         <li><a href="#">HƯỚNG DẪN</a></li>
