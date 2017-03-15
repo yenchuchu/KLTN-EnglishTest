@@ -13,15 +13,9 @@
 
                 '<div class="table-responsive" id="wrap-content-exam-' + j + '">' +
 
-                '<div class="col-lg-10" style="padding-left: 0;">' +
+                '<div class="col-lg-12" style="padding-left: 0;">' +
                 '<div class="form-group">' +
                 '<input type="text" name="answer_question['+ j +'][title-answer-question] " class="form-control" required>' +
-                '</div>' +
-                '</div>' +
-                '<div class="col-lg-2" style=" padding-right: 0;">' +
-                '<div class="form-group">' +
-                '<label class="lable-point">Point: </label>' +
-                '<input type="number" name="answer_question['+ j +'][point]" class="form-control input-point" required>' +
                 '</div>' +
                 '</div>' +
 

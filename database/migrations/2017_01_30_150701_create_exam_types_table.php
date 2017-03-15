@@ -18,6 +18,7 @@ class CreateExamTypesTable extends Migration
 
             $table->string('title');
             $table->string('code');
+            $table->string('time');
             $table->string('description')->nullable();
             $table->integer('class_id')->nullable();
             $table->integer('skill_id')->nullable();

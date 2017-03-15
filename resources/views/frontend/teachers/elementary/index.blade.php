@@ -50,7 +50,7 @@
                                     <option value="0" code="none">--- Chọn loại kiểm tra----</option>
                                     @foreach($exam_types as $exam_type)
                                         <option value="{{$exam_type->id}}" code="{{$exam_type->code}}"
-                                                id="{{$exam_type->description}}">{{$exam_type->title}}</option>
+                                                id="{{$exam_type->code}}">{{$exam_type->title}} - {{$exam_type->time}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -94,8 +94,6 @@
                 },
                 success: function (data) {
                     $('#reload-unit').html(data);
-//                    console.log(data);
-//                    return false;
                 },
                 error: function () {
                     alert("Không lấy được thông tin này!");
@@ -113,7 +111,6 @@
                 },
                 success: function (data) {
                     $('#reload_examtype_skill').html(data);
-//                    return false;
                 },
                 error: function () {
                     alert("Không lấy được thông tin này!");
@@ -144,7 +141,6 @@
                     $('#container_skill').hide();
                     $('#reload-unit').hide();
                 }
-
             });
 
             $('#slKyNang').on('change', function (e) {

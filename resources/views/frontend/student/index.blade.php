@@ -6,7 +6,7 @@
 
 @section('style-menu-main')
    <style>
-       #ul-menu-main li {
+       #ul-menu-main>li {
            background: navajowhite;
            margin-right: 15px;
            height: 41px;

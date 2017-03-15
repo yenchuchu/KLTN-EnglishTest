@@ -7,15 +7,11 @@ use App\Classes;
 use App\ExamType;
 use App\Http\Controllers\Controller;
 use App\Skill;
-
-use App\AnswerQuestion;
-
 use Config;
 use DB;
-use Illuminate\Support\Facades\App;
-//use Barryvdh\DomPDF\PDF;
-use Barryvdh\DomPDF\Facade as PDF;
 use Illuminate\Http\Request;
+
+//use Barryvdh\DomPDF\PDF;
 
 class TeacherController extends Controller
 {
@@ -34,6 +30,7 @@ class TeacherController extends Controller
         $this->book_maps = BookMap::all();
 
         $this->kind_exam = Config::get('constants.skill');
+        $this->lama = Config::get('constants.lama');
     }
 
     public function index()
@@ -82,12 +79,14 @@ class TeacherController extends Controller
 
         $class_id = $request_all['class_id'];
         $exam_type_id = $request_all['exam_type_id'];
-        $code_user = $request_all['code_user'];
-        if(isset($request_all['examtype_skills'])) {
-            $examtype_skills = $request_all['examtype_skills'];
-        } else {
-            $examtype_skills = '';
+        $find_exam_type = ExamType::whereId($exam_type_id)->first();
+        if (!isset($find_exam_type)) {
+            Session::flash('message', 'Không thực hiện được hành động này.');
+
+            return view('dashboard.index');
         }
+
+        $code_user = $request_all['code_user'];
 
         if (!isset($request_all['skill_id']) || $request_all['skill_id'] == 0) {
             $skill_id = null;
@@ -98,31 +97,53 @@ class TeacherController extends Controller
             $code_skill = $find_skill->code;
         }
 
+//        $examtype_skills = [];
+        if (isset($request_all['examtype_skills'])) {
+            $examtype_skills = $request_all['examtype_skills'];
+        } else {
+
+            $type_exam_read = Config::get('constants.skill.Read');
+            $random_type_read = array_rand($type_exam_read, 3);
+
+            $type_exam_listen = Config::get('constants.skill.Listen');
+            $random_type_listen = array_rand($type_exam_listen, 1);
+
+//            $examtype_skills
+        }
+
+
         if (!isset($request_all['book_map_id'])) {
             $book_map_id = null;
         } else {
             $book_map_id = $request_all['book_map_id'];
         }
 
-        // xử lí random bài như của học sinh.
         $record_model = [];
         foreach ($examtype_skills as $item) {
 
-            $records[$item] = DB::table($item)->where(['class_id' => $class_id, 'type_user' => $code_user,
-                'skill_id' => $skill_id, 'exam_type_id' => $exam_type_id])
+            $records[$item] = DB::table($item)->where([
+                'class_id' => $class_id,
+                'type_user' => $code_user,
+                'skill_id' => $skill_id,
+                'exam_type_id' => $exam_type_id
+            ])
                 ->whereIn('bookmap_id', $book_map_id)
                 ->get();
 
-            foreach ($records[$item] as $record) {
+            $number_random = rand(0, count($records[$item]) - 1);
+//            foreach ($records[$item] as $order => $record) {
 
-                $record->content_json = json_decode($record->content_json);
-                $record->type_model = $item;
-            }
+            $records[$item][$number_random]->content_json = json_decode($records[$item][$number_random]->content_json);
+            $records[$item][$number_random]->type_model = $item;
+//            }
 
-            $record_model[$item] = $records[$item];
+            $record_model[$item] = $records[$item][$number_random];
         }
+//        dd($record_model);
 
-        return view('frontend.teachers.elementary.show', compact('record_model', 'code_skill'));
+        $lamas = $this->lama;
+
+        return view('frontend.teachers.elementary.show', compact('record_model', 'code_skill', 'find_exam_type', 'lamas'));
 //        $pdf = PDF::loadView('frontend.teachers.elementary.show', compact('record_model', 'code_skill'))->setPaper('a4', 'portrait');
 //        return $pdf->stream();
 //        return $pdf->download('invoice.pdf');

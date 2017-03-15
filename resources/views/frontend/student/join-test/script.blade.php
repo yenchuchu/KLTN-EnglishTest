@@ -202,7 +202,7 @@
     <script type="text/javascript">
 
         swal({
-                    title: "Are you sure?",
+                    title: "",
                     text: "Bạn muốn tiếp tục hay làm lại bài thi?",
                     type: "warning",
                     showCancelButton: true,

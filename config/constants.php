@@ -28,5 +28,14 @@ return [
     'point' => 25,
     'sum_point' => 100,
     'time_start' => 3600, // 60 phuts cho 1 bai thi
+    'lama' => [
+        '1' => 'I',
+        '2' => 'II',
+        '3' => 'III',
+        '4' => 'IV',
+        '5' => 'V',
+        '6' => 'VI',
+        '7' => 'VII',
+    ]
 
 ];

@@ -27,11 +27,13 @@ class StudentController extends Controller
     protected $skill_listen;
     protected $code_student;
     protected $levels;
+    protected $lama;
 
     public function __construct()
     {
         $this->skill_read = Config::get('constants.skill.Read');
         $this->skill_listen = Config::get('constants.skill.Listen');
+        $this->lama = Config::get('constants.lama');
         $this->code_student = 'ST';
         $this->levels = Level::all();
     }
@@ -45,7 +47,6 @@ class StudentController extends Controller
     }
 
     public function learn_speak() {
-//        require_once('Voicerss_tts.php');
 
         $tts = new VoiceRSS;
         $voice = $tts->speech([
@@ -174,6 +175,7 @@ class StudentController extends Controller
 
             }
 
+            var_dump($random_type_listen);
             var_dump($random_type_read);
 
             if (!isset($check_read)) {
@@ -253,10 +255,11 @@ class StudentController extends Controller
         }
 
 //        dd($items);
+        $lamas = $this->lama;
 
         return view('frontend.student.join-test.index',
             compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read',
-                'noti_not_complete', 'time_remaining'));
+                'noti_not_complete', 'time_remaining', 'lamas'));
     }
 
     // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh.
