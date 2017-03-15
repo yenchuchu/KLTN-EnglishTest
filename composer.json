@@ -24,7 +24,10 @@
         ],
         "psr-4": {
             "App\\": "app/"
-        }
+        },
+        "files": [
+            "app/Http/Controllers/frontend/Voicerss_tts.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

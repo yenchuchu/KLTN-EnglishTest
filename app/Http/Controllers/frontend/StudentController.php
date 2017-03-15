@@ -9,6 +9,10 @@ use App\Level;
 use App\Skill;
 use App\User;
 use App\UserSkill;
+use App\Http\Controllers\frontend\VoiceRSS;
+
+//use Voicerss\VoiceRSS;
+
 use Auth;
 use Config;
 use DB;
@@ -22,27 +26,43 @@ class StudentController extends Controller
     protected $skill_read;
     protected $skill_listen;
     protected $code_student;
+    protected $levels;
 
     public function __construct()
     {
         $this->skill_read = Config::get('constants.skill.Read');
         $this->skill_listen = Config::get('constants.skill.Listen');
         $this->code_student = 'ST';
+        $this->levels = Level::all();
     }
 
     public function index()
     {
         $class_id = Auth::user()->class_id;
-        $levels = Level::all();
+        $levels = $this->levels;
 
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
     public function learn_speak() {
-        $class_id = Auth::user()->class_id;
-        $levels = Level::all();
+//        require_once('Voicerss_tts.php');
 
-        return view('frontend.student.speak_skill', compact('class_id', 'levels'));
+        $tts = new VoiceRSS;
+        $voice = $tts->speech([
+            'key' => 'd78f3419c63f4a35978e295ec139fc06',
+            'hl' => 'en-us',
+            'src' => 'Television is having a negative impact on society',
+            'r' => '0',
+            'c' => 'mp3',
+            'f' => '44khz_16bit_stereo',
+            'ssml' => 'false',
+            'b64' => 'true'
+        ]);
+
+        $class_id = Auth::user()->class_id;
+        $levels = $this->levels;
+
+        return view('frontend.student.speak_skill', compact('class_id', 'levels', 'voice'));
     }
 
     public function check_text_speech(Request $request) {
@@ -81,7 +101,7 @@ class StudentController extends Controller
         }
 
         $class_id = Auth::user()->class_id;
-        $levels = Level::all();
+        $levels = $this->levels;
 
         $skills = $user->user_skills()->where(['level_id' => $level_id])->get();
 
@@ -518,9 +538,26 @@ class StudentController extends Controller
 
     }
 
-    public function show($id)
+    public function show_results()
     {
+        $user_id = Auth::user()->id;
+        $all_results = UserSkill::where(['user_id' => $user_id])
+            ->orderBy('level_id', 'ASC')
+            ->get();
 
+        foreach ($all_results as $result) {
+            $max_test_id = explode('_', $result->test_id);
+            $result->test_id = $max_test_id[1];
+            $result->skill_json = json_decode($result->skill_json);
+            foreach ($result->skill_json as $key => $skill) {
+                $find_skill = Skill::whereId($skill->skill_id)->first();
+                $skill->skill_id = $find_skill->code;
+            }
+        }
+
+        $levels = $this->levels;
+
+        return view('frontend.student.test_results', compact('all_results', 'levels'));
     }
 
     public function edit($id)

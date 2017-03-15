@@ -50,7 +50,13 @@
 @stop
 
 @section('content')
-    <div><p id="text_demo">Television is having a negative impact on society</p></div>
+    <div>
+        <p id="text_demo">Television is having a negative impact on society</p>
+        <audio controls>
+            <source src="{{$voice['response']}}">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 
     <div style="float:left; width: 100%">
         <a href="#" id="start_button" onclick="startDictation(event)"><i class="fa fa-microphone" aria-hidden="true"></i></a>
@@ -62,16 +68,166 @@
         </div>
     </div>
 
+
+
     <button id="check_diff" class="btn btn-success" style="margin-top: 10px;">Check</button>
 
 
+    <h1> MediaRecorder API example</h1>
+
+    <p> For now it is supported only in Firefox(v25+) and Chrome(v47+)</p>
+    <div id='gUMArea'>
+        <div>
+            Record:
+            <input type="radio" name="media" value="audio">audio
+        </div>
+    </div>
+    <div id='btns'>
+        <button  class="btn btn-default" id='start'>Start</button>
+        <button  class="btn btn-default" id='stop' disabled>Stop</button>
+    </div>
+    <div>
+        <ul  class="list-unstyled" id='ul'></ul>
+    </div>
 @stop
 
 @section('script')
+
+    <script>
+        'use strict'
+//var record_recognition;
+        let log = console.log.bind(console),
+                id = val => document.getElementById(val),
+                ul = id('ul'),
+                start = id('start'),
+                stop = id('stop'),
+                stream,
+                recorder,
+                counter=1,
+                chunks,
+                media, record_recognition, final_transcript = '';
+
+            let mv = { audio: {
+                            tag: 'audio',
+                            type: 'audio/ogg',
+                            ext: '.ogg',
+                            gUM: {audio: true}
+                        }
+                    };
+            media =mv.audio;
+            navigator.mediaDevices.getUserMedia(media.gUM).then(_stream => {
+                stream = _stream;
+            id('gUMArea').style.display = 'none';
+            id('btns').style.display = 'inherit';
+            start.removeAttribute('disabled');
+
+            recorder = new MediaRecorder(stream);
+            recorder.ondataavailable = e => {
+                chunks.push(e.data);
+                if(recorder.state == 'inactive')  makeLink();
+            };
+            log('got media successfully');
+        }).catch(log);
+        console.log(record_recognition);
+        start.onclick = e => {
+            start.disabled = true;
+            stop.removeAttribute('disabled');
+            chunks=[];
+            recorder.start();
+
+            final_transcript = '';
+            final_span.innerHTML = '';
+            interim_span.innerHTML = '';
+            messages_result.innerHTML = '';
+
+            record_recognition = new webkitSpeechRecognition();
+            record_recognition.lang = "en-US";
+            record_recognition.continuous = true;
+            record_recognition.interimResults = true;
+            record_recognition.start();
+
+            record_recognition.onresult = function(event) {
+                var interim_transcript = '';
+                for (var i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        final_transcript += event.results[i][0].transcript;
+                    } else {
+                        interim_transcript += event.results[i][0].transcript;
+                    }
+                }
+                final_transcript = capitalize(final_transcript);
+                final_span.innerHTML = linebreak(final_transcript);
+                interim_span.innerHTML = linebreak(interim_transcript);
+            }
+        }
+        stop.onclick = e => {
+            stop.disabled = true;
+            recorder.stop();
+            start.removeAttribute('disabled');
+            record_recognition.stop();
+//            final_transcript = '';
+        }
+
+        function start_speech(recognizing) {
+
+            var record_recognition = new webkitSpeechRecognition();
+
+            if (recognizing == false) {
+                record_recognition.continuous = false;
+                record_recognition.interimResults = false;
+                record_recognition.stop();
+                return;
+            }
+
+            if(recognizing == true) {
+                record_recognition.continuous = true;
+                record_recognition.interimResults = true;
+                record_recognition.start();
+            }
+
+
+//            record_recognition.onstart = function() {
+//                recognizing = true;
+//            };
+//
+//            record_recognition.onerror = function(event) {
+//                console.log(event.error);
+//            };
+//
+//            record_recognition.onend = function() {
+//                recognizing = false;
+//            };
+//
+            record_recognition.onresult = function(event) {
+                console.log(event)
+            }
+
+        }
+
+        function makeLink(){
+            let blob = new Blob(chunks, {type: media.type })
+                    , url = URL.createObjectURL(blob)
+                    , li = document.createElement('li')
+                    , mt = document.createElement(media.tag)
+                    , hf = document.createElement('a')
+                    ;
+            mt.controls = true;
+            mt.src = url;
+            hf.href = url;
+            hf.download = `${counter++}${media.ext}`;
+            hf.innerHTML = `donwload ${hf.download}`;
+            li.appendChild(mt);
+            li.appendChild(hf);
+            ul.appendChild(li);
+        }
+
+        </script>
+    <script>
+
+
     <!-- HTML5 Speech Recognition API -->
-    <script type="text/javascript">
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        var final_transcript = '';
+//        var final_transcript = '';
         var recognizing = false;
 
         if ('webkitSpeechRecognition' in window) {

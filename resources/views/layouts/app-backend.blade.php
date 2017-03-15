@@ -14,9 +14,10 @@
     <link href="{{URL::asset('backend/assets/css/main-style.css')}}" rel="stylesheet" />
 
     <!-- sweet alert -->
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/loader.css')}}"/>
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/page_loaders.css')}}"/>
-    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/sweetalert2.min.css')}}"/>
+    <link rel="stylesheet" href="{{URL::asset('sweetalert/dist/sweetalert.css')}}"/>
+{{--    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/loader.css')}}"/>--}}
+{{--    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/page_loaders.css')}}"/>--}}
+{{--    <link rel="stylesheet" href="{{URL::asset('css/sweet-alert/sweetalert2.min.css')}}"/>--}}
 
     <!-- Page-Level CSS -->
     <link href="{{URL::asset('backend/assets/plugins/morris/morris-0.4.3.min.css')}}" rel="stylesheet" />
@@ -150,7 +151,7 @@
 <script src="{{URL::asset('table/datatables/media/js/jquery.dataTables.min.js')}}"></script>
 <script src="{{URL::asset('table/datatables/media/js/dataTables.bootstrap.min.js')}}"></script>
 
-<script src="{{URL::asset('js/sweet-alert/sweetalert2.js')}}"></script>
+<script src="{{URL::asset('sweetalert/dist/sweetalert.min.js')}}"></script>
 
 
 <script>

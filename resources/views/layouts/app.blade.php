@@ -96,8 +96,17 @@
 
 <!-- Core Scripts - Include with every page -->
 <script src="{{URL::asset('backend/assets/plugins/jquery-1.10.2.js')}}"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{{URL::asset('backend/assets/plugins/bootstrap/bootstrap.min.js')}}"></script>
+<script src="{{URL::asset('backend/assets/plugins/metisMenu/jquery.metisMenu.js')}}"></script>
+<script src="{{URL::asset('backend/assets/plugins/pace/pace.js')}}"></script>
+<!-- Page-Level Plugin Scripts-->
+<script src="{{URL::asset('backend/assets/plugins/morris/raphael-2.1.0.min.js')}}"></script>
+
+{{-- set dataTable--}}
+<script src="{{URL::asset('table/datatables/media/js/jquery.dataTables.min.js')}}"></script>
+<script src="{{URL::asset('table/datatables/media/js/dataTables.bootstrap.min.js')}}"></script>
+
 <script src="{{URL::asset('sweetalert/dist/sweetalert.min.js')}}"></script>
 
 <script>
@@ -111,10 +120,7 @@
 </script>
 
 <!-- Scripts -->
-<script src="{{URL::asset('js/app.js')}}"></script>
-
-@yield('script')
-
+{{--<script src="{{URL::asset('js/app.js')}}"></script>--}}
 
 <script>
 
@@ -143,12 +149,47 @@
         });
     }
 
+    function setTableInitStudent(table_id) {
+        var set_name = 'manager_set' + table_id;
+        set_name = $('#'+ table_id).DataTable({
+            responsive: true,
+            language: {
+                "sProcessing": "Đang xử lý...",
+                "sLengthMenu": "Xem _MENU_ bản ghi",
+                "sZeroRecords": "Không tìm thấy dòng nào phù hợp",
+                "sInfo": "Đang xem _START_ đến _END_ trong tổng số _TOTAL_ bản ghi",
+                "sInfoEmpty": "Đang xem 0 đến 0 trong tổng số 0 bản ghi",
+                "sInfoFiltered": "(được lọc từ _MAX_ bản ghi)",
+                "sInfoPostFix": "",
+                "sSearch": "Tìm kiếm:",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Đầu",
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                    "sLast": "Cuối"
+                }
+            },
+            aLengthMenu: [
+                [10, 30, 60, 100, -1],
+                [10, 30, 60, 100, "All"]
+            ],
+            iDisplayLength: 10,
+//            "order": [[1, 'asc']]
+        });
 
-    $('.dropdown').click(function () {
-        $('.dropdown-menu').toggle();
-    });
+//        set_name.on('order.dt search.dt', function () {
+//            set_name.column(0, {
+//                search: 'applied',
+//                order: 'applied'
+//            }).nodes().each(function (cell, i) {
+//                cell.innerHTML = i + 1;
+//            });
+//        }).draw();
+    }
 
 </script>
+@yield('script')
 
 </body>
 </html>

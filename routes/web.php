@@ -200,10 +200,16 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::post('check_text_speech', 'frontend\StudentController@check_text_speech')
                 ->name('frontend.student.testing.check_text_speech');
+
             Route::post('handling-result', 'frontend\StudentController@hanglingResult')
                 ->name('frontend.student.testing.handle');
             Route::post('restart-delete-item', 'frontend\StudentController@restartDeleteItem')
                 ->name('frontend.student.testing.restart.delete.item');
+
+            Route::get('show_results', 'frontend\StudentController@show_results')
+                ->name('frontend.student.show.results');
+
+
 
         });
 
