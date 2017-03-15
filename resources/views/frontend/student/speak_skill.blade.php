@@ -95,7 +95,7 @@
 
     <script>
         'use strict'
-//var record_recognition;
+
         let log = console.log.bind(console),
                 id = val => document.getElementById(val),
                 ul = id('ul'),
@@ -165,43 +165,6 @@
             recorder.stop();
             start.removeAttribute('disabled');
             record_recognition.stop();
-//            final_transcript = '';
-        }
-
-        function start_speech(recognizing) {
-
-            var record_recognition = new webkitSpeechRecognition();
-
-            if (recognizing == false) {
-                record_recognition.continuous = false;
-                record_recognition.interimResults = false;
-                record_recognition.stop();
-                return;
-            }
-
-            if(recognizing == true) {
-                record_recognition.continuous = true;
-                record_recognition.interimResults = true;
-                record_recognition.start();
-            }
-
-
-//            record_recognition.onstart = function() {
-//                recognizing = true;
-//            };
-//
-//            record_recognition.onerror = function(event) {
-//                console.log(event.error);
-//            };
-//
-//            record_recognition.onend = function() {
-//                recognizing = false;
-//            };
-//
-            record_recognition.onresult = function(event) {
-                console.log(event)
-            }
-
         }
 
         function makeLink(){
@@ -227,43 +190,6 @@
 
     <!-- HTML5 Speech Recognition API -->
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-//        var final_transcript = '';
-        var recognizing = false;
-
-        if ('webkitSpeechRecognition' in window) {
-
-            var recognition = new webkitSpeechRecognition();
-
-            recognition.continuous = true;
-            recognition.interimResults = true;
-
-            recognition.onstart = function() {
-                recognizing = true;
-            };
-
-            recognition.onerror = function(event) {
-                console.log(event.error);
-            };
-
-            recognition.onend = function() {
-                recognizing = false;
-            };
-
-            recognition.onresult = function(event) {
-                var interim_transcript = '';
-                for (var i = event.resultIndex; i < event.results.length; ++i) {
-                    if (event.results[i].isFinal) {
-                        final_transcript += event.results[i][0].transcript;
-                    } else {
-                        interim_transcript += event.results[i][0].transcript;
-                    }
-                }
-                final_transcript = capitalize(final_transcript);
-                final_span.innerHTML = linebreak(final_transcript);
-                interim_span.innerHTML = linebreak(interim_transcript);
-
-            };
-        }
 
         var two_line = /\n\n/g;
         var one_line = /\n/g;
@@ -289,9 +215,6 @@
 
         $('#check_diff').click(function () {
 
-            recognition.onend = function() {
-                recognizing = false;
-            };
             text_demo = $('#text_demo').text();
             text_speak = $('#final_span').text();
 
