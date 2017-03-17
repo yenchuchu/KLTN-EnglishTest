@@ -31,7 +31,8 @@
     .save-tick-true-false,
     .save-multiple-choice,
     .save-complete-word,
-    .save-find-errors {
+    .save-find-errors,
+    .save-speaking {
         background: rgb(69, 224, 32);
         border-radius: 24px;
         color: white;
@@ -49,7 +50,8 @@
     .save-tick-true-false:hover, .save-tick-true-false:focus,
     .save-multiple-choice:hover, .save-multiple-choice:focus,
     .save-complete-word:hover, .save-complete-word:focus,
-    .save-find-errors:hover, .save-find-errors:focus {
+    .save-find-errors:hover, .save-find-errors:focus,
+    .save-speaking:hover, .save-speaking:focus {
         color: snow;
         text-decoration: underline;
         background: rgba(69, 224, 32, 0.69);
@@ -110,6 +112,18 @@
     .div-wrap-option-answers .col-lg-11 {
         padding-left: 0;
         padding-right: 0;
+    }
+
+    .btn-create-new-test {
+        float: right;
+    }
+
+    .alert-note {
+        font-size: 19px;
+        float: right;
+        padding-top: 15px;
+        color: #f0ad4e;
+        cursor: pointer;
     }
 
 </style>

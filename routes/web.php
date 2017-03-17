@@ -81,7 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
                     Route::get('/{class_code}', 'backend\author\TickCircleTrueFalseController@index')
                         ->name('backend.manager.author.tick-circle-true-false');
 
-                    Route::get('/create/{code_user}/{class_code}', 'backend\author\TickCircleTrueFalseController@create')
+                    Route::get('/create/{code_user}/{class_code}',
+                        'backend\author\TickCircleTrueFalseController@create')
                         ->name('backend.manager.author.tick-circle-true-false.create');
 
                     Route::post('/store', 'backend\author\TickCircleTrueFalseController@store')
@@ -143,6 +144,16 @@ Route::group(['middleware' => 'auth'], function () {
                         ->name('backend.manager.author.find-errors.store');
                 });
 
+                Route::group(array('prefix' => 'speaking'), function () {
+                    Route::get('/{class_code}', 'backend\author\SpeakingController@index')
+                        ->name('backend.manager.author.speaking');
+
+                    Route::get('/create/{code_user}/{class_code}', 'backend\author\SpeakingController@create')
+                        ->name('backend.manager.author.speaking.create');
+
+                    Route::post('/store', 'backend\author\SpeakingController@store')
+                        ->name('backend.manager.author.speaking.store');
+                });
             });
 
         });
@@ -194,7 +205,8 @@ Route::group(['middleware' => 'auth'], function () {
 
             // dashboard
             Route::get('/', 'frontend\StudentController@index')->name('frontend.dashboard.student.index');
-            Route::get('/learn-speak', 'frontend\StudentController@learn_speak')->name('frontend.dashboard.student.learn.speak');
+            Route::get('/learn-speak',
+                'frontend\StudentController@learn_speak')->name('frontend.dashboard.student.learn.speak');
             Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
 
@@ -210,7 +222,6 @@ Route::group(['middleware' => 'auth'], function () {
                 ->name('frontend.student.show.results');
 
 
-
         });
 
     });
@@ -220,7 +231,7 @@ Route::group(['middleware' => 'auth'], function () {
 //Route::group(array('middleware' => 'guest'), function () {
 // dashboard
 //Route::group(array('middleware' => 'checkRole:TC|AU|guest'), function () {
-    Route::get('/', 'DashboardController@index')->name('dashboard');
+Route::get('/', 'DashboardController@index')->name('dashboard');
 //});
 
 Auth::routes();

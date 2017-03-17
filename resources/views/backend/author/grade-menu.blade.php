@@ -1,4 +1,4 @@
- @extends('layouts.app-backend')
+@extends('layouts.app-backend')
 
 @section('header')
     <h1 class="page-header">Create Exam For {{$name_code}}</h1>
@@ -37,11 +37,11 @@
             background: rgba(10, 185, 122, 0.74);
         }
 
-        .type-exam>a:hover {
+        .type-exam > a:hover {
             text-decoration: none;
         }
 
-        .type-exam>a {
+        .type-exam > a {
             color: white;
             padding: 11% 17%;
         }
@@ -101,6 +101,21 @@
                         <h1>Listening</h1>
                     </div>
                 </div>
+
+                <div class="col-lg-6">
+                    <h1>Speaking</h1>
+                    <div class="main-body">
+
+                        <div class="col-lg-5 type-exam">
+                            <a href="{{route('backend.manager.author.speaking', $class_code)}}">
+                                <i class="fa fa-dashboard fa-fw"></i>
+                                {{trans('label.backend.author.speaking.grade_menu.content')}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </section>

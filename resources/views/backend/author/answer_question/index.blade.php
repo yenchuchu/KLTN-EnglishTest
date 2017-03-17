@@ -1,7 +1,9 @@
 @extends('layouts.app-backend')
 
 @section('header')
-    <h1 class="page-header">Answer questions for {{$name_code}}</h1>
+    <h1 class="page-header">
+        Answer questions for {{$name_code}}
+    </h1>
 @stop
 @section('content')
     <div class="row">
