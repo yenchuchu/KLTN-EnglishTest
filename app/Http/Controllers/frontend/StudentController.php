@@ -7,18 +7,16 @@ use App\Http\Requests;
 use App\Item;
 use App\Level;
 use App\Skill;
+use App\Speaking;
 use App\User;
 use App\UserSkill;
-use App\Speaking;
-use App\Http\Controllers\frontend\VoiceRSS;
-
-
 use Auth;
 use Config;
 use DB;
 use Illuminate\Http\Request;
 use Route;
 use Session;
+
 
 class StudentController extends Controller
 {
@@ -46,13 +44,14 @@ class StudentController extends Controller
         return view('frontend.student.index', compact('class_id', 'levels'));
     }
 
-    public function learn_speak() {
+    public function learn_speak()
+    {
         $class_id = Auth::user()->class_id;
         $speak_items = Speaking::where(['class_id' => $class_id])->get();
 
 
-        foreach ($speak_items as $item ) {
-            if($item->url_mp3 == null ) {
+        foreach ($speak_items as $item) {
+            if ($item->url_mp3 == null) {
                 $tts = new VoiceRSS;
                 $voice = $tts->speech([
                     'key' => 'd78f3419c63f4a35978e295ec139fc06',
@@ -74,37 +73,34 @@ class StudentController extends Controller
         return view('frontend.student.speak_skill', compact('class_id', 'levels', 'speak_items'));
     }
 
-    public function check_text_speech(Request $request) {
+    public function check_text_speech(Request $request)
+    {
         $all_request = $request->all();
         $text_demo = $all_request['text_demo'];
         $text_speak = $all_request['text_speak'];
-// thử try catch chỗ này đi
-        try{
-            if(strcmp($text_demo, $text_speak) == 0) {
 
-                return response()->json([
-                    'code' => 200,
-                    'result' => null,
-                    'message' => 'Score: 10'
-                ]);
-            } else {
-                $diff = $this->get_decorated_diff($text_demo, $text_speak);
-                $result_diff = $diff['new'];
-                $point = $diff['point'];
+        if (strcmp($text_demo, $text_speak) == 0) {
+            return response()->json([
+                'code' => 200,
+                'result' => null,
+                'message' => 'Score: 10'
+            ]);
+        } else {
+            $diff = $this->get_decorated_diff($text_demo, $text_speak);
+            $result_diff = $diff['new'];
+            $point = $diff['point'];
 
-                return response()->json([
-                    'code' => 200,
-                    'result' => $result_diff,
-                    'message' => 'Score: '.$point
-                ]);
-            }
-        }catch(Exception $err){
-            echo $err;
+            return response()->json([
+                'code' => 200,
+                'result' => $result_diff,
+                'message' => 'Score: ' . $point
+            ]);
         }
 
     }
 
-    function get_decorated_diff($old, $new){
+    function get_decorated_diff($old, $new)
+    {
         $count_word_old = str_word_count($old);
 
         $from_start = strspn($old ^ $new, "\0");
@@ -120,17 +116,17 @@ class StudentController extends Controller
 
         $count_word_correct = str_word_count($start) + str_word_count($end);
         var_dump($count_word_correct);
-        if($count_word_correct == 0) {
+        if ($count_word_correct == 0) {
             $point = 0;
         } else {
-            $point = ($count_word_correct*10)/$count_word_old;
+            $point = ($count_word_correct * 10) / $count_word_old;
         }
 
 //        $new = "$start<span style='background-color:#ccffcc'>$new_diff</span>$end";
 //        dd($new_diff);
-        $new = $start." - ".$new_diff. " - ".$end;
+        $new = $start . " - " . $new_diff . " - " . $end;
 //        $old = "$start<del style='background-color:#ffcccc'>$old_diff</del>$end";
-        return array("old"=>$old, "new"=>$new, "point" => round($point, 2));
+        return array("old" => $old, "new" => $new, "point" => round($point, 2));
     }
 
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
@@ -189,19 +185,21 @@ class StudentController extends Controller
                     $type_exam_listen = $this->skill_listen;
                     $random_type_listen = array_rand($type_exam_listen, 3);
 
-                } else if ($skill_json['Read'] < $skill_json['Listen']) {
-                    $type_exam_read = $this->skill_read;
-                    $random_type_read = array_rand($type_exam_read, 3);
+                } else {
+                    if ($skill_json['Read'] < $skill_json['Listen']) {
+                        $type_exam_read = $this->skill_read;
+                        $random_type_read = array_rand($type_exam_read, 3);
 
-                    $type_exam_listen = $this->skill_listen;
-                    $random_type_listen = array_rand($type_exam_listen, 1);
-                    $check_listen = 'Listen';
-                }  else {
-                    $type_exam_read = $this->skill_read;
-                    $random_type_read = array_rand($type_exam_read, 2);
+                        $type_exam_listen = $this->skill_listen;
+                        $random_type_listen = array_rand($type_exam_listen, 1);
+                        $check_listen = 'Listen';
+                    } else {
+                        $type_exam_read = $this->skill_read;
+                        $random_type_read = array_rand($type_exam_read, 2);
 
-                    $type_exam_listen = $this->skill_listen;
-                    $random_type_listen = array_rand($type_exam_listen, 2);
+                        $type_exam_listen = $this->skill_listen;
+                        $random_type_listen = array_rand($type_exam_listen, 2);
+                    }
                 }
             } else {
                 $type_exam_read = $this->skill_read;

@@ -240,11 +240,12 @@
             text_demo = $('#text_demo').text();
             text_speak = $('#final_span').text();
 
+
             url = '{{ route('frontend.student.testing.check_text_speech') }}';
             $.ajax({
                 url: url,
                 type: "post",
-//                dataType: "text",
+                dataType: "json",
                 data: {
                     text_demo: text_demo,
                     text_speak: text_speak,
@@ -252,7 +253,8 @@
                 },
                 success: function (data) {
 
-                    if (data['code'] == 200) {
+                    console.log(data); // loi cho int(0) y.
+                    if (data.code == 200) {
                         console.log('200');
                         console.log(data.result);
                         // hay trả về data mảng dạng {code, message, data};
