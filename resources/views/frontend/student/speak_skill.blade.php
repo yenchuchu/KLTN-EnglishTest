@@ -50,16 +50,41 @@
 @stop
 
 @section('content')
+
+    {{--@foreach($speak_items as $item)--}}
+        {{--<div>--}}
+            {{--<p id="text_demo">{{$item->content}}</p>--}}
+            {{--@if(isset($item->url_mp3_create))--}}
+                {{--<audio controls>--}}
+                    {{--<source src="{{$item->url_mp3_create}}" type="audio/mpeg">--}}
+                {{--</audio>--}}
+            {{--@else--}}
+                {{--<audio controls>--}}
+                    {{--<source src="{{URL::asset($item->url_mp3)}}" type="audio/mpeg">--}}
+                {{--</audio>--}}
+            {{--@endif--}}
+
+        {{--</div>--}}
+    {{--@endforeach--}}
+
+
     <div>
-        <p id="text_demo">Television is having a negative impact on society</p>
-        <audio controls>
-            <source src="{{$voice['response']}}">
-            Your browser does not support the audio element.
-        </audio>
+    <p id="text_demo">{{$speak_items[0]->content}}</p>
+    @if(isset($speak_items[0]->url_mp3_create))
+    <audio controls>
+    <source src="{{$speak_items[0]->url_mp3_create}}" type="audio/mpeg">
+    </audio>
+    @else
+    <audio controls>
+    <source src="{{URL::asset($speak_items[0]->url_mp3)}}" type="audio/mpeg">
+    </audio>
+    @endif
+
     </div>
 
     <div style="float:left; width: 100%">
-        <a href="#" id="start_button" onclick="startDictation(event)"><i class="fa fa-microphone" aria-hidden="true"></i></a>
+        {{--<a href="#" id="start_button" onclick="startDictation(event)"><i class="fa fa-microphone" aria-hidden="true"></i></a>--}}
+        <a href="#" id="start_button"><i class="fa fa-microphone" aria-hidden="true"></i></a>
 
         <div id="results">
             <span id="final_span" class="final"></span>
@@ -67,11 +92,6 @@
             <span id="messages_result"></span>
         </div>
     </div>
-
-
-
-    <button id="check_diff" class="btn btn-success" style="margin-top: 10px;">Check</button>
-
 
     <h1> MediaRecorder API example</h1>
 
@@ -89,6 +109,8 @@
     <div>
         <ul  class="list-unstyled" id='ul'></ul>
     </div>
+
+    <button id="check_diff" class="btn btn-success" style="margin-top: 10px;">Check</button>
 @stop
 
 @section('script')
@@ -126,7 +148,7 @@
                 chunks.push(e.data);
                 if(recorder.state == 'inactive')  makeLink();
             };
-            log('got media successfully');
+//            log('got media successfully');
         }).catch(log);
         console.log(record_recognition);
         start.onclick = e => {
@@ -222,6 +244,7 @@
             $.ajax({
                 url: url,
                 type: "post",
+//                dataType: "text",
                 data: {
                     text_demo: text_demo,
                     text_speak: text_speak,
@@ -229,17 +252,27 @@
                 },
                 success: function (data) {
 
-                    // hay trả về data mảng dạng {code, message, data};
-                    if (data.code == 200) {  // mặc định 200 là thành công
-                        $('#messages_result').css('color', '#1bf51b');
-                        $('#messages_result').text(data.message);
+                    if (data['code'] == 200) {
+                        console.log('200');
+                        console.log(data.result);
+                        // hay trả về data mảng dạng {code, message, data};
+                        if (data.result == null) {  // mặc định 200 là thành công
+                            $('#messages_result').css('color', '#1bf51b');
+                            $('#messages_result').text(data.message);
+                        } else {
+                            $('#final_span').text(data.result);
+                            $('#messages_result').css('color', '#1bf51b');
+                            $('#messages_result').text(data.message);
+                        }
                     }
 
-                    if (data.code == 32) {  // mặc định 200 là thành công
-                        $('#messages_result').css('color', 'red');
-                        $('#messages_result').text(data.message);
-                    }
-                    console.log(data.message);
+
+//                    if (data.code == 32) {  // mặc định 200 là thành công
+//
+//                        $('#messages_result').css('color', '#1bf51b');
+//                        $('#final_span').text(data.result);
+//                        $('#messages_result').text(data.message);
+//                    }
 
                     if (data.code == 404) {
                         swal('', data.message, 'error').catch(swal.noop);
@@ -248,6 +281,7 @@
                     }
                 },
                 error: function () {
+                    alert('error');
                     swal('', 'Không thực hiện được hành động này!', 'error');
                 }
             });

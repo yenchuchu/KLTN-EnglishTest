@@ -6,14 +6,17 @@ use App\AnswerQuestion;
 use App\BookMap;
 use App\Classes;
 use App\ExamType;
-use App\FindError;
 use App\Http\Controllers\Controller;
 use App\Level;
 use App\Skill;
+use App\Speaking;
 use App\User;
-use Illuminate\Http\Request;
-use Route;
+
 use Config;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
+use Route;
+use Session;
 
 class SpeakingController extends Controller
 {
@@ -33,7 +36,7 @@ class SpeakingController extends Controller
     {
         $this->levels = Level::all();
         $this->classes = Classes::all();
-        $this->skill = 'Read';
+        $this->skill = 'Speak';
 
         $this->url_parameters = Route::getCurrentRoute()->parameters();
     }
@@ -115,62 +118,61 @@ class SpeakingController extends Controller
     public function store(Request $request)
     {
         $all_data = $request->all();
-//        dd($all_data);
+        $class_code = $all_data['class_code'];
 
-        if (!isset($all_data['level_id'])) {
-            $all_data['level_id'] = null;
-        }
+        foreach ($all_data['speaking'] as $key => $data) {
 
-        if (!isset($all_data['book_map_id'])) {
-            $all_data['book_map_id'] = null;
-        }
+            $speak_item = new Speaking();
+            $speak_item->content = $data['content-speaking'];
 
-        if (!isset($all_data['exam_type_id'])) {
-            $all_data['exam_type_id'] = null;
-        }
-
-        $skill = Skill::where('code', $this->skill)->first();
-        $level_id = $all_data['level_id'];
-        $class_id = $all_data['class_id'];
-        $code_user = $all_data['code_user'];
-        $book_map_id = $all_data['book_map_id'];
-        $exam_type_id = $all_data['exam_type_id'];
-
-        foreach ($all_data['find_errors'] as $data) {
-
-            $find_error_content_question = $data['content-choose-ans-question'];
-//            $array_suggest_ans ;
-            foreach ($find_error_content_question as $key => $value) {
-
-                $content_qts = $value['content'];
-
-                preg_match_all("~<u\>(.*?)\<\/u\>~", $content_qts, $array_suggest_ans);
-                $find_error_content_question[$key]['suggest_choose'] = $array_suggest_ans[1];
+            if (!isset($all_data['level_id'])) {
+                $all_data['level_id'] = null;
             }
 
-            $find_error = new FindError();
+            if (!isset($all_data['book_map_id'])) {
+                $all_data['book_map_id'] = null;
+            }
 
-            $find_error->title = $data['title-find-errors'];
-//            $find_error->point = $data['point'];
-            $find_error->type_user = $code_user;
-            $find_error->content_json = json_encode($find_error_content_question);
-            $find_error->skill_id = $skill->id;
-            $find_error->exam_type_id = $exam_type_id;
-            $find_error->level_id = $level_id;
-            $find_error->class_id = $class_id;
-//            $find_error->bookmap_json_id = json_encode($book_map_id);
-            $find_error->bookmap_id = $book_map_id;
+            if (!isset($all_data['exam_type_id'])) {
+                $all_data['exam_type_id'] = null;
+            }
 
-            $find_error->save();
+            $skill = Skill::where('code', $this->skill)->first();
+
+            $speak_item->type_user = $all_data['code_user'];
+            $speak_item->skill_id = $skill->id;
+            $speak_item->exam_type_id = $all_data['exam_type_id'];
+            $speak_item->level_id = $all_data['level_id'];
+            $speak_item->class_id = $all_data['class_id'];
+            $speak_item->bookmap_id = $all_data['book_map_id'];
+
+            $audio_files = Input::file();
+            if (!empty($audio_files)) {
+
+                if (isset($audio_files['speaking'][$key])) {
+                    $audio = $audio_files['speaking'][$key];
+
+                    $filename = $audio['audio']->getClientOriginalName();
+                    $location = public_path('backend/audio/');
+                    $audio['audio']->move($location, $filename);
+                    $speak_item->url_mp3 = 'backend/audio/'.$filename;
+                }
+            }
+
+            $speak_item->save();
         }
 
-        return Redirect()->route('backend.manager.author.find-errors', $class_id);
+        Session::flash('message', 'Thêm dữ liệu thành công!');
+        return Redirect()->route('backend.manager.author.speaking', $class_code);
     }
 
-    function get_string_between($string, $start, $end){
+    function get_string_between($string, $start, $end)
+    {
         $string = ' ' . $string;
         $ini = strpos($string, $start);
-        if ($ini == 0) return '';
+        if ($ini == 0) {
+            return '';
+        }
         $ini += strlen($start);
         $len = strpos($string, $end, $ini) - $ini;
         return substr($string, $ini, $len);

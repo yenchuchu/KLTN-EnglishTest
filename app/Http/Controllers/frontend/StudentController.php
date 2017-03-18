@@ -9,9 +9,9 @@ use App\Level;
 use App\Skill;
 use App\User;
 use App\UserSkill;
+use App\Speaking;
 use App\Http\Controllers\frontend\VoiceRSS;
 
-//use Voicerss\VoiceRSS;
 
 use Auth;
 use Config;
@@ -47,42 +47,90 @@ class StudentController extends Controller
     }
 
     public function learn_speak() {
-
-        $tts = new VoiceRSS;
-        $voice = $tts->speech([
-            'key' => 'd78f3419c63f4a35978e295ec139fc06',
-            'hl' => 'en-us',
-            'src' => 'Television is having a negative impact on society',
-            'r' => '0',
-            'c' => 'mp3',
-            'f' => '44khz_16bit_stereo',
-            'ssml' => 'false',
-            'b64' => 'true'
-        ]);
-
         $class_id = Auth::user()->class_id;
+        $speak_items = Speaking::where(['class_id' => $class_id])->get();
+
+
+        foreach ($speak_items as $item ) {
+            if($item->url_mp3 == null ) {
+                $tts = new VoiceRSS;
+                $voice = $tts->speech([
+                    'key' => 'd78f3419c63f4a35978e295ec139fc06',
+                    'hl' => 'en-us',
+                    'src' => $item->content,
+                    'r' => '0',
+                    'c' => 'mp3',
+                    'f' => '44khz_16bit_stereo',
+                    'ssml' => 'false',
+                    'b64' => 'true'
+                ]);
+
+                $item->url_mp3_create = $voice['response'];
+            }
+        }
+
         $levels = $this->levels;
 
-        return view('frontend.student.speak_skill', compact('class_id', 'levels', 'voice'));
+        return view('frontend.student.speak_skill', compact('class_id', 'levels', 'speak_items'));
     }
 
     public function check_text_speech(Request $request) {
         $all_request = $request->all();
         $text_demo = $all_request['text_demo'];
         $text_speak = $all_request['text_speak'];
+// thử try catch chỗ này đi
+        try{
+            if(strcmp($text_demo, $text_speak) == 0) {
 
-        if(strcmp($text_demo, $text_speak) == 0) {
-            return response()->json([
-                'code' => 200,
-                'message' => 'Correct'
-            ]);
-        } else {
-            return response()->json([
-                'code' => 32,
-                'message' => 'Incorrect'
-            ]);
+                return response()->json([
+                    'code' => 200,
+                    'result' => null,
+                    'message' => 'Score: 10'
+                ]);
+            } else {
+                $diff = $this->get_decorated_diff($text_demo, $text_speak);
+                $result_diff = $diff['new'];
+                $point = $diff['point'];
+
+                return response()->json([
+                    'code' => 200,
+                    'result' => $result_diff,
+                    'message' => 'Score: '.$point
+                ]);
+            }
+        }catch(Exception $err){
+            echo $err;
         }
-        dd($all_request);
+
+    }
+
+    function get_decorated_diff($old, $new){
+        $count_word_old = str_word_count($old);
+
+        $from_start = strspn($old ^ $new, "\0");
+        $from_end = strspn(strrev($old) ^ strrev($new), "\0");
+
+        $old_end = strlen($old) - $from_end;
+        $new_end = strlen($new) - $from_end;
+
+        $start = substr($new, 0, $from_start);
+        $end = substr($new, $new_end);
+        $new_diff = substr($new, $from_start, $new_end - $from_start);
+//        $old_diff = substr($old, $from_start, $old_end - $from_start);
+
+        $count_word_correct = str_word_count($start) + str_word_count($end);
+        var_dump($count_word_correct);
+        if($count_word_correct == 0) {
+            $point = 0;
+        } else {
+            $point = ($count_word_correct*10)/$count_word_old;
+        }
+
+//        $new = "$start<span style='background-color:#ccffcc'>$new_diff</span>$end";
+//        dd($new_diff);
+        $new = $start." - ".$new_diff. " - ".$end;
+//        $old = "$start<del style='background-color:#ffcccc'>$old_diff</del>$end";
+        return array("old"=>$old, "new"=>$new, "point" => round($point, 2));
     }
 
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
