@@ -28,7 +28,6 @@
             padding-bottom: 16px;
         }
 
-
          .speech {border: 1px solid #DDD; width: 300px; padding: 0; margin: 0}
         .speech input {border: 0; width: 240px; display: inline-block; height: 30px;}
         .speech img {float: right; width: 40px }
@@ -40,6 +39,21 @@
 
         #results {
             margin-left: 10px;
+            float: left;
+            width: 100%;
+        }
+
+        #messages_result {
+            color: rgb(27, 245, 27);
+            float: left;
+            width: 100%;
+            margin-left: 30px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        #btns {
+            margin-bottom: 5px;
         }
 
     </style>
@@ -69,6 +83,7 @@
 
 
     <div>
+        <h3>Listen and repeat</h3>
     <p id="text_demo">{{$speak_items[0]->content}}</p>
     @if(isset($speak_items[0]->url_mp3_create))
     <audio controls>
@@ -84,16 +99,14 @@
 
     <div style="float:left; width: 100%">
         {{--<a href="#" id="start_button" onclick="startDictation(event)"><i class="fa fa-microphone" aria-hidden="true"></i></a>--}}
-        <a href="#" id="start_button"><i class="fa fa-microphone" aria-hidden="true"></i></a>
 
         <div id="results">
+            <a href="#" id="start_button" style="margin-right: 10px;"><i class="fa fa-microphone" aria-hidden="true"></i></a>
             <span id="final_span" class="final"></span>
             <span id="interim_span" class="interim"></span>
-            <span id="messages_result"></span>
         </div>
+        <div id="messages_result"></div>
     </div>
-
-    <h1> MediaRecorder API example</h1>
 
     <p> For now it is supported only in Firefox(v25+) and Chrome(v47+)</p>
     <div id='gUMArea'>
@@ -200,7 +213,7 @@
             mt.src = url;
             hf.href = url;
             hf.download = `${counter++}${media.ext}`;
-            hf.innerHTML = `donwload ${hf.download}`;
+            hf.innerHTML = `<i class="fa fa-download" aria-hidden="true"></i> ${hf.download}`;
             li.appendChild(mt);
             li.appendChild(hf);
             ul.appendChild(li);
@@ -240,12 +253,10 @@
             text_demo = $('#text_demo').text();
             text_speak = $('#final_span').text();
 
-
             url = '{{ route('frontend.student.testing.check_text_speech') }}';
             $.ajax({
                 url: url,
                 type: "post",
-                dataType: "json",
                 data: {
                     text_demo: text_demo,
                     text_speak: text_speak,
@@ -253,28 +264,15 @@
                 },
                 success: function (data) {
 
-                    console.log(data); // loi cho int(0) y.
                     if (data.code == 200) {
-                        console.log('200');
-                        console.log(data.result);
-                        // hay trả về data mảng dạng {code, message, data};
-                        if (data.result == null) {  // mặc định 200 là thành công
-                            $('#messages_result').css('color', '#1bf51b');
+                        if (data.result == null) {
                             $('#messages_result').text(data.message);
                         } else {
-                            $('#final_span').text(data.result);
-                            $('#messages_result').css('color', '#1bf51b');
+                            $('#final_span').remove();
+                            $('#results').prepend(data.result);
                             $('#messages_result').text(data.message);
                         }
                     }
-
-
-//                    if (data.code == 32) {  // mặc định 200 là thành công
-//
-//                        $('#messages_result').css('color', '#1bf51b');
-//                        $('#final_span').text(data.result);
-//                        $('#messages_result').text(data.message);
-//                    }
 
                     if (data.code == 404) {
                         swal('', data.message, 'error').catch(swal.noop);

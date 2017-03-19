@@ -102,7 +102,7 @@ class StudentController extends Controller
     function get_decorated_diff($old, $new)
     {
         $count_word_old = str_word_count($old);
-
+//
         $from_start = strspn($old ^ $new, "\0");
         $from_end = strspn(strrev($old) ^ strrev($new), "\0");
 
@@ -115,18 +115,21 @@ class StudentController extends Controller
 //        $old_diff = substr($old, $from_start, $old_end - $from_start);
 
         $count_word_correct = str_word_count($start) + str_word_count($end);
-        var_dump($count_word_correct);
+//        var_dump($count_word_correct);
         if ($count_word_correct == 0) {
             $point = 0;
         } else {
             $point = ($count_word_correct * 10) / $count_word_old;
         }
 
-//        $new = "$start<span style='background-color:#ccffcc'>$new_diff</span>$end";
+        $new = "<span id='final_span' class='final'>$start<span style='background-color: rgba(249, 150, 117, 0.49);'>$new_diff</span>$end</span>";
 //        dd($new_diff);
-        $new = $start . " - " . $new_diff . " - " . $end;
+//        $new = $start . " - " . $new_diff . " - " . $end;
 //        $old = "$start<del style='background-color:#ffcccc'>$old_diff</del>$end";
         return array("old" => $old, "new" => $new, "point" => round($point, 2));
+//
+//        return array('1','2');
+
     }
 
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
