@@ -1,6 +1,7 @@
 <div class="row wrap-test-class" id="title-level-testing">
-    <h3>Testing {{$level_chosen->title}}</h3>
-    <input type="hidden" id="level-tesing-hidden" value="{{$level_chosen->id}}">
+    <h3>Testing {{$skill_code}}</h3>
+    <input type="hidden" id="level-tesing-hidden" value="{{$get_next_level}}">
+    <input type="hidden" id="skill-code-tesing-hidden" value="{{$skill_code}}">
 </div>
 
 <div class="row wrap-test-class" id="testing-id">
@@ -14,11 +15,11 @@
     ?>
     @foreach($items as $key => $item)
 
-        <h4>{{$i_skill}}. {{$key}}</h4>
+{{--        <h4>{{$i_skill}}. {{$key}}</h4>--}}
         @foreach($item as $key_item => $detail)
             @if(!empty($detail))
                 <div class="col-lg-12 space-exam">
-                    <p>{{$j_title}}. {{$detail->title}}</p>
+                    <div class="title-common">{{$lamas[$j_title]}}. {{$detail->title}}</div>
                     @if(isset($detail->content))
                         <article> {{$detail->content}} </article>
                     @endif

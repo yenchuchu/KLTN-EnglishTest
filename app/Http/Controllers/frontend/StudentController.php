@@ -34,6 +34,7 @@ class StudentController extends Controller
         $this->lama = Config::get('constants.lama');
         $this->code_student = 'ST';
         $this->levels = Level::all();
+
     }
 
     public function index()
@@ -132,106 +133,150 @@ class StudentController extends Controller
 
     }
 
+    public function checkLevel($point, $level_now) {
+
+        $level = Level::get()->pluck('id')->toArray();
+        $key_max = count($level) -1;
+//dd($level);
+        foreach ($level as $key => $lv) {
+            if($lv == $level_now) {
+                $key_now = $key;
+            }
+        }
+
+        if($point < 50) {
+            if($key_now == 0) {
+                $level_next = $level[$key_now];
+            } else {
+                $level_next = $level[$key_now-1];
+            }
+        } else {
+            if($key_now == $key_max) {
+                $level_next = $level[$key_now];
+            } else {
+                $level_next = $level[$key_now+1];
+            }
+
+        }
+
+        return $level_next;
+    }
+
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
     public function redirectToTest(Request $request)
     {
         $this->url_parameters = Route::getCurrentRoute()->parameters();
-        $level_id = $this->url_parameters['level_id'];
+
+        $skill_code = $this->url_parameters['skill_code'];
+        $skill_id = $this->getSkillIdByCode($skill_code);
+
         $user = Auth::user();
         $user_id = $user->id;
 
-        $level_chosen = Level::whereId($level_id)->first();
-
-        if (!isset($level_chosen)) {
-            Session::flash('message', 'Không thực hiện được hành động này!');
-
-            return redirect()->route('frontend.dashboard.student.index');
-        }
+//        $level_chosen = Level::whereId($level_id)->first();
+//
+//        if (!isset($level_chosen)) {
+//            Session::flash('message', 'Không thực hiện được hành động này!');
+//
+//            return redirect()->route('frontend.dashboard.student.index');
+//        }
 
         $class_id = Auth::user()->class_id;
         $levels = $this->levels;
 
-        $skills = $user->user_skills()->where(['level_id' => $level_id])->get();
+        $skills = $user->user_skills()->where(['skill_id' => $skill_id])->get();
+        $max_code = $this->getMaxCodeTest($skills);
+
+        // Lấy kết quả lần thi gần đây nhất.
+        $filter_skills = $skills->filter(function ($skill) use ($user_id, $max_code) {
+            $test_id = $user_id . '_' . $max_code;
+
+            return $skill->user_id == $user_id && $skill->test_id == $test_id;
+        })->all();
+
+        if(!empty($filter_skills)) {
+            foreach ($filter_skills as $filter) {
+                $get_next_level = $this->checkLevel($filter['point'], $filter['level_id']);
+            }
+        } else {
+            $get_next_level = 2;
+        }
 
         // kiểm tra lượt thi đã tồn tại hay chưa ( được lưu ở bảng Items).
-        $check_exist_item = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
+//        $check_exist_item = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
+        $check_exist_item = Item::where(['user_id' => $user_id, 'skill_id' => $skill_id])->get();
         if (count($check_exist_item) == 0) {
-
-            $max_code = $this->getMaxCodeTest($skills);
-
-            // Lấy kết quả lần thi gần đây nhất.
-            $filter_skills = $skills->filter(function ($skill) use ($user_id, $max_code) {
-                $test_id = $user_id . '_' . $max_code;
-
-                return $skill->user_id == $user_id && $skill->test_id == $test_id;
-            });
 
             // lấy điểm của từng kỹ năng. so sánh, kỹ năng nào có điểm thấp hơn thì cho nhiều bài tập hơn.
             // nếu chưa có phần thi nào => số bài của 2 kĩ năng = nhau.
+//
+//            $skill_json = [];
+//            foreach ($filter_skills as $diff) {
+//                $de_json = json_decode($diff->skill_json);
+//
+//                foreach ($de_json as $de) {
+//                    $code_skill = Skill::select('code')->whereId($de->skill_id)->first();
+//                    $skill_json[$code_skill->code] = $de->point;
+//                }
+//            }
 
-            $skill_json = [];
-            foreach ($filter_skills as $diff) {
-                $de_json = json_decode($diff->skill_json);
 
-                foreach ($de_json as $de) {
-                    $code_skill = Skill::select('code')->whereId($de->skill_id)->first();
-                    $skill_json[$code_skill->code] = $de->point;
-                }
-            }
+//            if (!empty($skill_json)) {
+//                if ($skill_json['Read'] > $skill_json['Listen']) {
+//                    $type_exam_read = $this->skill_read;
+//                    $random_type_read = array_rand($type_exam_read, 1);
+//                    $check_read = 'Read';
+//
+//                    $type_exam_listen = $this->skill_listen;
+//                    $random_type_listen = array_rand($type_exam_listen, 3);
+//
+//                } else {
+//                    if ($skill_json['Read'] < $skill_json['Listen']) {
+//                        $type_exam_read = $this->skill_read;
+//                        $random_type_read = array_rand($type_exam_read, 3);
+//
+//                        $type_exam_listen = $this->skill_listen;
+//                        $random_type_listen = array_rand($type_exam_listen, 1);
+//                        $check_listen = 'Listen';
+//                    } else {
+//                        $type_exam_read = $this->skill_read;
+//                        $random_type_read = array_rand($type_exam_read, 2);
+//
+//                        $type_exam_listen = $this->skill_listen;
+//                        $random_type_listen = array_rand($type_exam_listen, 2);
+//                    }
+//                }
+//            } else {
 
-            if (!empty($skill_json)) {
-                if ($skill_json['Read'] > $skill_json['Listen']) {
-                    $type_exam_read = $this->skill_read;
-                    $random_type_read = array_rand($type_exam_read, 1);
-                    $check_read = 'Read';
+//                $type_exam_read = $skill_code;
+                $type_exam_read = Config::get('constants.skill.'.$skill_code);
+            $random_type_read = array_rand($type_exam_read, 3);
+//            dd($random_type_read);
 
-                    $type_exam_listen = $this->skill_listen;
-                    $random_type_listen = array_rand($type_exam_listen, 3);
-
-                } else {
-                    if ($skill_json['Read'] < $skill_json['Listen']) {
-                        $type_exam_read = $this->skill_read;
-                        $random_type_read = array_rand($type_exam_read, 3);
-
-                        $type_exam_listen = $this->skill_listen;
-                        $random_type_listen = array_rand($type_exam_listen, 1);
-                        $check_listen = 'Listen';
-                    } else {
-                        $type_exam_read = $this->skill_read;
-                        $random_type_read = array_rand($type_exam_read, 2);
-
-                        $type_exam_listen = $this->skill_listen;
-                        $random_type_listen = array_rand($type_exam_listen, 2);
-                    }
-                }
-            } else {
-                $type_exam_read = $this->skill_read;
-                $random_type_read = array_rand($type_exam_read, 2);
-
-                $type_exam_listen = $this->skill_listen;
-                $random_type_listen = array_rand($type_exam_listen, 2);
-            }
+//                $type_exam_listen = $this->skill_listen;
+//                $random_type_listen = array_rand($type_exam_listen, 2);
+//            }
 
             $items = [];
 //            $items['Listen'][] = [];
 //            $items['Read'][] = [];
 //            dd($items);
 
-            if (!isset($check_listen)) {
-                // listen chỉ có 1 dạng bài.
-                $items['Listen'][] = [];
-            } else {
+//            if (!isset($check_listen)) {
+//                // listen chỉ có 1 dạng bài.
+//                $items['Listen'][] = [];
+//            } else {
+//
+//            }
 
-            }
-
-            var_dump($random_type_listen);
+//            var_dump($random_type_listen);
             var_dump($random_type_read);
 
             if (!isset($check_read)) {
 //                echo " k ton tai";
                 foreach ($random_type_read as $read) {
                     $read_table = DB::table($read)
-                        ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
+                        ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $get_next_level])
                         ->get()->toArray();
 
                     if (count($read_table) != 0) {
@@ -248,7 +293,7 @@ class StudentController extends Controller
 //                var_dump($check_read);
                 // read chỉ có 1 dạng bài.
                 $read_table = DB::table($random_type_read)
-                    ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $level_id])
+                    ->where(['class_id' => $class_id, 'type_user' => $this->code_student, 'level_id' => $get_next_level])
                     ->get()->toArray();
 
                 if (count($read_table) != 0) {
@@ -264,10 +309,11 @@ class StudentController extends Controller
             $noti_not_complete = 0;
             $time_remaining = Config::get('constants.time_start');
         } elseif (count($check_exist_item) == 1) { // đã tồn tại
+
             $noti_not_complete = 1;
             $items_old = Item::where([
                 'user_id' => $user_id,
-                'level_id' => $level_id
+                'level_id' => $get_next_level
             ])->get();
 
             $items = [];
@@ -307,7 +353,7 @@ class StudentController extends Controller
         $lamas = $this->lama;
 
         return view('frontend.student.join-test.index',
-            compact('class_id', 'level_chosen', 'levels', 'items', 'random_type_listen', 'random_type_read',
+            compact('class_id', 'items', 'random_type_listen', 'random_type_read', 'skill_code', 'get_next_level',
                 'noti_not_complete', 'time_remaining', 'lamas'));
     }
 
@@ -378,12 +424,15 @@ class StudentController extends Controller
             }
         }
 
-        $check_item_exist = Item::where(['user_id' => $user_id, 'level_id' => $level_id])->get();
+        $skill_id_item = $this->getSkillIdByCode($ans['skill_name']);
+
+        $check_item_exist = Item::where(['user_id' => $user_id, 'skill_id' => $skill_id_item])->get();
         if ($done == 0) {
             if (count($check_item_exist) == 0) {
                 $items = new Item();
 
                 $items->level_id = $level_id;
+                $items->skill_id = $skill_id_item;
                 $items->user_id = $user_id;
                 $items->time_remaining = $time_remaining;
                 $items->update_json_answer = $json_answer_encode;
@@ -397,6 +446,7 @@ class StudentController extends Controller
 
                 Item::where([
                     'user_id' => $user_id,
+                    'skill_id' => $skill_id_item,
                     'level_id' => $level_id
                 ])
                     ->update($data);
@@ -418,9 +468,10 @@ class StudentController extends Controller
             $i_item = 1;
             foreach ($point_skills as $skill => $point) {
 
-                $find_skill = Skill::where(['code' => $skill])->first();
+                $skill_id = $this->getSkillIdByCode($skill);
+//                $find_skill = Skill::where(['code' => $skill])->first();
                 $array_point_skills[$i_item] = [
-                    'skill_id' => $find_skill->id,
+                    'skill_id' => $skill_id,
                     'point' => $point
                 ];
 
@@ -446,11 +497,12 @@ class StudentController extends Controller
             $add_user_skill->status = 1;
             $add_user_skill->test_id = $test_id;
 
-            $add_user_skill->skill_json = $encode_point;
+            $add_user_skill->point = $point;
+            $add_user_skill->skill_id = $skill_id;
 
             $add_user_skill->save();
 
-            Item::where(['user_id' => $user_id, 'level_id' => $level_id])->delete();
+            Item::where(['user_id' => $user_id, 'level_id' => $level_id, 'skill_id' => $skill_id])->delete();
 
             return response()->json([
                 'code' => 200,
@@ -471,13 +523,15 @@ class StudentController extends Controller
         $point_total = 0;
         $point = []; // điểm theo từng kỹ năng.
 
-        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
+        $point_sum = Config::get('constants.sum_point'); // Tổng điểm của cả bài thi.
+        $max_exam = Config::get('constants.max_exam'); // số bài có trong 1 kỹ năng
+//        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
         foreach ($json_answer as $skill => $items) {
             $point[$skill] = 0;
             foreach ($items as $table => $qts_asn) {
 
                 $total_qts = count($qts_asn); // tổng số câu trong 1 bài ( 1 bài trong 1 kĩ năng)
-                $point_each_qts = $point_constant / $total_qts;  // điểm trung bình của từng question trong bài đấy.
+                $point_each_qts = ($point_sum/$max_exam) / $total_qts;  // điểm trung bình của từng question trong bài đấy.
 
                 $id_record = $qts_asn[0]['id_record'];
                 $found_record = DB::table($table)->where(['id' => $id_record])->get()->toArray();
@@ -513,7 +567,6 @@ class StudentController extends Controller
 
         }
 
-
         return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
     }
 
@@ -527,8 +580,8 @@ class StudentController extends Controller
     public function restartDeleteItem(Request $request)
     {
         $request_all = $request->all();
-
-        $check_item_exist = Item::where(['user_id' => Auth::user()->id, 'level_id' => $request_all['level_id']]);
+        $skill_id = $this->getSkillIdByCode($request_all['skill_code']);
+        $check_item_exist = Item::where(['user_id' => Auth::user()->id, 'skill_id' => $skill_id]);
 
         if (count($check_item_exist) == 0) {
             return response()->json([
@@ -593,23 +646,29 @@ class StudentController extends Controller
     public function show_results()
     {
         $user_id = Auth::user()->id;
-        $all_results = UserSkill::where(['user_id' => $user_id])
-            ->orderBy('level_id', 'ASC')
-            ->get();
+        $all_results = [];
 
-        foreach ($all_results as $result) {
+        $results = UserSkill::where(['user_id' => $user_id])->get();
+
+        foreach ($results as $result) {
             $max_test_id = explode('_', $result->test_id);
             $result->test_id = $max_test_id[1];
-            $result->skill_json = json_decode($result->skill_json);
-            foreach ($result->skill_json as $key => $skill) {
-                $find_skill = Skill::whereId($skill->skill_id)->first();
-                $skill->skill_id = $find_skill->code;
-            }
+            $result->point = $result->point;
+            $result->level_id = $result->level_id;
         }
 
-        $levels = $this->levels;
 
-        return view('frontend.student.test_results', compact('all_results', 'levels'));
+        $all_results['Read'] = $results->filter(function ($result) {
+           return $result->skill_id == $this->getSkillIdByCode('Read');
+        });
+
+        return view('frontend.student.test_results', compact('all_results'));
+    }
+
+    public function getSkillIdByCode($code_skill) {
+        $skill = Skill::where(['code' => $code_skill])->first();
+
+        return $skill->id;
     }
 
     public function edit($id)

@@ -81,4 +81,10 @@
         margin-right: 5px;
     }
 
+    .title-common {
+        font-size: 16px;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
 </style>

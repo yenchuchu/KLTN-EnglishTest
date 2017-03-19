@@ -207,8 +207,10 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/', 'frontend\StudentController@index')->name('frontend.dashboard.student.index');
             Route::get('/learn-speak',
                 'frontend\StudentController@learn_speak')->name('frontend.dashboard.student.learn.speak');
-            Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
+            Route::get('/redirect-to-test-page/{skill_code}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
+// Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
+//                ->name('frontend.dashboard.student.redirect');
 
             Route::post('check_text_speech', 'frontend\StudentController@check_text_speech')
                 ->name('frontend.student.testing.check_text_speech');

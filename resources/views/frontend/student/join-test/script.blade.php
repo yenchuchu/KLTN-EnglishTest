@@ -168,13 +168,14 @@
     }
 
     // khi chọn nút restart => gọi ajax xóa bản ghi có level_id và user_id.
-    function restart_test(level_id) {
+    function restart_test(level_id, skill_code) {
         url = '{{ route('frontend.student.testing.restart.delete.item') }}';
         $.ajax({
             url: url,
             type: "post",
             data: {
                 level_id: level_id,
+                skill_code: skill_code,
                 _token: CSRF_TOKEN
             },
             success: function (data) {
@@ -182,7 +183,7 @@
                     swal('', data.message, 'error').catch(swal.noop);
                     return false;
                 } else if (data.code == 200) {
-                    window.location = document.getElementById('href_level_' + level_id).href;
+                    window.location = document.getElementById('href_' + skill_code).href;
                     // cứ 15s gửi đáp án lên serve 1 lần
                     interval = setInterval(function () {
                         get_answer_consecutive(0);
@@ -216,7 +217,7 @@
                     if (isConfirm) { // true: restart
                         // xóa record gần nhất ( record của cái lần vừa được restart)
                         // bắt đầu thêm lại và update.
-                        restart_test('{{$level_chosen->id}}');
+                        restart_test('{{$get_next_level}}', '{{$skill_code}}');
 
 
                         timer = setInterval(function () {

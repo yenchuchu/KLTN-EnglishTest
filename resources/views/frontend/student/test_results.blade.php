@@ -48,43 +48,28 @@
 @section('content')
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <!-- Advanced Tables -->
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Kết quả đã thi
+                   Reading
                 </div>
                 <div class="panel-body">
                     <div class="table-responsive" id="reload-table-results">
                         <table class="table table-hover" id="manager_results_users">
                             <thead>
                             <tr>
-                                {{--<th rowspan="2">STT</th>--}}
-                                <th rowspan="2">Lần thi</th>
-                                <th rowspan="2">Level</th>
-                                <th colspan="2" align="center">Điểm</th>
-                            </tr>
-                            <tr>
-                                <th>Nghe</th>
-                                <th>Đọc</th>
+                                <th>Lần thi</th>
+                                <th align="center">Điểm</th>
+                                <th align="center">Ngày Thi</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($all_results as $results)
+                            @foreach($all_results['Read'] as $results)
                                 <tr class="odd gradeX">
-                                    {{--<td></td>--}}
                                     <td>{{$results->test_id}}</td>
-                                    <td>{{$results->level_id}}</td>
-                                    @foreach($results->skill_json as $skill)
-
-                                        @if($skill->skill_id == 'Listen')
-                                        <td> {{$skill->point}} </td>
-                                        @endif
-
-                                        @if($skill->skill_id == 'Read')
-                                                <td> {{$skill->point}} </td>
-                                        @endif
-                                    @endforeach
+                                    <td>{{$results->point}}</td>
+                                    <td>{{Carbon\Carbon::parse($results->created_at)->format('d/m/Y - H:i')}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
