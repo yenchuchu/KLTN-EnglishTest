@@ -26,64 +26,20 @@
                     @endif
                     <?php $list_question = json_decode($detail->content_json);
                     $k_question = 1;
-
                     ?>
-                    @foreach($list_question as $question)
+                    {{--@foreach($list_question as $question)--}}
+{{--                        {{dd($list_question)}}--}}
                         <?php
                         switch ($detail->table) {
-                        case "answer_questions": ?>
-
-                        @include('frontend.student.join-test.temp_answer_question',
-                        ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question, 'id_question' => $question->id,
-                        'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table])
-                        <?php  break;
-
-                        case "complete_words": ?>
-                            @include('frontend.student.join-test.temp_complete_word',
-                         ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question, 'id_question' => $question->id,
-                         'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table])
-                            <?php  break;
-
-                        case "find_errors": ?>
-
-                        @include('frontend.student.join-test.temp_find_error',
-                        ['key' => $key, 'j_title' => $j_title, 'k_question' => $k_question, 'id_question' => $question->id,
-                        'question_content' =>$question->content, 'id_record'=> $detail->id, 'table' => $detail->table,
-                        'suggest_answer' => $question->suggest_choose])
-                        <?php  break;
-
-                        case "multiple_choices": ?>
-
-                        @include('frontend.student.join-test.temp_multiple_choice',
-                    ['key' => $key, 'id_record'=> $detail->id, 'table' => $detail->table, 'k_question' => $k_question,
-                    'id_question' => $question->id, 'question_content' =>$question->content, 'j_title' => $j_title,
-                    'suggest_answer' => $question->suggest_choose])
-                        <?php break;
-
-                        case "tick_circle_true_falses": ?>
-
-                        @include('frontend.student.join-test.temp_tick_circle_true_false',
-                        ['key' => $key, 'table' => $detail->table, 'k_question' => $k_question, 'id_question' => $question->id,
-                        'question_content' =>$question->content, 'id_record'=> $detail->id])
-                        <?php break;
-
-//                        case "underlines":
-//                            echo "underlines!";
-//                            break;
-
-//                            case "classify_words":
-//                                echo "classify_words!";
-//                                break;
-
                             case "complete_tables":
                                 echo "classify_words!";
                                 break;
 
-                            case "table_ticks":?>
+                            case "listen_table_ticks":?>
 
                             @include('frontend.student.join-test.listening.temp_table_tick',
-                            ['key' => $key, 'table' => $detail->table, 'k_question' => $k_question, 'id_question' => $question->id,
-                            'question_content' =>$question->content, 'id_record'=> $detail->id])
+                            ['key' => $key, 'table' => $detail->table, 'number_title' =>$j_title,
+                            'suggest_choose' =>$list_question->suggest_choose, 'id_record'=> $detail->id])
                             <?php break;
 
                             case "table_matchs":
@@ -120,7 +76,7 @@
                         ?>
 
                         <?php $k_question++; ?>
-                    @endforeach
+                    {{--@endforeach--}}
                 </div>
                 <?php $j_title++; ?>
             @endif

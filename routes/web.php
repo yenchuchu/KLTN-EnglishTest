@@ -209,6 +209,9 @@ Route::group(['middleware' => 'auth'], function () {
                 'frontend\StudentController@learn_speak')->name('frontend.dashboard.student.learn.speak');
             Route::get('/redirect-to-test-page/{skill_code}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
+
+            Route::get('/redirect-to-test-page-listen/{skill_code}', 'frontend\StudentController@redirectToTestListem')
+                ->name('frontend.dashboard.student.redirect.listen');
 // Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
 //                ->name('frontend.dashboard.student.redirect');
 
@@ -217,6 +220,9 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::post('handling-result', 'frontend\StudentController@hanglingResult')
                 ->name('frontend.student.testing.handle');
+            Route::post('handling-result-listen', 'frontend\StudentController@hanglingResultListen')
+                ->name('frontend.student.testing.listen.handle');
+
             Route::post('restart-delete-item', 'frontend\StudentController@restartDeleteItem')
                 ->name('frontend.student.testing.restart.delete.item');
 
