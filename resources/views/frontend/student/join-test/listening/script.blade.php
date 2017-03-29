@@ -50,29 +50,56 @@
                         for (var prop in obj) {
                             // skip loop if the property is from prototype
                             if (!obj.hasOwnProperty(prop)) continue;
-
                             var end_obj = obj[prop];
+//                            console.log(end_obj['answer']);
                             for (var end in  end_obj) {
+                                console.log(end_obj);
+                                console.log(end);
                                 if (!end_obj.hasOwnProperty(end)) continue;
-                                name_id = 'your_answer_' + key + '_' + prop + '_' + end;
-
-                                if (key == 'tick_circle_true_falses') {
-                                    if (end_obj[end]['answer'] == 'T') {
-                                        $('#' + name_id + '_false').parent().parent().append('' +
-                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>True</b></label>');
-                                    } else {
-                                        $('#' + name_id + '_false').parent().parent().append('' +
-                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
-                                    }
-                                } else if (key == 'find_errors' || 'multiple_choices') {
-                                    $('#' + name_id).css('border', '1px solid red');
-                                    $('#' + name_id +'_answer').append('' +
-                                            '<span style="color: red;">Answer:  <b>' + end_obj[end]['answer'] + '<b> </sapn>');
-                                } else if(key == 'answer_questions') {
-                                    console.log( end_obj[end]['answer']);
-                                    $('#' + name_id).css('border', '1px solid red');
-                                    $('#' + name_id).parent().append('<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
+//console.log(key);
+//console.log(prop);
+                                var answer_correct = end_obj['answer'];
+                                for (var result_item_correct in answer_correct) {
+                                    if (!answer_correct.hasOwnProperty(result_item_correct)) continue;
+//                                    console.log(answer_correct[result_item_correct]);
+                                    var replace_answer = answer_correct[result_item_correct].replace(/\ /g, '_');
+                                    name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
+//                                    console.log(name_id);
+                                    $('#' + name_id).css('color', '#09e609');
                                 }
+//                                your_answer_listen_table_ticks_141_label_River
+                                var answer_error = end_obj['error'];
+
+                                for (var result_item_error in answer_error) {
+                                    console.log(answer_error);
+                                    if (!answer_error.hasOwnProperty(result_item_error)) continue;
+                                    console.log( answer_error[result_item_error]);
+                                    var replace_answer = answer_error[result_item_error].replace(/\ /g, '_');
+                                    name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
+                                    console.log(name_id);
+                                    $('#' + name_id).css('color', 'red');
+                                }
+
+//                                name_id = 'your_answer_' + prop + '_' + key + '_' + end;
+////                                your_answer_listen_table_ticks_141_River
+//                                if (key == 'listen_table_ticks') {
+//                                    if (end_obj[end]['answer'] == 'T') {
+////                                        color: #09e609;
+//                                        $('#' + name_id + '_false').parent().parent().append('' +
+//                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>True</b></label>');
+//                                    } else {
+//                                        $('#' + name_id + '_false').parent().parent().append('' +
+//                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
+//                                    }
+//                                } else if (key == 'find_errors' || 'multiple_choices') {
+//                                    $('#' + name_id).css('border', '1px solid red');
+//                                    $('#' + name_id +'_answer').append('' +
+//                                            '<span style="color: red;">Answer:  <b>' + end_obj[end]['answer'] + '<b> </sapn>');
+//                                } else if(key == 'answer_questions') {
+//                                    console.log( end_obj[end]['answer']);
+//                                    $('#' + name_id).css('border', '1px solid red');
+//                                    $('#' + name_id).parent().append('<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
+//                                }
                             }
                         }
                     }
@@ -139,27 +166,41 @@
 
         $("[id^='your_answer_']").each(function () {
             name_table = $(this).attr('name_table');
+//            console.log(name_table);
             id_record = $(this).attr('id_record');
             number_title = $(this).attr('number_title');
 
             if (name_table == 'listen_table_ticks') {
-                var answer_student = []
+                var answer_student = [];
                 $("input[name='your_answer_" + name_table + "_" + id_record+"[]']:checked").each(function ()
                 {
                     answer_student.push($(this).val());
                 });
 
             } else {
-                answer_student = '';
+                id_question = $(this).attr('id_question');
+                answer_student = $(this).val();
             }
 
-            list_answer.push({
-                'name_table': name_table,
-                'id_record': id_record,
-                'answer_student': answer_student,
-                'number_title': number_title,
-                'skill_name': skill_name
-            });
+            if (typeof id_question == 'undefined') {
+                list_answer.push({
+                    'name_table': name_table,
+                    'id_record': id_record,
+                    'answer_student': answer_student,
+                    'number_title': number_title,
+                    'skill_name': skill_name
+                });
+            } else {
+                list_answer.push({
+                    'name_table': name_table,
+                    'id_record': id_record,
+                    'id_question': id_question,
+                    'answer_student': answer_student,
+                    'number_title': number_title,
+                    'skill_name': skill_name
+                });
+            }
+
 
             unique_list_answer = dedupe(list_answer);
         });

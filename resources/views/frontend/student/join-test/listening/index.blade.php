@@ -6,6 +6,22 @@
 
 @section('style-menu-main')
     @include('frontend.student.join-test.style')
+
+    <style>
+        .input_complete_listen {
+            width: 7%;
+            border: none;
+            border-bottom: 1px solid gray;
+            margin-left: 7px;
+            color: gray;
+        }
+
+        .audio_listen {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+    </style>
 @stop
 
 @section('content')

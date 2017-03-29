@@ -210,7 +210,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/redirect-to-test-page/{skill_code}', 'frontend\StudentController@redirectToTest')
                 ->name('frontend.dashboard.student.redirect');
 
-            Route::get('/redirect-to-test-page-listen/{skill_code}', 'frontend\StudentController@redirectToTestListem')
+            Route::get('/redirect-to-test-page-listen/{skill_code}', 'frontend\StudentController@redirectToTestListen')
                 ->name('frontend.dashboard.student.redirect.listen');
 // Route::get('/redirect-to-test-page/{level_id}', 'frontend\StudentController@redirectToTest')
 //                ->name('frontend.dashboard.student.redirect');

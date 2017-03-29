@@ -161,7 +161,11 @@ class StudentController extends Controller
         return $level_next;
     }
 
-    // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh
+    /**
+     * XỬ LÍ KỸ NĂNG ĐỌC
+     */
+
+    // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh- KỸ NĂNG READING
     public function redirectToTest(Request $request)
     {
         $this->url_parameters = Route::getCurrentRoute()->parameters();
@@ -298,7 +302,6 @@ class StudentController extends Controller
 
         }
 
-//        dd($items);
         $lamas = $this->lama;
 
         return view('frontend.student.join-test.index',
@@ -306,7 +309,7 @@ class StudentController extends Controller
                 'noti_not_complete', 'time_remaining', 'lamas'));
     }
 
-    // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh.
+    // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh - KY NANG READING
     public function hanglingResult(Request $request)
     {
 
@@ -387,7 +390,7 @@ class StudentController extends Controller
                 $items->time_remaining = $time_remaining;
                 $items->update_json_answer = $json_answer_encode;
 
-                $items->save();
+//                $items->save();
             } else {
                 $data = [
                     'time_remaining' => $time_remaining,
@@ -412,7 +415,6 @@ class StudentController extends Controller
             $point_total = $result_answer['point_total'];
 
             $fix_answer_error = $result_answer['check_correct'];
-//            dd($fix_answer_error);
 
             $array_point_skills = [];
             $i_item = 1;
@@ -463,7 +465,7 @@ class StudentController extends Controller
 
     }
 
-    // hàm kiểm tra đáp án và tính điểm.
+    // hàm kiểm tra đáp án và tính điểm.- KỸ NĂNG READING
     public function checkAnswer($json_answer)
     {
 //dd($json_answer);
@@ -520,8 +522,12 @@ class StudentController extends Controller
         return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
     }
 
+    /**
+     * XỬ LÍ KỸ NĂNG NGHE
+     */
+
     // hàm hiển thị bài test hoặc bài test chưa hoàn thiện của học sinh - KỸ NĂNG NGHE
-    public function redirectToTestListem(Request $request)
+    public function redirectToTestListen(Request $request)
     {
         $this->url_parameters = Route::getCurrentRoute()->parameters();
 
@@ -567,10 +573,11 @@ class StudentController extends Controller
         if (count($check_exist_item) == 0) {
 
             $type_exam_read = Config::get('constants.skill.'.$skill_code);
-            $random_type_read = array_rand($type_exam_read, 3);
+//            $random_type_read = array_rand($type_exam_read, 3);
+            $random_type_read = ['listen_complete_sentences'];
 
             $items = [];
-            var_dump($random_type_read);
+//            var_dump($random_type_read);
 
             if (!isset($check_read)) {
 //                echo " k ton tai";
@@ -624,7 +631,6 @@ class StudentController extends Controller
                 'skill_id' => $skill_id,
                 'level_id' => $get_next_level
             ])->get();
-            dd($items_old);
 
             $items = [];
             foreach ($items_old as $item) {
@@ -633,8 +639,9 @@ class StudentController extends Controller
             }
 
             foreach ($json_decode_answer as $skill => $ans) {
-
+//dd($ans);
                 foreach ($ans as $table => $tb) {
+//                    dd($tb);
                     $find = DB::table($table)->where([
                         'id' => $tb[0]->id_record
                     ])->first();
@@ -647,10 +654,15 @@ class StudentController extends Controller
 
                     $find->table = $table;
                     foreach ($tb as $t) {
-                        $find->old_answer[$t->id_question] = [
-                            'id_question' => $t->id_question,
-                            'answer_student' => $t->answer_student
-                        ];
+
+                        if(!isset($t->id_question)) {
+                            $find->old_answer = $t->answer_student;
+                        } else {
+                            $find->old_answer[$t->id_question] = [
+                                'id_question' => $t->id_question,
+                                'answer_student' => $t->answer_student
+                            ];
+                        }
                     }
 
                     $items[$skill][$tb[0]->order] = $find;
@@ -658,7 +670,7 @@ class StudentController extends Controller
             }
 
         }
-
+//        dd($items);
         $lamas = $this->lama;
 
         return view('frontend.student.join-test.listening.index',
@@ -666,39 +678,48 @@ class StudentController extends Controller
                 'noti_not_complete', 'time_remaining', 'lamas'));
     }
 
-
-    // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh.
+    // xử lí lưu liên tục kết quả làm bài 15s/lần của học sinh.- KỸ NĂNG NGHE
     public function hanglingResultListen(Request $request)
     {
 
         $requets_all = $request->all();
+//        dd($requets_all);
 
         $array_tables = collect($requets_all['list_answer'])->pluck('name_table');
         $table_all = array_unique($array_tables->toArray());
-
+//dd($table_all);
         foreach ($requets_all['list_answer'] as $ans) {
+            if ($ans['skill_name'] == 'Listen') {
+                foreach ($table_all as $table) {
+                    if ($ans['name_table'] == $table) {
 
-                if ($ans['skill_name'] == 'Listen') {
-                    foreach ($table_all as $table) {
-                        if ($ans['name_table'] == $table) {
+                        if (!isset($ans['answer_student'])) {
+                            $ans['answer_student'] = '';
+                        }
 
-                            if (!isset($ans['answer_student'])) {
-                                $ans['answer_student'] = '';
-                            }
-
+                        if(isset($ans['id_question'])) {
+                            $data = [
+                                'order' => $ans['number_title'], // số thứ tự của bài đang test. ( bài 1 bài 2)
+                                'id_question' => $ans['id_question'],
+                                'id_record' => $ans['id_record'],
+                                'answer_student' => $ans['answer_student']
+                            ];
+                        } else {
                             $data = [
                                 'order' => $ans['number_title'], // số thứ tự của bài đang test. ( bài 1 bài 2)
                                 'id_record' => $ans['id_record'],
                                 'answer_student' => $ans['answer_student']
                             ];
-                            $json_answer['Listen'][$table][] = $data;
                         }
+
+                        $json_answer['Listen'][$table][] = $data;
                     }
                 }
+            }
 
         }
-
         $json_answer_encode = json_encode($json_answer);
+//        dd($json_answer_encode);
         $user_id = Auth::user()->id;
         $level_id = $requets_all['level_id'];
         $time_remaining = $requets_all['time_remaning']; // thời gian còn lại của học sinh để làm bài
@@ -748,33 +769,14 @@ class StudentController extends Controller
             $add_user_skill = new UserSkill();
 
             // gọi hàm đối chiếu đáp án & tính điểm
-            $result_answer = $this->checkAnswer($json_answer);
+            $result_answer = $this->checkAnswerListen($json_answer);
+
             $point_skills = $result_answer['point'];
             $point_total = $result_answer['point_total'];
 
             $fix_answer_error = $result_answer['check_correct'];
-//            dd($fix_answer_error);
 
-            $array_point_skills = [];
-            $i_item = 1;
-            foreach ($point_skills as $skill => $point) {
-
-                $skill_id = $this->getSkillIdByCode($skill);
-//                $find_skill = Skill::where(['code' => $skill])->first();
-                $array_point_skills[$i_item] = [
-                    'skill_id' => $skill_id,
-                    'point' => $point
-                ];
-
-                $i_item++;
-            }
-            // chưa có bài test cho phần Listening => gán tạm
-            $array_point_skills[2] = [
-                'skill_id' => 1,
-                'point' => 20
-            ];
-
-            $encode_point = json_encode($array_point_skills);
+            $skill_id = $this->getSkillIdByCode($ans['skill_name']);
 
             $user = User::find($user_id);
 
@@ -788,12 +790,12 @@ class StudentController extends Controller
             $add_user_skill->status = 1;
             $add_user_skill->test_id = $test_id;
 
-            $add_user_skill->point = $point;
+            $add_user_skill->point = $point_total;
             $add_user_skill->skill_id = $skill_id;
 
-            $add_user_skill->save();
+//            $add_user_skill->save();
 
-            Item::where(['user_id' => $user_id, 'level_id' => $level_id, 'skill_id' => $skill_id])->delete();
+//            Item::where(['user_id' => $user_id, 'level_id' => $level_id, 'skill_id' => $skill_id])->delete();
 
             return response()->json([
                 'code' => 200,
@@ -804,10 +806,9 @@ class StudentController extends Controller
 
     }
 
-    // hàm kiểm tra đáp án và tính điểm.
+    // hàm kiểm tra đáp án và tính điểm.- KỸ NĂNG NGHE
     public function checkAnswerListen($json_answer)
     {
-//dd($json_answer);
         $check_correct = [];
         $count_correct = 0;
         $count_incorrect = 0;
@@ -815,42 +816,75 @@ class StudentController extends Controller
         $point = []; // điểm theo từng kỹ năng.
 
         $point_sum = Config::get('constants.sum_point'); // Tổng điểm của cả bài thi.
-        $max_exam = Config::get('constants.max_exam'); // số bài có trong 1 kỹ năng
+//        $max_exam = Config::get('constants.max_exam'); // số bài có trong 1 kỹ năng
+        $max_exam = 1; // số bài có trong 1 kỹ năng
+
 //        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
         foreach ($json_answer as $skill => $items) {
             $point[$skill] = 0;
             foreach ($items as $table => $qts_asn) {
-
                 $total_qts = count($qts_asn); // tổng số câu trong 1 bài ( 1 bài trong 1 kĩ năng)
                 $point_each_qts = ($point_sum/$max_exam) / $total_qts;  // điểm trung bình của từng question trong bài đấy.
 
                 $id_record = $qts_asn[0]['id_record'];
                 $found_record = DB::table($table)->where(['id' => $id_record])->get()->toArray();
-                $answer_correct = json_decode($found_record[0]->content_json);
+                dd($found_record); // đang bị conflict đáp án của table tick vs .....
+                die
+                $answer_correct = json_decode($found_record[0]->content_json)->answer;
                 $answer_correct_array = [];
 
-                foreach ($answer_correct as $check) {
-                    $answer_correct_array[$check->id] = preg_replace('/\s+/', ' ', trim($check->answer));
+                foreach ($answer_correct as $key => $check) {
+                    if(!isset($check->id)) {
+                        $answer_correct_array[$key] = preg_replace('/\s+/', ' ', trim($check));
+                    } else {
+                        $answer_correct_array[$check->id] = preg_replace('/\s+/', ' ', trim($check->answer));
+                    }
                 }
 
                 foreach ($qts_asn as $item) {
-                    $id_question = $item['id_question'];
-                    $answer_student = preg_replace('/\s+/', ' ', trim($item['answer_student']));
-
-                    $text_answer_correct = $answer_correct_array[$id_question];
-                    if (strcmp($text_answer_correct, $answer_student) == 0) {
-//                       $check_correct[$table][$id_record][$id_question] = 1; // đúng kết quả
-                        $count_correct++; // số câu đúng
-
+                    if(isset($item['id_question'])) {
+                        $id_question = $item['id_question'];
+                        $text_answer_correct = $answer_correct_array[$id_question];
                     } else {
-                        // gán kết quả đúng để show cho học sinh.
-                        $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
-//                       $check_correct['review'] = 1;
-
-                        $count_incorrect++; // số câu sai
+                        $text_answer_correct = $answer_correct_array;
                     }
 
+                    if(is_array($item['answer_student']) == true) {
+                        $answer_student = $item['answer_student'];
+                    } else {
+                        $answer_student = preg_replace('/\s+/', ' ', trim($item['answer_student']));
+                    }
 
+                    $result_check = [];
+                    if(is_array($answer_student) == true) {
+                        $result_check['answer_student_incorrect'] = array_diff($answer_student, $text_answer_correct);
+                        $result_check['answer_correct_miss'] = array_diff($text_answer_correct, $answer_student);
+
+                        $check_correct[$table][$id_record]['answer'] = $text_answer_correct;
+                        $check_correct[$table][$id_record]['error'] = $result_check['answer_student_incorrect'];
+
+                        $count_incorrect_table_tick = count($result_check['answer_student_incorrect']);
+                        $count_correct_table_tick = count($answer_student) - count($result_check['answer_student_incorrect']);
+
+                        $point_each_ans = $point_each_qts/count($text_answer_correct);
+                        $point_total += $point_each_ans * $count_correct_table_tick;
+                    } else {
+                        if (strcmp($text_answer_correct, $answer_student) == 0) {
+//                       $check_correct[$table][$id_record][$id_question] = 1; // đúng kết quả
+                            $count_correct++; // số câu đúng
+
+                        } else {
+                            // gán kết quả đúng để show cho học sinh.
+                            if(!isset($id_question)) {
+                                $id_question = 1;
+                                $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
+                            } else {
+                                $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
+                            }
+
+                            $count_incorrect++; // số câu sai
+                        }
+                    }
                 }
             }
             $point[$skill] += $count_correct * $point_each_qts;
@@ -861,6 +895,9 @@ class StudentController extends Controller
         return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
     }
 
+    /**
+     * XỬ LÍ ITEMS
+     */
 
     // xoas 1 item trong bang Items
     public function deleteItems($check_item_exist)

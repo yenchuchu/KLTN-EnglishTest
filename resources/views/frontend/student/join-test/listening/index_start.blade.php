@@ -15,7 +15,7 @@
     ?>
     @foreach($items as $key => $item)
 
-{{--        <h4>{{$i_skill}}. {{$key}}</h4>--}}
+        {{--        <h4>{{$i_skill}}. {{$key}}</h4>--}}
         @foreach($item as $key_item => $detail)
             @if(!empty($detail))
 
@@ -25,57 +25,69 @@
                         <article> {{$detail->content}} </article>
                     @endif
                     <?php $list_question = json_decode($detail->content_json);
+
                     $k_question = 1;
                     ?>
-                    {{--@foreach($list_question as $question)--}}
-{{--                        {{dd($list_question)}}--}}
-                        <?php
-                        switch ($detail->table) {
-                            case "complete_tables":
-                                echo "classify_words!";
-                                break;
+                    <div class="audio_listen" style="margin-top: 10px; margin-bottom: 15px;">
+                        <audio controls>
+                            <source src="{{URL::asset($detail->url)}}" type="audio/mpeg">
+                        </audio>
+                    </div>
+                    <?php
+                    switch ($detail->table) {
+                    case "complete_tables":
+                        echo "classify_words!";
+                        break;
 
-                            case "listen_table_ticks":?>
+                    case "listen_table_ticks": ?>
 
-                            @include('frontend.student.join-test.listening.temp_table_tick',
-                            ['key' => $key, 'table' => $detail->table, 'number_title' =>$j_title,
-                            'suggest_choose' =>$list_question->suggest_choose, 'id_record'=> $detail->id])
-                            <?php break;
+                    @include('frontend.student.join-test.listening.temp_table_tick',
+                    ['key' => $key, 'table' => $detail->table, 'number_title' =>$j_title,
+                    'suggest_choose' =>$list_question->suggest_choose, 'id_record'=> $detail->id])
+                    <?php break;
 
-                            case "table_matchs":
-                                echo "classify_words!";
-                                break;
+                    case "table_matchs":
+                        echo "classify_words!";
+                        break;
 
-                            case "complete_sentences":
-                                echo "classify_words!";
-                                break;
+                    case "listen_complete_sentences": ?>
+                    @foreach($list_question as $question)
 
-                            case "listen_ticks":
-                                echo "classify_words!";
-                                break;
-
-                            case "tick_crosses":
-                                echo "classify_words!";
-                                break;
-
-                            case "fill_numbers":
-                                echo "classify_words!";
-                                break;
-//
-//                                '' => 'Complete Table',
-//            '' => 'Table Tick',
-//            '' => 'Table Matchs',
-//            '' => 'Complete Sentences',
-//            '' => 'Listen and Tick',
-//            '' => 'Tick Cross',
-//            '' => 'Listen And Fill In One Number',
-
-                        default:
-                            echo "Your favorite color is neither red, blue, nor green!";
-                        }
-                        ?>
+                        @include('frontend.student.join-test.listening.temp_complete_sentences',
+                        ['key' => $key, 'table' => $detail->table, 'number_title' =>$j_title,
+                        'k_question' => $k_question, 'id_question' => $question->id,
+                        'question_content' =>$question->content, 'id_record'=> $detail->id])
 
                         <?php $k_question++; ?>
+                    @endforeach
+                    <?php break;
+
+                    case "listen_ticks":
+                        echo "classify_words!";
+                        break;
+
+                    case "tick_crosses":
+                        echo "classify_words!";
+                        break;
+
+                    case "fill_numbers":
+                        echo "classify_words!";
+                        break;
+                    //
+                    //                                '' => 'Complete Table',
+                    //            '' => 'Table Tick',
+                    //            '' => 'Table Matchs',
+                    //            '' => 'Complete Sentences',
+                    //            '' => 'Listen and Tick',
+                    //            '' => 'Tick Cross',
+                    //            '' => 'Listen And Fill In One Number',
+
+                    default:
+                        echo "Your favorite color is neither red, blue, nor green!";
+                    }
+                    ?>
+
+                    <?php $k_question++; ?>
                     {{--@endforeach--}}
                 </div>
                 <?php $j_title++; ?>
