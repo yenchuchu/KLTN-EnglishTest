@@ -244,6 +244,9 @@ Route::get('/', 'DashboardController@index')->name('dashboard');
 
 Auth::routes();
 
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
 Route::get('/403', function () {
     return view('errors.403');
 });

@@ -573,12 +573,13 @@ class StudentController extends Controller
         if (count($check_exist_item) == 0) {
 
             $type_exam_read = Config::get('constants.skill.'.$skill_code);
-//            $random_type_read = array_rand($type_exam_read, 3);
-            $random_type_read = ['listen_complete_sentences'];
+//            $random_type_read = array_rand($type_exam_read, 2); // 3
+            $random_type_read = ['listen_ticks'];
 
             $items = [];
-//            var_dump($random_type_read);
+            var_dump($random_type_read);
 
+//            die;
             if (!isset($check_read)) {
 //                echo " k ton tai";
                 foreach ($random_type_read as $read) {
@@ -718,6 +719,7 @@ class StudentController extends Controller
             }
 
         }
+
         $json_answer_encode = json_encode($json_answer);
 //        dd($json_answer_encode);
         $user_id = Auth::user()->id;
@@ -793,9 +795,9 @@ class StudentController extends Controller
             $add_user_skill->point = $point_total;
             $add_user_skill->skill_id = $skill_id;
 
-//            $add_user_skill->save();
+            $add_user_skill->save();
 
-//            Item::where(['user_id' => $user_id, 'level_id' => $level_id, 'skill_id' => $skill_id])->delete();
+            Item::where(['user_id' => $user_id, 'level_id' => $level_id, 'skill_id' => $skill_id])->delete();
 
             return response()->json([
                 'code' => 200,
@@ -820,6 +822,7 @@ class StudentController extends Controller
         $max_exam = 1; // số bài có trong 1 kỹ năng
 
 //        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
+//        dd($json_answer);
         foreach ($json_answer as $skill => $items) {
             $point[$skill] = 0;
             foreach ($items as $table => $qts_asn) {
@@ -828,11 +831,18 @@ class StudentController extends Controller
 
                 $id_record = $qts_asn[0]['id_record'];
                 $found_record = DB::table($table)->where(['id' => $id_record])->get()->toArray();
-                dd($found_record); // đang bị conflict đáp án của table tick vs .....
-                die
-                $answer_correct = json_decode($found_record[0]->content_json)->answer;
+//dd($found_record);
+                $json_decode_answer = json_decode($found_record[0]->content_json); // conten_json từ trong db
+//                dd($json_decode_answer);
+                if(isset($json_decode_answer->answer)) {
+                    $answer_correct = $json_decode_answer->answer;
+//                    echo 'isset';
+                } else {
+//                    echo 'konh ton tai';
+                    $answer_correct = $json_decode_answer;
+                }
+//dd($answer_correct);
                 $answer_correct_array = [];
-
                 foreach ($answer_correct as $key => $check) {
                     if(!isset($check->id)) {
                         $answer_correct_array[$key] = preg_replace('/\s+/', ' ', trim($check));
@@ -842,12 +852,14 @@ class StudentController extends Controller
                 }
 
                 foreach ($qts_asn as $item) {
-                    if(isset($item['id_question'])) {
+//                    dd($item);
+                    if($item['id_question'] == 0) {
+                        $text_answer_correct = $answer_correct_array;
+                    } else {
                         $id_question = $item['id_question'];
                         $text_answer_correct = $answer_correct_array[$id_question];
-                    } else {
-                        $text_answer_correct = $answer_correct_array;
                     }
+//                    dd($text_answer_correct);
 
                     if(is_array($item['answer_student']) == true) {
                         $answer_student = $item['answer_student'];
@@ -880,6 +892,7 @@ class StudentController extends Controller
                                 $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
                             } else {
                                 $check_correct[$table][$id_record][$id_question]['answer'] = $text_answer_correct;
+//                                echo "khong ton tai";
                             }
 
                             $count_incorrect++; // số câu sai
@@ -892,6 +905,8 @@ class StudentController extends Controller
 
         }
 
+//        dd($point_total);
+//dd($check_correct);
         return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
     }
 

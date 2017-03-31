@@ -53,53 +53,47 @@
                             var end_obj = obj[prop];
 //                            console.log(end_obj['answer']);
                             for (var end in  end_obj) {
-                                console.log(end_obj);
-                                console.log(end);
+//                                console.log(end_obj);
+//                                console.log(end);
                                 if (!end_obj.hasOwnProperty(end)) continue;
-//console.log(key);
-//console.log(prop);
-                                var answer_correct = end_obj['answer'];
-                                for (var result_item_correct in answer_correct) {
-                                    if (!answer_correct.hasOwnProperty(result_item_correct)) continue;
+
+                                if (key == 'listen_table_ticks') {
+                                    var answer_correct = end_obj['answer'];
+                                    for (var result_item_correct in answer_correct) {
+                                        if (!answer_correct.hasOwnProperty(result_item_correct)) continue;
 //                                    console.log(answer_correct[result_item_correct]);
-                                    var replace_answer = answer_correct[result_item_correct].replace(/\ /g, '_');
-                                    name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
+                                        var replace_answer = answer_correct[result_item_correct].replace(/\ /g, '_');
+                                        name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
 //                                    console.log(name_id);
-                                    $('#' + name_id).css('color', '#09e609');
-                                }
-//                                your_answer_listen_table_ticks_141_label_River
-                                var answer_error = end_obj['error'];
+                                        $('#' + name_id).css('color', '#09e609');
+                                    }
 
-                                for (var result_item_error in answer_error) {
-                                    console.log(answer_error);
-                                    if (!answer_error.hasOwnProperty(result_item_error)) continue;
-                                    console.log( answer_error[result_item_error]);
-                                    var replace_answer = answer_error[result_item_error].replace(/\ /g, '_');
-                                    name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
-                                    console.log(name_id);
+                                    var answer_error = end_obj['error'];
+
+                                    for (var result_item_error in answer_error) {
+//                                        console.log(answer_error);
+                                        if (!answer_error.hasOwnProperty(result_item_error)) continue;
+//                                        console.log(answer_error[result_item_error]);
+                                        var replace_answer = answer_error[result_item_error].replace(/\ /g, '_');
+                                        name_id = 'your_answer_' + key + '_' + prop + '_label_' + replace_answer;
+//                                    console.log(name_id);
+                                        $('#' + name_id).css('color', 'red');
+                                    }
+                                } else if (key == 'listen_complete_sentences') {
+                                    name_id = 'your_answer_' + key + '_' + prop + '_' + end;
                                     $('#' + name_id).css('color', 'red');
+                                    $('#' + name_id).parent().append('' +
+                                            '<span style="color: red;padding-left: 12px;"><strong style="margin-right: 5px;">Anwer:</strong> ' + end_obj[end]['answer'] + '</sapn>');
+//                                    console.log(key); // name tbale
+//                                    console.log(prop); // 851
+//                                    console.log('test teststet');
+                                } else if(key == 'listen_ticks') {
+                                    name_id = 'show_result_'+ key +'_' + prop + '_' + end;
+                                    $('#' + name_id).append('' +
+                                            '<label class="checkbox-inline" style="color: red;"><strong>Answer:</strong>'+ end_obj[end]['answer'] +'</label>');
+//                                    console.log(name_id);
+//                                    console.log(end_obj[end]);
                                 }
-
-//                                name_id = 'your_answer_' + prop + '_' + key + '_' + end;
-////                                your_answer_listen_table_ticks_141_River
-//                                if (key == 'listen_table_ticks') {
-//                                    if (end_obj[end]['answer'] == 'T') {
-////                                        color: #09e609;
-//                                        $('#' + name_id + '_false').parent().parent().append('' +
-//                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>True</b></label>');
-//                                    } else {
-//                                        $('#' + name_id + '_false').parent().parent().append('' +
-//                                                '<label class="checkbox-inline" style="color: red;">Answer: <b>False</b></label>');
-//                                    }
-//                                } else if (key == 'find_errors' || 'multiple_choices') {
-//                                    $('#' + name_id).css('border', '1px solid red');
-//                                    $('#' + name_id +'_answer').append('' +
-//                                            '<span style="color: red;">Answer:  <b>' + end_obj[end]['answer'] + '<b> </sapn>');
-//                                } else if(key == 'answer_questions') {
-//                                    console.log( end_obj[end]['answer']);
-//                                    $('#' + name_id).css('border', '1px solid red');
-//                                    $('#' + name_id).parent().append('<span style="color: red;padding-left: 12px;">' + end_obj[end]['answer'] + '</sapn>');
-//                                }
                             }
                         }
                     }
@@ -160,6 +154,7 @@
         list_answer_details = [];
         unique_list_answer = [];
 
+
         level_id = $('#level-tesing-hidden').val();
         skill_name = $('#skill-code-tesing-hidden').val();
         time_remaning = $('#demnguoc').attr('time_remaining');
@@ -170,38 +165,34 @@
             id_record = $(this).attr('id_record');
             number_title = $(this).attr('number_title');
 
+
+            var answer_student = [];
             if (name_table == 'listen_table_ticks') {
-                var answer_student = [];
-                $("input[name='your_answer_" + name_table + "_" + id_record+"[]']:checked").each(function ()
-                {
+                var  id_question = 0;
+                $("input[name='your_answer_" + name_table + "_" + id_record + "[]']:checked").each(function () {
                     answer_student.push($(this).val());
                 });
 
+            } else if (name_table == 'listen_ticks') {
+                id_question = $(this).attr('id_question');
+                answer_student = $('input[name="your_answer_[' + name_table + '][' + id_record + '][' + id_question + '][]"]:checked').val();
+
+//                $("input[name='your_answer_[" + name_table + "][" + id_record + "]["+ id_question +"][]']:checked").each(function () {
+//                    answer_student.push($(this).val());
+//                });
             } else {
                 id_question = $(this).attr('id_question');
                 answer_student = $(this).val();
             }
 
-            if (typeof id_question == 'undefined') {
-                list_answer.push({
-                    'name_table': name_table,
-                    'id_record': id_record,
-                    'answer_student': answer_student,
-                    'number_title': number_title,
-                    'skill_name': skill_name
-                });
-            } else {
-                list_answer.push({
-                    'name_table': name_table,
-                    'id_record': id_record,
-                    'id_question': id_question,
-                    'answer_student': answer_student,
-                    'number_title': number_title,
-                    'skill_name': skill_name
-                });
-            }
-
-
+            list_answer.push({
+                'name_table': name_table,
+                'id_record': id_record,
+                'id_question': id_question,
+                'answer_student': answer_student,
+                'number_title': number_title,
+                'skill_name': skill_name
+            });
             unique_list_answer = dedupe(list_answer);
         });
 
