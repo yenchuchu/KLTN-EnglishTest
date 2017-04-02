@@ -10,9 +10,19 @@
 
 @section('content')
     <a style="display: none;" href="{{route('frontend.dashboard.student.index')}}" id="href_goto_index"></a>
-    <div id="refresh-page-testing">
+    <div class="wrap-clock">
+        <div id='demnguoc' time_remaining="{{$time_remaining}}"><i class="fa fa-clock-o" aria-hidden="true"></i><span
+                    id='dem'></span> <span id='donvi'></span>
+        </div>
+        <div class="reload-exam-btn">
+            <button class="btn btn-default" style="width: 133%;" onclick="restart_test('{{$get_next_level}}', '{{$skill_code}}')">Restart</button>
+        </div>
+    </div>
 
-        @include('frontend.student.join-test.index_start')
+    <div class="container">
+        <div id="refresh-page-testing">
+            @include('frontend.student.join-test.index_start')
+        </div>
     </div>
 @stop
 

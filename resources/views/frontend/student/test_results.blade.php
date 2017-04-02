@@ -35,49 +35,48 @@
 @stop
 
 @section('content')
-
-    <div class="row">
-        <div class="col-lg-6">
-            <!-- Advanced Tables -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                   Reading
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive" id="reload-table-results">
-                        <table class="table table-hover" id="manager_results_users">
-                            <thead>
-                            <tr>
-                                <th>Lần thi</th>
-                                <th align="center">Điểm</th>
-                                <th align="center">Ngày Thi</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($all_results['Read'] as $results)
-                                <tr class="odd gradeX">
-                                    <td>{{$results->test_id}}</td>
-                                    <td>{{$results->point}}</td>
-                                    <td>{{Carbon\Carbon::parse($results->created_at)->format('d/m/Y - H:i')}}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <!-- Advanced Tables -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Reading
                     </div>
+                    <div class="panel-body">
+                        <div class="table-responsive" id="reload-table-results">
+                            <table class="table table-hover" id="manager_results_users">
+                                <thead>
+                                <tr>
+                                    <th>Lần thi</th>
+                                    <th align="center">Điểm</th>
+                                    <th align="center">Ngày Thi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($all_results['Read'] as $results)
+                                    <tr class="odd gradeX">
+                                        <td>{{$results->test_id}}</td>
+                                        <td>{{$results->point}}</td>
+                                        <td>{{Carbon\Carbon::parse($results->created_at)->format('d/m/Y - H:i')}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
 
+                    </div>
                 </div>
+                <!--End Advanced Tables -->
             </div>
-            <!--End Advanced Tables -->
         </div>
     </div>
-
 @stop
 
 @section('script')
 
     <script type="text/javascript">
         setTableInitStudent('manager_results_users');
-
     </script>
 
 @stop

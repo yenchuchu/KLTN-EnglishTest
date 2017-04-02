@@ -69,20 +69,19 @@
 
         {{--</div>--}}
     {{--@endforeach--}}
-
-
+<div class="container">
     <div>
         <h3>Listen and repeat</h3>
-    <p id="text_demo">{{$speak_items[0]->content}}</p>
-    @if(isset($speak_items[0]->url_mp3_create))
-    <audio controls>
-    <source src="{{$speak_items[0]->url_mp3_create}}" type="audio/mpeg">
-    </audio>
-    @else
-    <audio controls>
-    <source src="{{URL::asset($speak_items[0]->url_mp3)}}" type="audio/mpeg">
-    </audio>
-    @endif
+        <p id="text_demo">{{$speak_items[0]->content}}</p>
+        @if(isset($speak_items[0]->url_mp3_create))
+            <audio controls>
+                <source src="{{$speak_items[0]->url_mp3_create}}" type="audio/mpeg">
+            </audio>
+        @else
+            <audio controls>
+                <source src="{{URL::asset($speak_items[0]->url_mp3)}}" type="audio/mpeg">
+            </audio>
+        @endif
 
     </div>
 
@@ -113,6 +112,8 @@
     </div>
 
     <button id="check_diff" class="btn btn-success" style="margin-top: 10px;">Check</button>
+</div>
+
 @stop
 
 @section('script')

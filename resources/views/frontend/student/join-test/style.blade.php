@@ -58,12 +58,25 @@
         margin-bottom: 20px;
     }
 
+    .wrap-clock {
+        position: relative;
+    }
+
     #click,
     #demnguoc {
-        width: 10%;
+        width: 7%;
         border: 1px solid;
         border-radius: 5px;
         padding: 7px 13px;
+        right: 0;
+        margin-right: 4px;
+        position: fixed;
+    }
+
+    .reload-exam-btn  {
+        right: 28px;
+        position: fixed;
+        margin-top: 40px;
     }
 
     #demnguoc>i {

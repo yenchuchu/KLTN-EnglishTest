@@ -34,22 +34,22 @@
             </div>
             <!--End Advanced Tables -->
         </div>
-        <div class="col-lg-12">
-            <!-- Advanced Tables -->
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    AnswerQuestion's Teacher Tables
-                    <a href="{{route('backend.manager.author.answer-question.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>
-                </div>
-                <div class="panel-body">
-                    <div class="table-responsive" id="reload_table_ans_for_teachers">
-                        @include('backend.author.answer_question.table-teachers-index')
-                    </div>
+        {{--<div class="col-lg-12">--}}
+            {{--<!-- Advanced Tables -->--}}
+            {{--<div class="panel panel-default">--}}
+                {{--<div class="panel-heading">--}}
+                    {{--AnswerQuestion's Teacher Tables--}}
+                    {{--<a href="{{route('backend.manager.author.answer-question.create', ['TC', $class_code])}}" target="_blank">Add exam for teacher</a>--}}
+                {{--</div>--}}
+                {{--<div class="panel-body">--}}
+                    {{--<div class="table-responsive" id="reload_table_ans_for_teachers">--}}
+                        {{--@include('backend.author.answer_question.table-teachers-index')--}}
+                    {{--</div>--}}
 
-                </div>
-            </div>
-            <!--End Advanced Tables -->
-        </div>
+                {{--</div>--}}
+            {{--</div>--}}
+            {{--<!--End Advanced Tables -->--}}
+        {{--</div>--}}
     </div>
 
 @stop

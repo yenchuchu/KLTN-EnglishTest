@@ -6,10 +6,6 @@
 
 <div class="row wrap-test-class" id="testing-id">
 
-    <div id='demnguoc' time_remaining="{{$time_remaining}}"><i class="fa fa-clock-o" aria-hidden="true"></i><span
-                id='dem'></span> <span id='donvi'></span>
-    </div>
-
     <?php $i_skill = 1;
     $j_title = 1;
     ?>
