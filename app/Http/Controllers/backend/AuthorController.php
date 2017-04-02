@@ -9,6 +9,13 @@ use Route;
 
 class AuthorController extends Controller
 {
+
+    protected $posts;
+    public function __construct()
+    {
+
+    }
+
     /**
      * Display a listing of the resource.
      *

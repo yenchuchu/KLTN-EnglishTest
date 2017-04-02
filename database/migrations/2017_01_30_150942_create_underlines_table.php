@@ -26,6 +26,7 @@ class CreateUnderlinesTable extends Migration
             $table->integer('bookmap_id')->nullable();
             $table->integer('skill_id')->nullable();
             $table->integer('level_id')->nullable();
+            $table->tinyInteger('status')->defaul(0)->comment('0-chua active, 1-active');
 
             $table->timestamps();
         });

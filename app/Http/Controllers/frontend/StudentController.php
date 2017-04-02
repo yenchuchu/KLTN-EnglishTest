@@ -390,7 +390,7 @@ class StudentController extends Controller
                 $items->time_remaining = $time_remaining;
                 $items->update_json_answer = $json_answer_encode;
 
-//                $items->save();
+                $items->save();
             } else {
                 $data = [
                     'time_remaining' => $time_remaining,
@@ -573,8 +573,8 @@ class StudentController extends Controller
         if (count($check_exist_item) == 0) {
 
             $type_exam_read = Config::get('constants.skill.'.$skill_code);
-//            $random_type_read = array_rand($type_exam_read, 2); // 3
-            $random_type_read = ['listen_ticks'];
+            $random_type_read = array_rand($type_exam_read, 3); // 3
+//            $random_type_read = ['listen_ticks'];
 
             $items = [];
             var_dump($random_type_read);
@@ -818,8 +818,8 @@ class StudentController extends Controller
         $point = []; // điểm theo từng kỹ năng.
 
         $point_sum = Config::get('constants.sum_point'); // Tổng điểm của cả bài thi.
-//        $max_exam = Config::get('constants.max_exam'); // số bài có trong 1 kỹ năng
-        $max_exam = 1; // số bài có trong 1 kỹ năng
+        $max_exam = Config::get('constants.max_exam'); // số bài có trong 1 kỹ năng
+//        $max_exam = 1; // số bài có trong 1 kỹ năng
 
 //        $point_constant = Config::get('constants.point'); // điểm của mỗi bài trong mỗi kỹ năng
 //        dd($json_answer);

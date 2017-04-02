@@ -234,6 +234,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     });
 
+    Route::get('/setup/roles', 'SetupRoleController@setupRole')->name('get.setup.roles');
+    Route::post('post/setup/roles', 'SetupRoleController@postSetupRole')->name('post.setup.roles');
+
 });
 
 //Route::group(array('middleware' => 'guest'), function () {
@@ -244,9 +247,11 @@ Route::get('/', 'DashboardController@index')->name('dashboard');
 
 Auth::routes();
 
-Route::get('login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('login/facebook', 'Auth\LoginController@redirectToProvider')->name('login.facebook');
 Route::get('login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
 
 Route::get('/403', function () {
     return view('errors.403');
 });
+
+Route::get('test/send-email', 'TestEmailController@ship');

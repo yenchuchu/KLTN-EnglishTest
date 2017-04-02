@@ -202,6 +202,8 @@
             });
         }).draw();
     }
+
+
 </script>
 
 @yield('script')

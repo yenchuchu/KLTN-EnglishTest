@@ -43,7 +43,9 @@
 
     <style>
         #menu-nav-top {
-            background-color: #0c8db9;
+            background-color: #4d545d;
+            margin-bottom: -1px;
+            height: 60px;
         }
 
         #menu-nav-top .navbar-brand,
@@ -55,6 +57,93 @@
         #menu-nav-top .nav a:hover,
         #menu-nav-top .nav a:active {
             background-color: #2aadda;
+        }
+
+        #nav-bottom-tab {
+            background-color: #f6f6f6;
+            height: 55px;
+            z-index: 40;
+        }
+
+        .navbar-default .navbar-nav > .active > a,
+        .navbar-default .navbar-nav > .active > a:hover,
+        .navbar-default .navbar-nav > .active > a:focus,
+        .navbar-default .navbar-nav > li > a:hover{
+            color: white !important;
+            background: #00b1b3;
+            border-right: 1px solid #00989a;
+        }
+
+        #ul-menu-main>li {
+            background: #f6f6f6;
+            border-left: 1px solid #d7d7d7;
+            /*border-right: 1px solid transparent;*/
+
+        }
+
+        #ul-menu-main li a {
+            color: #7d8793;
+            padding: 15px 44px;
+            font-size: 16px;
+            height: 54px;
+        }
+
+        .img-icon {
+            float: left;
+            margin-top: -3px;
+            margin-right: 15px;
+        }
+
+        .img-icon>i {
+            font-size: 24px;
+        }
+
+        .dropbtn {
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+        }
+
+        /*@media screen and (min-width: 769px){*/
+            /*#dropdown-menu-top {*/
+                /*position: relative;*/
+            /*}*/
+        /*}*/
+
+        #dropdown-menu-top {
+            position: relative;
+            display: inline-block;
+            float: right;
+            margin-top: 15px;
+        }
+
+        .dropdown-content {
+            margin-top: 22px;
+            display: none;
+            position: relative;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .dropdown-content a:hover {background-color: #f1f1f1}
+
+        #dropdown-menu-top:hover .dropdown-content {
+            display: block;
+        }
+
+        #dropdown-menu-top:hover .dropbtn {
+           text-decoration: none;
         }
 
     </style>
@@ -84,9 +173,9 @@
             @include('partials.menu-top-right')
         </div>
     </nav>
+    @yield('menu-main')
     <div class="container">
 
-        @yield('menu-main')
         @include('errors.errors')
         @yield('content')
 
@@ -187,6 +276,18 @@
 //            });
 //        }).draw();
     }
+
+    $('#btn-done-loginfb').click(function () {
+
+        var type_user = $("input[name='office_type']:checked").val();
+        if(type_user == 'ST') {
+            var class_id = $("#class-choose option:selected" ).val();
+            if(class_id == 0) {
+                alert('Bạn phải chọn lớp');
+                return false;
+            }
+        }
+    });
 
 </script>
 @yield('script')

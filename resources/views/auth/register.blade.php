@@ -179,9 +179,9 @@
                             </div>
 
                             <div class="tab-content">
-                                <div id="teacher-tabs" class="tab-pane fade in active">
+                                <div id="teacher-tabs" class="tab-pane fade ">
                                 </div>
-                                <div id="student-tabs" class="tab-pane fade">
+                                <div id="student-tabs" class="tab-pane fade in active">
                                     <div class="form-group">
                                         <label for="class" class="col-md-4 control-label">Class</label>
 

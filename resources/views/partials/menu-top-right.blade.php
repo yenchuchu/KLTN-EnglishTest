@@ -234,34 +234,44 @@
     @endif
 
     @if ( Auth::user()->hasRole('TC') ||  Auth::user()->hasRole('ST'))
-        <ul class="nav navbar-nav navbar-right">
+
             <!-- Authentication Links -->
             @if (Auth::guest())
+                <ul class="nav navbar-nav navbar-right">
                 <li class="guest-app"><a href="{{ url('/login') }}">Login</a></li>
                 <li class="guest-app"><a href="{{ url('/register') }}">Register</a></li>
+                    </ul>
             @else
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle"  id="username-auth" data-toggle="dropdown" role="button" aria-expanded="false">
+                <div class="dropdown" id="dropdown-menu-top">
+                    <a href="#" class="dropbtn" id="username-auth">
                         {{ Auth::user()->user_name }} <span class="caret"></span>
                     </a>
-
-                    <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
-                        </li>
-                        <li>
-                            <a href="{{ url('/logout') }}"
-                               onclick="event.preventDefault();
+                    <div class="dropdown-content">
+                        <a href="#"><i class="fa fa-user fa-fw"></i>User Profile</a>
+                        <a href="{{ url('/logout') }}"
+                           onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                Logout
-                            </a>
+                            Logout
 
                             <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
                                 {{ csrf_field() }}
                             </form>
+                        </a>
+
+                    </div>
+                </div>
+
+                <li class="dropdown">
+
+
+                    <ul class="dropdown-menu dropdown-user">
+                        <li></a>
+                        </li>
+                        <li>
+
                         </li>
                     </ul>
                 </li>
             @endif
-        </ul>
     @endif
 @endif

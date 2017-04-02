@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Classes;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\Social;
+use App\User;
 use Auth;
-use Socialite;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
 {
@@ -69,6 +73,47 @@ class LoginController extends Controller
     {
         $user = Socialite::driver('facebook')->user();
 
-        // $user->token;
+        $social = Social::where('provider_user_id', $user->id)->where('provider', 'facebook')->first();
+
+        if ($social) {
+            $u = User::where(['email' => $user->email])->first();
+            Auth::login($u);
+            if ($u->type == 0) {
+                return redirect()->route('get.setup.roles');
+            } else {
+                if ( Auth::user()->hasRole('ST')) {
+                    return redirect()->route('frontend.dashboard.student.index');
+                }
+
+                if ( Auth::user()->hasRole('AD')) {
+                    return redirect()->route('backend.manager.users.index');
+                }
+
+                if ( Auth::user()->hasRole('AT')) {
+                    return redirect()->route('backend.manager.author.index');
+                }
+            }
+        } else {
+            $temp = new Social();
+            $temp->provider_user_id = $user->id;
+            $temp->provider = 'facebook';
+
+            $u = User::where(['email' => $user->email])->first();
+            if (!$u) {
+                $u = User::create([
+                    'user_name' => $user->name,
+                    'email' => $user->email,
+                    'avatar' => $user->avatar,
+                    'type' => 0
+                ]);
+            }
+            $temp->user_id = $u->id;
+
+            $temp->save();
+
+            Auth::login($u);
+            return redirect()->route('get.setup.roles');
+        }
     }
+
 }

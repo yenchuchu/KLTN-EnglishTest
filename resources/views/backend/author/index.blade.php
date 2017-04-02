@@ -29,7 +29,7 @@
 
 @section('content')
     <section id="dashboard-index-wrap">
-        <div class="container">
+        <div class="">
             <div class="row">
 
                 <div class="main-body">
