@@ -69,6 +69,76 @@
                 </div>
                 <!--End Advanced Tables -->
             </div>
+
+            {{--LISTENING--}}
+            <div class="col-lg-6">
+                <!-- Advanced Tables -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Listening
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive" id="reload-table-listening-results">
+                            <table class="table table-hover" id="manager_results_listening_users">
+                                <thead>
+                                <tr>
+                                    <th>Lần thi</th>
+                                    <th align="center">Điểm</th>
+                                    <th align="center">Ngày Thi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($all_results['Listen'] as $results)
+                                    <tr class="odd gradeX">
+                                        <td>{{$results->test_id}}</td>
+                                        <td>{{$results->point}}</td>
+                                        <td>{{Carbon\Carbon::parse($results->created_at)->format('d/m/Y - H:i')}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!--End Advanced Tables -->
+            </div>
+        </div>
+
+        <div class="row">
+            {{--Speaking--}}
+            <div class="col-lg-6">
+                <!-- Advanced Tables -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Speaking
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive" id="reload-table-Speaking-results">
+                            <table class="table table-hover" id="manager_results_Speaking_users">
+                                <thead>
+                                <tr>
+                                    <th>Lần thi</th>
+                                    <th align="center">Điểm</th>
+                                    <th align="center">Ngày Thi</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($all_results['Speak'] as $results)
+                                    <tr class="odd gradeX">
+                                        <td>{{$results->test_id}}</td>
+                                        <td>{{$results->point}}</td>
+                                        <td>{{Carbon\Carbon::parse($results->created_at)->format('d/m/Y - H:i')}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+                <!--End Advanced Tables -->
+            </div>
         </div>
     </div>
 @stop
@@ -77,6 +147,7 @@
 
     <script type="text/javascript">
         setTableInitStudent('manager_results_users');
+        setTableInitStudent('manager_results_listening_users');
     </script>
 
 @stop

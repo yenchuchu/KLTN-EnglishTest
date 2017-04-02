@@ -866,11 +866,19 @@ class StudentController extends Controller
                     } else {
                         $answer_student = preg_replace('/\s+/', ' ', trim($item['answer_student']));
                     }
+//                    var_dump($answer_student);
 
                     $result_check = [];
-                    if(is_array($answer_student) == true) {
-                        $result_check['answer_student_incorrect'] = array_diff($answer_student, $text_answer_correct);
-                        $result_check['answer_correct_miss'] = array_diff($text_answer_correct, $answer_student);
+                    if(is_array($text_answer_correct) == true) {
+//                        var_dump($text_answer_correct);
+//                        var_dump($answer_student);
+                        if(!empty($answer_student)) {
+                            $result_check['answer_student_incorrect'] = array_diff($answer_student, $text_answer_correct);
+                            $result_check['answer_correct_miss'] = array_diff($text_answer_correct, $answer_student);
+                        } else {
+                            $result_check['answer_student_incorrect'] = '';
+                            $result_check['answer_correct_miss'] = $text_answer_correct;
+                        }
 
                         $check_correct[$table][$id_record]['answer'] = $text_answer_correct;
                         $check_correct[$table][$id_record]['error'] = $result_check['answer_student_incorrect'];
@@ -881,6 +889,8 @@ class StudentController extends Controller
                         $point_each_ans = $point_each_qts/count($text_answer_correct);
                         $point_total += $point_each_ans * $count_correct_table_tick;
                     } else {
+//                        dd(strcmp($text_answer_correct, $answer_student));
+//                        dd($answer_student);
                         if (strcmp($text_answer_correct, $answer_student) == 0) {
 //                       $check_correct[$table][$id_record][$id_question] = 1; // đúng kết quả
                             $count_correct++; // số câu đúng
@@ -904,7 +914,7 @@ class StudentController extends Controller
             $point_total += $point[$skill];
 
         }
-
+//die;
 //        dd($point_total);
 //dd($check_correct);
         return ['check_correct' => $check_correct, 'point' => $point, 'point_total' => $point_total];
@@ -1004,6 +1014,14 @@ class StudentController extends Controller
 
         $all_results['Read'] = $results->filter(function ($result) {
            return $result->skill_id == $this->getSkillIdByCode('Read');
+        });
+
+        $all_results['Listen'] = $results->filter(function ($result) {
+           return $result->skill_id == $this->getSkillIdByCode('Listen');
+        });
+
+        $all_results['Speak'] = $results->filter(function ($result) {
+           return $result->skill_id == $this->getSkillIdByCode('Speak');
         });
 
         return view('frontend.student.test_results', compact('all_results'));
